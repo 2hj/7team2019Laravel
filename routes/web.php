@@ -31,7 +31,7 @@ Route::get('social/{provider}', [
 ]);
 
 
-Route::post('/register', "MembersController@test");
+// Route::post('/register', "MembersController@test");
 
 // Route::post('/members/{$id}', 'MembersController@ajaxteset');
 
