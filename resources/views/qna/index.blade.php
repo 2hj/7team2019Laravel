@@ -57,11 +57,20 @@
 	</table>
 </div>
 
-<div class="Align_Center">
-		<!-- <button type="button" id="btn" data-toggle="modal" data-target="#layerpop`">Create Question</button> -->
-		<!-- <button class="btn btn-warning btn-detail open_modal">Create Question</button> -->
-    <button id="questionModalBtn" type="button" class="btn btn-primary" data-toggle="modal" data-target="#questionModal" >Create Question</button>
-
+<div class="right-side">
+  <h1 style="color: #FFFFFF;">포럼 글 목록</h1>
+  <hr/>
+  <ul>
+      @forelse($questions as $question)
+        <li class="openQuestion" id="ques_{{$question->id}}">
+          <p id="questionId" style="color: #FFFFFF;">{{ $question->id }}</p>
+          <p> {{ $question->title }} </p>
+          <small style="color: #FFFFFF;"> by {{ $question->user->name }} </small>
+        </li>
+      @empty
+        <p style="color: #FFFFFF;">글이 없습니다</p>
+      @endforelse
+  </ul>
 </div>
 
 
@@ -105,12 +114,49 @@
 <link rel="stylesheet" type="text/css" href="{{ URL::asset('css\styles\bootstrap-4.1.2\bootstrap.min.css') }}">
 <script>
 $(document).ready(function(){
-  $('#questionModalBtn').click(function(e){
-    e.preventDefault();
-    console.log('event emitted');
-    // $('#questionModal').modal();
-    $('#questionModal').modal('show');
+  $.ajaxSetup({
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
   });
+
+  var selected = -1;
+
+  document.querySelectorAll('.openQuestion').forEach(function (e){
+    e.addEventListener('click',function(){
+      let id = e.querySelector('#questionId').innerHTML;
+      onClick(id);
+    });
+  });
+
+  function onClick(id){
+    $.ajax({
+      headers:{
+          'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+      },
+      type: 'get',
+      url: '/qna/' + id,
+      data: {
+        "_token": "{{ csrf_token() }}",
+        qid: id,
+      },
+      success: function(result){
+        $('p#questionValue').remove();
+        var p = document.createElement('p');
+        p.innerHTML = result['value'];
+        p.setAttribute('id', 'questionValue');
+        if(selected != result['qid']) {
+          selected = result['qid'];
+          document.getElementById('ques_'+result['qid']).appendChild(p);
+        } else {
+          selected = -1;
+        }
+      },
+      error: function(request, status, error){
+        console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+      }
+    });
+  }
 });
 </script>
 @stop
