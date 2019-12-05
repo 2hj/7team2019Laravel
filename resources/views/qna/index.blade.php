@@ -61,7 +61,9 @@ $(document).ready(function(){
     headers: {
       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
-  });  
+  });
+
+  var selected = -1;
 
   document.querySelectorAll('.openQuestion').forEach(function (e){
     e.addEventListener('click',function(){
@@ -86,7 +88,12 @@ $(document).ready(function(){
         var p = document.createElement('p');
         p.innerHTML = result['value'];
         p.setAttribute('id', 'questionValue');
-        document.getElementById('ques_'+result['qid']).appendChild(p);
+        if(selected != result['qid']) {
+          selected = result['qid'];
+          document.getElementById('ques_'+result['qid']).appendChild(p);
+        } else {
+          selected = -1;
+        }
       },
       error: function(request, status, error){
         console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
