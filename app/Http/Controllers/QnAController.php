@@ -74,7 +74,8 @@ class QnAController extends Controller
     */
 
     public function store(\App\Http\Requests\QuestionsRequest $request){
-      $question = \App\User::find(1)->questions()->create($request->all());
+      // $question = \App\User::find(1)->questions()->create($request->all());
+      $question = auth()->user()->questions()->create($request->all());
 
       if(! $question){
         return back()->withErrors('flash_message', '글이 저장되지 않았습니다.')->withInput();

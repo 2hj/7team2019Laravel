@@ -139,7 +139,7 @@ h1, h2, h3, h4, h5, h6
 	-webkit-font-smoothing: antialiased;
 	-webkit-text-shadow: rgba(0,0,0,.01) 0 0 1px;
 	text-shadow: rgba(0,0,0,.01) 0 0 1px;
-	line-height: 1.2;
+	/* line-height: 1.2; */
 }
 h1::selection, 
 h2::selection, 
@@ -638,9 +638,11 @@ section
 	white-space: nowrap;
 }
 
+
 /*********************************
 6. Contact
 *********************************/
+
 
 .contact
 {
@@ -651,12 +653,11 @@ section
 {
 	font-size: 36px;
 	color: #FFFFFF;
-	line-height: 1.2;
 }
 .contact_form
 {
 	display: block;
-	width: 100%;
+	width: 50%;
 	margin-top: 59px;
 }
 .contact_input
@@ -752,9 +753,24 @@ section
 }
 .contact_info_list
 {
-	margin-top: 84px;
+	margin-top: 100px;
 	padding-left: 13px;
 }
+
+/* 이혜진 추가 스타일 */
+.contact_info_list h1{
+  color: #FFFFFF;
+}
+
+.right-side {
+  padding-right: 13px;
+}
+
+.right-side hr{
+  border: solid 1px #FFFFFF;
+  width: 100%;
+}
+
 .contact_info_list ul li
 {
 	font-size: 16px;
@@ -790,6 +806,16 @@ section
 	color: #FFFFFF;
 }
 
+/* 이혜진 추가 스타일 */
+.right-side h1 ul li small{
+  color: #FFFFFF;
+}
+#questions-render {
+  color: #FFFFFF;
+}
+#fill-title, #fill-content{
+  color: #FFFFFF;
+}
 /*********************************
 7. Footer
 *********************************/

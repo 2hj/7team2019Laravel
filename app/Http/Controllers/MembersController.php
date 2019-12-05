@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-// use Illuminate\Http\Request;
+use Illuminate\Http\Request;
 use App\Http\Requests\MembersRequest;
 
 class MembersController extends Controller
@@ -73,6 +73,19 @@ class MembersController extends Controller
         }
 
         return redirect(route('members.index'))->with('flash_message', '작성하신 글이 저장되었습니다.');
+
+        /* $validator = Validator::make($request->all(), [
+            'name' => 'required|max:10',
+            'phone_number' => 'required|max:13',
+            'motto' => 'required|min:10',
+            'address' => 'required|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            return back()->with('flash_message', '글이 저장되지 않았습니다.')->withInput();
+        }
+
+        return redirect(route('members.index'))->with('flash_message', '작성하신 글이 저장되었습니다.'); */
     }
 
     /**
@@ -118,5 +131,25 @@ class MembersController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    function members()
+    {
+        $data = DB::table('members')->get();
+
+        return $data;
+    }
+
+    public function test(Request $request) {
+        return $request->test;
+    }
+
+    public function ajaxtest(Request $request) {
+        return $request->test;
+    }
+
+    public function createMember(Request $request) {
+        dd($request->checking);
+        return $request->checking;
     }
 }

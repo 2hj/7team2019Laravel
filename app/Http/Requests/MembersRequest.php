@@ -24,18 +24,22 @@ class MembersRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required'],
-            'phone_number' => ['required'],
-            'motto' => ['required|min:10'],
-            'address' => ['required'],  
+            // 이름 10, 주소 255, 전화번호 13, 좌우명 x, 이미지 255,
+            // id, created_at, updated_at
+            // 왜인지 모르겠지만 |사용시 오류025ㅠ
+            'name' => ['required', 'max:10'],
+            'phone_number' => ['required', 'max:13'],
+            'motto' => ['required', 'min:10'],
+            'address' => ['required', 'max:255'],  
         ];
     }
 
-    public function message()
+    public function messages()
     {
         return [
             'required' => ':attribute은(는) 필수 입력 항목입니다.',
-            'min' => ':attribute은(는) 최소 :min글자 이상이 필요합니다.',
+            'min' => ':attribute은(는) 최소 :min자 이상 입력해주세요.',
+            'max' => ':attribute은(는) 최대 :max자 이상 입력할 수 없습니다.',
         ];
     }
 

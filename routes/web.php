@@ -14,9 +14,6 @@
 
 Auth::routes();
 
-// 메인페이지에 CRUD 안할거니까 리소스 컨트롤러 삭제함
-//Route::resource('/', 'MainpageController');
-
 Route::get('/', 'MainController@index')->name('Mainpage');
 
 Route::resource('/japan', 'JapanController');
@@ -25,8 +22,21 @@ Route::resource('/members', 'MembersController');
 
 Route::resource('/qna', 'QnAController');
 
+Route::get('ajax', 'AjaxController@index');
+
 /* Social Login */
 Route::get('social/{provider}', [
     'as' => 'social.login',
     'uses' => 'SocialController@execute',
 ]);
+
+
+Route::post('/register', "MembersController@test");
+
+// Route::post('/members/{$id}', 'MembersController@ajaxteset');
+
+Route::post('/ajaxtest', "MembersController@ajaxtest");
+
+Route::post('/createMember', "MembersController@createMember");
+
+// Route::post('/addMember', "MembersController@test");
