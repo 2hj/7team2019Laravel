@@ -35,8 +35,9 @@
   <hr/>
   <ul>
       @forelse($questions as $question)
-        <li>
-          <a data-id="{{ $question->id }}" class="choose-question" href="#" style="color: #FFFFFF;"> {{ $question->title }} </a>
+        <li class="openQuestion" id="ques_{{$question->id}}">
+          <p id="questionId" style="color: #FFFFFF;">{{ $question->id }}</p>
+          <p> {{ $question->title }} </p>
           <small style="color: #FFFFFF;"> by {{ $question->user->name }} </small>
         </li>
       @empty
@@ -60,29 +61,38 @@ $(document).ready(function(){
     headers: {
       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
+  });  
+
+  document.querySelectorAll('.openQuestion').forEach(function (e){
+    e.addEventListener('click',function(){
+      let id = e.querySelector('#questionId').innerHTML;
+      onClick(id);
+    });
   });
 
-  $('.choose-question').click(function(e){
-    if(confirm('ajax로 글 보기')){
-
-      var title = '{{ $question->title }}';
-      var content = '{{ $question->content }}';
-
-      $.ajax({
-        type: 'get',
-        url: '/ajax',
-        dataType: 'json',
-        data: '_token = <?php echo csrf_token() ?>',
-        success: function(data){
-          $('#fill-title').html(title);
-          $('#fill-content').html(content);
-        },
-        error: function(data, textStatus, errorThrown){
-          console.log('data');
-        }
-      });
-    }
-  });
+  function onClick(id){
+    $.ajax({
+      headers:{
+          'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+      },
+      type: 'get',
+      url: '/qna/' + id,
+      data: {
+        "_token": "{{ csrf_token() }}",
+        qid: id,
+      },
+      success: function(result){
+        $('p#questionValue').remove();
+        var p = document.createElement('p');
+        p.innerHTML = result['value'];
+        p.setAttribute('id', 'questionValue');
+        document.getElementById('ques_'+result['qid']).appendChild(p);
+      },
+      error: function(request, status, error){
+        console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+      }
+    });
+  }
 });
 
 </script>

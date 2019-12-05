@@ -74,14 +74,14 @@ class QnAController extends Controller
     */
 
     public function store(\App\Http\Requests\QuestionsRequest $request){
-      // $question = \App\User::find(1)->questions()->create($request->all());
-      $question = auth()->user()->questions()->create($request->all());
+        // $question = \App\User::find(1)->questions()->create($request->all());
+        $question = auth()->user()->questions()->create($request->all());
+        
+        if(! $question){
+            return back()->withErrors('flash_message', '글이 저장되지 않았습니다.')->withInput();
+        }
 
-      if(! $question){
-        return back()->withErrors('flash_message', '글이 저장되지 않았습니다.')->withInput();
-      }
-
-      return redirect(route('qna.index'))->with('flash_message', '작성한 글이 저장되었습니다.');
+        return redirect(route('qna.index'))->with('flash_message', '작성한 글이 저장되었습니다.');
     }
 
     /**
@@ -92,7 +92,12 @@ class QnAController extends Controller
      */
     public function show($id)
     {
-        //
+        $search = \App\Question::where('id', '=', $id)->get();
+        
+        return response([
+            'qid' => $search[0]['id'],
+            'value' => $search[0]['content'],
+        ]);
     }
 
     /**
@@ -128,4 +133,5 @@ class QnAController extends Controller
     {
         //
     }
+
 }
