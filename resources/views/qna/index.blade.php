@@ -58,8 +58,6 @@
 </div>
 
 <div class="Align_Center">
-		<!-- <button type="button" id="btn" data-toggle="modal" data-target="#layerpop`">Create Question</button> -->
-		<!-- <button class="btn btn-warning btn-detail open_modal">Create Question</button> -->
     <button id="questionModalBtn" type="button" class="btn btn-primary" data-toggle="modal" data-target="#questionModal" >Create Question</button>
 
 </div>
@@ -70,7 +68,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modalTitle">Create Question</h5>
+        <h5 class="modal-title" id="modalTitle">새 글 쓰기</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
       </div>
@@ -78,19 +76,18 @@
       <div class="modal-body">
         <form>
           <div class="form-group">
-            <label for="question-title" class="col-form-label">Title</label>
+            <label for="question-title" class="col-form-label">제목</label>
             <input type="text" class="form-control" id="question-title">
           </div>
           <div class="form-group">
-            <label for="question-content" class="col-form-label">Content</label>
+            <label for="question-content" class="col-form-label">본문</label>
             <textarea class="form-control" id="question-content"></textarea>
           </div>
         </form>
       </div>
 
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">질문 저장하기</button>
-        <!-- <button type="button" class="btn btn-primary">질문 저장</button> -->
+        <button id="closeQuestionModal" type="button" class="btn btn-secondary" data-dismiss="modal">질문 저장하기</button>
       </div>
     </div>
   </div>
@@ -110,6 +107,15 @@ $(document).ready(function(){
     console.log('event emitted');
     // $('#questionModal').modal();
     $('#questionModal').modal('show');
+  });
+
+  $('#closeQuestionModal').click(function(e){
+    console.log('event emitted');
+
+    $.ajax({
+      type:'get',
+      url: '/ajax'
+    });
   });
 });
 </script>

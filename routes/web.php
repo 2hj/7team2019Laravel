@@ -22,7 +22,7 @@ Route::resource('/members', 'MembersController');
 
 Route::resource('/qna', 'QnAController');
 
-Route::get('ajax', 'AjaxController@index');
+Route::get('/ajax', 'AjaxController@index');
 
 /* Social Login */
 Route::get('social/{provider}', [

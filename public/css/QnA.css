@@ -9,12 +9,13 @@
  .table-container th h1 {
        font-weight: bold;
        font-size: 1em;
-       text-align: left;
+       text-align: center;
        color: #DDDDDD;
+       padding-top: 2%;
  }
  
 
- .btn-submit , #btn-delete, #comment_button{
+ .btn-submit , .btn-delete, #comment_button{
       float: right;
       display: block;
       padding: 0 5px;
@@ -24,12 +25,12 @@
       background: -webkit-linear-gradient(top, rgb(0,37,103) 0%,rgb(0,87,166) 50%,rgb(0,74,152) 51%,rgb(75,135,182) 100%);
       border: 1px solid slategray;
       color: #EEEEEE;
-      height: 37px;
-      line-height: 37px;
+      height: 20px;
+      line-height: 20px;
       margin: 1%;
       margin-left: 2%;
       margin-right: 2%;
-      font-size: 30px
+      font-size: 18px
     }
 
  .table-container td {
@@ -50,6 +51,7 @@
        padding: 0 0 1% 0;
        font-weight: bold;
        font-size: 24px;
+       text-align: center;
  }
  
  .table-container td, .table-container th {
