@@ -12,7 +12,7 @@
 </div>
 
 
-
+<!-- 
 <div id="qna_div">
 	<table class="table-container">
 		<thead>
@@ -56,14 +56,30 @@
 		@endforeach
 	</table>
 </div>
+ -->
 
-<div class="Align_Center">
-    <button id="questionModalBtn" type="button" class="btn btn-primary" data-toggle="modal" data-target="#questionModal" >Create Question</button>
-
+<div class="question-list">
+  <h1 style="color: #FFFFFF;">질문 목록</h1>
+  <hr/>
+  <ul>
+      @forelse($questions as $question)
+        <li class="openQuestion" id="ques_{{$question->id}}">
+          <p id="questionId" style="color: #FFFFFF;">{{ $question->id }}</p>
+          <p> {{ $question->title }} </p>
+          <small style="color: #FFFFFF;"> by {{ $question->user->name }} </small>
+        </li>
+      @empty
+        <p style="color: #FFFFFF;">글이 없습니다</p>
+      @endforelse
+  </ul>
 </div>
 
 
 <!-- 질문글 작성 모달창 -->
+<div class="Align_Center">
+    <button id="questionModalBtn" type="button" class="btn btn-primary" data-toggle="modal" data-target="#questionModal" >Create Question</button>
+</div>
+
 <div class="modal fade" id="questionModal" role="dialog">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -102,6 +118,12 @@
 <link rel="stylesheet" type="text/css" href="{{ URL::asset('css\styles\bootstrap-4.1.2\bootstrap.min.css') }}">
 <script>
 $(document).ready(function(){
+  $.ajaxSetup({
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+  });
+
   $('#questionModalBtn').click(function(e){
     e.preventDefault();
     console.log('event emitted');
@@ -117,6 +139,43 @@ $(document).ready(function(){
       url: '/ajax'
     });
   });
+  var selected = -1;
+
+  document.querySelectorAll('.openQuestion').forEach(function (e){
+    e.addEventListener('click',function(){
+      let id = e.querySelector('#questionId').innerHTML;
+      onClick(id);
+    });
+  });
+
+  function onClick(id){
+    $.ajax({
+      headers:{
+          'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+      },
+      type: 'get',
+      url: '/qna/' + id,
+      data: {
+        "_token": "{{ csrf_token() }}",
+        qid: id,
+      },
+      success: function(result){
+        $('p#questionValue').remove();
+        var p = document.createElement('p');
+        p.innerHTML = result['value'];
+        p.setAttribute('id', 'questionValue');
+        if(selected != result['qid']) {
+          selected = result['qid'];
+          document.getElementById('ques_'+result['qid']).appendChild(p);
+        } else {
+          selected = -1;
+        }
+      },
+      error: function(request, status, error){
+        console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+      }
+    });
+  }
 });
 </script>
 @stop
