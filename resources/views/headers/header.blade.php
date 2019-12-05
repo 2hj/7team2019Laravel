@@ -9,16 +9,10 @@
 
 <meta name="description" content="Mixtape template project">
 <title>{{ config('app.name', 'Laravel') }}</title>
+
+<link rel="stylesheet" type="text/javascript" href="{{ URL::asset('js/jquery-3.2.1.min.js') }}">
+<link rel="stylesheet" type="text/javascript" href="{{ URL::asset('css/styles/bootstrap-4.1.2/bootstrap.min.js') }}">
 <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/styles/bootstrap-4.1.2/bootstrap.min.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ URL::asset('plugins/OwlCarousel2-2.2.1/owl.carousel.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ URL::asset('plugins/OwlCarousel2-2.2.1/owl.theme.default.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ URL::asset('plugins/OwlCarousel2-2.2.1/animate.css') }}">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-
-<script src="{{ URL::asset('js\jquery-3.2.1.min.js') }}"></script>
-<script src="{{ URL::asset('css\styles\bootstrap-4.1.2\bootstrap.min.js') }}"></script>
-<link rel="stylesheet" type="text/css" href="{{ URL::asset('css\styles\bootstrap-4.1.2\bootstrap.min.css') }}">
-
 
 <link rel="dns-prefetch" href="//fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
@@ -52,7 +46,6 @@
   @include('sweetalert::alert')
 </head>
 <body>
-<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 
 <div class="super_container">
 	
@@ -112,9 +105,3 @@
 		</div>
 		
 	</header>
-  <main>
-  
-  @yield('content')
-  @yield('script')
-  </main>
-</div>
