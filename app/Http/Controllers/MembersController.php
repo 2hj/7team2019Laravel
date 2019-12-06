@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Vaildator;
 use Illuminate\Http\Request;
 use App\Http\Requests\MembersRequest;
+use App\Member;
+use Datatables;
 
 class MembersController extends Controller
 {
@@ -14,19 +17,22 @@ class MembersController extends Controller
      */
     public function index()
     {
+        
         $members = \App\Member::get();
+        // $members = DB::table('members')->get();
+        // dd($members);
 
         return view('members.index', compact('members'));
     }
 
     /**
      * Show the form for creating a new resource.
-     *
+     * @param \Illuminate\Http\Request
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        return view('members.create');
+        return $request;
     }
 
     /**
@@ -37,55 +43,28 @@ class MembersController extends Controller
      */
     // 타입형을 Request 클래스 경로로 바꾸어준다
     // \App\Http\Requests\MembersRequest
-    public function store(MembersRequest $request)
+    public function store(Request $request)
     {
-        /* $rules = [
-            // 이름, 폰번호, 모토 유효성 검사 규칙
-            'name' => ['required'],
-            'phone_number' => ['required'],
-            'address' => ['required'],
-            'motto' => ['required', 'min:10'],
-        ];
-
-        $messages = [
-            'name.required' => '이름은 필수 입력 항목입니다.',
-            'phone_number.required' => '전화번호는 필수 입력 항목입니다.',
-            'address' => '주소는 필수 입력 항목입니다.',
-            'motto.required' => '모토는 필수 입력 항목입니다.',
-            'motto.min' => '본문은 최소 :min 글자 이상이 필요합니다.',
-        ];
-
-        $this->validate($request, $rules, $messages);
-
-        $validator = \Validator::make($request->all(), $rules, $messages);
-
-        if($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
-        } */
-
-        // $validated = $request->validated();
-        
+        // debug("store");
+        // dd('dd');
 
         $members = \App\Member::create($request->all()); 
 
-        if(!$members) {
-            return back()->with('flash_message', '글이 저장되지 않았습니다.')->withInput();
-        }
-
-        return redirect(route('members.index'))->with('flash_message', '작성하신 글이 저장되었습니다.');
-
-        /* $validator = Validator::make($request->all(), [
-            'name' => 'required|max:10',
-            'phone_number' => 'required|max:13',
-            'motto' => 'required|min:10',
-            'address' => 'required|max:255',
-        ]);
-
-        if ($validator->fails()) {
+        // dd($members);
+        return $members;
+        /* return response([
+            'name' => $members[0]['name'],
+            'address' => $members[0]['address'],
+            'mottoes' => $members[0]['mottoes'],
+            'phone_number' => $members[0]['phone_number'],
+        ]); */
+        
+        /* if(!$members) {
             return back()->with('flash_message', '글이 저장되지 않았습니다.')->withInput();
         }
 
         return redirect(route('members.index'))->with('flash_message', '작성하신 글이 저장되었습니다.'); */
+
     }
 
     /**
@@ -94,9 +73,11 @@ class MembersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        
+        $member = \App\Member::where('id', '=', $id)->get();
+
+        return $member;
     }
 
     /**
@@ -128,9 +109,9 @@ class MembersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Reqeust $request, $id)
     {
-        //
+        return $request;
     }
 
     function members()
@@ -149,7 +130,7 @@ class MembersController extends Controller
     }
 
     public function createMember(Request $request) {
-        dd($request->checking);
-        return $request->checking;
+        // dd($request->testing);
+        return $request;
     }
 }
