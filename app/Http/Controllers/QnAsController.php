@@ -3,20 +3,36 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Question;
+use DataTables;
 
-class QnAController extends Controller
+class QnAsController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
 
-        $questions = \App\Question::with('user')->latest()->paginate(10);
-        
-        return view('qna.index', compact('questions'));
+        if ($request->ajax()) {
+            $data = Question::latest()->get();
+            return Datatables::of($data)
+                    ->addIndexColumn()
+                    ->addColumn('action', function($row){
+   
+                           $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editBook">Edit</a>';
+   
+                           $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteBook">Delete</a>';
+    
+                            return $btn;
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
+        }
+
+        return view('qna');
 
     }
 
@@ -27,7 +43,7 @@ class QnAController extends Controller
      */
     public function create()
     {
-        return view('qna.create');
+        //
     }
 
     /**
@@ -73,15 +89,22 @@ class QnAController extends Controller
     }
     */
 
-    public function store(\App\Http\Requests\QuestionsRequest $request){
-        // $question = \App\User::find(1)->questions()->create($request->all());
-        $question = auth()->user()->questions()->create($request->all());
+    // public function store(\App\Http\Requests\QuestionsRequest $request){
+    //     // $question = \App\User::find(1)->questions()->create($request->all());
+    //     $question = auth()->user()->questions()->create($request->all());
         
-        if(! $question){
-            return back()->withErrors('flash_message', '글이 저장되지 않았습니다.')->withInput();
-        }
+    //     if(! $question){
+    //         return back()->withErrors('flash_message', '글이 저장되지 않았습니다.')->withInput();
+    //     }
 
-        return redirect(route('qna.index'))->with('flash_message', '작성한 글이 저장되었습니다.');
+    //     return redirect(route('qna.index'))->with('flash_message', '작성한 글이 저장되었습니다.');
+    // }
+
+    public function store(Request $request)
+    {
+        Question::updateOrCreate(['id' => $request->id],
+                ['title' => $request->title, 'content' => $request->content, 'user_id' => $request->user_id]);        
+        return response()->json(['success'=>'Content saved successfully.']);
     }
 
     /**
@@ -92,12 +115,7 @@ class QnAController extends Controller
      */
     public function show($id)
     {
-        $search = \App\Question::where('id', '=', $id)->get();
-        
-        return response([
-            'qid' => $search[0]['id'],
-            'value' => $search[0]['content'],
-        ]);
+        //
     }
 
     /**
@@ -108,7 +126,8 @@ class QnAController extends Controller
      */
     public function edit($id)
     {
-        //
+        $question = Question::find($id);
+        return response()->json($question);
     }
 
     /**
@@ -131,7 +150,9 @@ class QnAController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Question::find($id)->delete();
+     
+        return response()->json(['success'=>'Question deleted successfully.']);
     }
 
 }

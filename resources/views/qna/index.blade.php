@@ -126,6 +126,7 @@
 <script src="{{ URL::asset('js\jquery-3.2.1.min.js') }}"></script>
 <script src="{{ URL::asset('css\styles\bootstrap-4.1.2\bootstrap.min.js') }}"></script>
 <link rel="stylesheet" type="text/css" href="{{ URL::asset('css\styles\bootstrap-4.1.2\bootstrap.min.css') }}">
+
 <script>
 $(document).ready(function(){
   $.ajaxSetup({
