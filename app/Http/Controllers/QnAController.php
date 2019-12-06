@@ -28,7 +28,7 @@ class QnAController extends Controller
      */
     public function create()
     {
-        return view('qna.create');
+        //
     }
 
     /**
@@ -89,7 +89,7 @@ class QnAController extends Controller
       $question = array(
         'title' => $request->title,
         'content' => $request->content,
-        'user_id' => $request->hidden_id
+        'user_id' => $request->hidden_id,
       );
 
       Question::create($question);
@@ -167,10 +167,9 @@ class QnAController extends Controller
      */
     public function destroy($id)
     {
-        $question = Question::find($id);
-        $question->forceDelete();
+        \App\Question::find($id)->delete();
 
-        return response()->json(['success'=>'Data Deleted in Database Successfully!']);
+        return response($id);
     }
 
 }
