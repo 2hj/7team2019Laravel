@@ -82,7 +82,7 @@ $(document).ready(function(){
             deleteBtn.innerHTML = '삭제';
             deleteBtn.setAttribute('id', 'deleteQuestion');
             deleteBtn.setAttribute('data-id', result['qid']);
-            deleteBtn.addEventListener('click', onClickEdit);
+            deleteBtn.addEventListener('click', onClickRemove);
             document.getElementById('option_'+result['qid']).appendChild(deleteBtn);
             } else {
             selected = -1;
