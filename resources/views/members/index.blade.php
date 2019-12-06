@@ -3,25 +3,157 @@
 @section('content')
 <div class="discs">
 		<div class="container">
-			<div class="row discs_row">
+
+			<div id="addingMember" class="row discs_row">
+				@forelse($members as $member)
+					<div class="col-xl-4 col-md-6">
+						<div class="disc">
+							<form class="showMember" data-id="{{$member->id}}" action="#">
+								<a href="">
+									<div class="disc_image"><img src="images/disc_2.jpg" alt="https://unsplash.com/@kasperrasmussen"></div>
+									<div class="disc_container">
+										<div>
+											<div class="disc_content_2 d-flex flex-column align-items-center justify-content-center">
+												<div>
+													<div id="member_name" name="member_name" class="disc_title">{{ $member->name }}</div>
+													<div id="member_id" name="member_id" class="disc_subtitle">{{ $member->id }}</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</a>
+							</form>
+						</div>
+					</div>
+				@empty
+					<p id="empty">조원이 등록되지 않았습니다.</p>
+				@endforelse	
+			</div>
+			<form id="createMember" action="#">
+				<button type="button" class="btn btn-warning" id="create">멤버추가</button>
+			</form>
+			<!-- <form id="deleteMember" action="#">
+				<button type="button" class="btn btn-waring" id="delete">멤버삭제</button>				
+			</form> -->
+
+			<div id="createDiv">
+				<form id="addMember">
+					
 				
+				</form>
+			</div>	
+
+	</div>
+</div>
+
+	<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+
+			// 불렀는지 유무
+			// 전역변수
+			var called = false;
+			var count = 0;
+
+			// 멤버 생성 제한
+			var memberCreateLimit = 0;
+			// var createForm = document.getElementById('addMember');
+			// jquery랑 javascript를 같이 사용할 수 없다.
+			var createForm = $('#addMember');
+			var addingMember = $('#addingMember');
+
+			$('.showMember').on('click', function(event) {
+				event.preventDefault();
+
+				var num = $(this).attr('data-id');
+				$.ajax({
+					headers:{
+						'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+					},
+					type: "GET",
+					url: '/members/'+num, 
+					success: function(data) {
+						console.log('show data:', data);
+					}
+				});
+			});
+
+			// 멤버 추가 버튼 생성 함수
+			function createHTML() {
+				var html = $(`
+				<label for="name">이름</label>
+				<input type="text" name="name" id="name" value="{!! old('name') !!}">
+				<label for="phone_number">전화번호</label>
+				<input type="text" name="phone_number" id="phone_number" value="{!! old('phone_number') !!}">
+				<label for="address">주소</label>
+				<input type="text" name="address" id="address" value="{!! old('address') !!}">
+				<label for="mottoes">좌우명</label>
+				<input type="text" name="mottoes" id="mottoes" value="{!! old('mottoes') !!}">
 				
-			@forelse($members as $member)	
-				<!-- Disc -->
+				<button type="submit" >조원추가</button>
+				`);
+
+				createForm.append(html);
+
+				console.log('function count', count);
+
+				called=false;
+			}
+
+			// 멤버 추가 버튼 클릭 함수
+			$('#create').click(function() {
+				console.log('createMember');
+				called = true;
+				var check = false;
+
+				if(called) {
+					console.log('called');
+					check = true;
+				}
+
+				$.ajax({
+					headers:{
+						'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+					},
+					type: "GET",
+					url: "{{ route('members.create') }}",
+					data: {
+						checking: check,
+					},
+					success: function(data) {
+						console.log("data.checking: ", data.checking);
+						count++;
+						console.log('success data', count);
+
+						if(memberCreateLimit == 6) {
+							alert('멤버를 더 이상 추가할 수 없습니다!!');
+						} else {
+							if(data.checking && count % 2 == 1) {
+								createHTML();
+							} else {
+								createForm.html("");
+								console.log('createForm: ', createForm);
+							}
+						}
+						
+					}
+				});
+			});
+			
+			// 멤버 추가 html 추가 함수
+			function addingHTML(id, name, address, mottoes, phone_number) {
+				var html = $(`
 				<div class="col-xl-4 col-md-6">
 					<div class="disc">
-						<form id="ajaxtest" action="#">
-							<!-- 토큰정보 -->
-							<input type="hidden" name="_token" value="{{ csrf_token() }}">
-
-							<a href="/members/{{ $member->id }}">
+						<form class="showMember" data-id="${id}" action="#">
+							<a href="">
 								<div class="disc_image"><img src="images/disc_2.jpg" alt="https://unsplash.com/@kasperrasmussen"></div>
 								<div class="disc_container">
 									<div>
 										<div class="disc_content_2 d-flex flex-column align-items-center justify-content-center">
 											<div>
-												<div class="disc_title">조원1</div>
-												<div class="disc_subtitle">조원1간략</div>
+												<div name="member_name" class="disc_title">${name}</div>
+												<div name="member_id" class="disc_subtitle">${id}</div>
 											</div>
 										</div>
 									</div>
@@ -30,199 +162,53 @@
 						</form>
 					</div>
 				</div>
+				`);
 
-			@empty
-				<p>조원이 등록되지 않았습니다.</p>
-			@endforelse	
-				<form id="ajaxtest" action="#">
-					<input type="hidden" name="_token" value="{{ csrf_token() }}">
-
-					<button type="button" class="btn btn-warning" id="testbutton">테스트</button>
-				</form>
-
-				<form id="createMember" action="#">
-					<input type="hidden" name="_token" value="{{ csrf_token() }}">
-
-					<button type="button" class="btn btn-warning" id="create">멤버추가</button>
-				</form>
-
-				<div id="createDiv">
-
-				</div>		
-
-				<form id="addMember" action="#">
-					<input type="hidden" name="_token" value="{{ csrf_token() }}">
-				
-				</form>
-				
-
-				
-				
-		</div>
-	</div>
-</div>
-
-	<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
-	<script type="text/javascript">
-		$(document).ready(function() {
-			/* $('#ajaxtest').submit(function() {
-				var a = 0;
-
-				$.ajax({
-					headers:{
-						'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
-					},
-					type: "POST",
-					url: "",
-					data: {
-						"_token": "{{ csrf_token() }}",
-					},
-					success: function(data) {
-						console.log(data);
-						// $('#postRequestData').html(data);
-					}
-				});
-			}); */
-
-			/* $('#createMemeber').click(function() {
-				console.log('click');
-				var createHTML = document.createElement("div");
-
-				createHTML.id = "create";
-				createHTML.className = "col-xl-4 col-md-6";
-				createHTML.innerHTML = "테스트";
-				
-				$.ajax({
-					headers:{
-						'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
-					},
-					type: "GET",
-					url: "ajaxtest",
-					data: {
-						"_token": "{{ csrf_token() }}",
-						create: craeteHTML,
-					},
-					success: function(data) {
-						console.log(data);
-						// $('#postRequestData').html(data);
-					}
-				});
-			}); */
-
-			$('#testbutton').click(function() {
-				console.log('click');
-
-				var testval = "테스트 데이터";
-
-				$.ajax({
-					headers:{
-						'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
-					},
-					type: "POST",
-					url: "ajaxtest",
-					data: {
-						"_token": "{{ csrf_token() }}",
-						test: testval,
-					},
-					success: function(data) {
-						console.log("data: ", data);
-						// $('#postRequestData').html(data);
-					}
-				});
-			});
-
-			// 불렀는지 유무
-			// 전역변수
-			var called = false;
-			var count = 0;
-			var createDiv = document.getElementById('createDiv');
-
-			// 멤버 추가 버튼 생성 함수
-			function createHTML() {
-				
-				var nameInputSpace = document.createElement('input');
-				nameInputSpace.type = "text";
-				nameInputSpace.name = "name";
-				nameInputSpace.id = "name";
-				nameInputSpace.value = "{!! old('name') !!}";
-
-				var submitButton = document.createElement('button');
-				submitButton.type = "submit";
-				submitButton.name = "addMember";
-				submitButton.id = "addMember";
-				submitButton.innerHTML = "조원추가";
-
-				var html = $(`<input type="text" name="phone_number" id="phone_number" value="{!! old('phone_number') !!}"><input type="text" name="address" id="address" value="{!! old('address') !!}"><input type="text" name="mottoes" id="mottoes" value="{!! old('mottoes') !!}">`);
-
-				console.log("nameInputSpace:", nameInputSpace);
-
-				createDiv.append(nameInputSpace);
-				createDiv.append(html);
-				createDiv.append(submitButton);
-
-				console.log(count);
-
-				called=false;
+				memberCreateLimit++;
+				addingMember.append(html);
 			}
 
-			$('#create').click(function() {
-				console.log('createMember');
-				called = true;
-				var check = false;
-
-				if(called) {
-					check = true;
-				}
-
-				$.ajax({
-					headers:{
-						'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
-					},
-					type: "POST",
-					url: "createMember",
-					contentType: false,
-					processData: false,
-					data: {
-						"_token": "{{ csrf_token() }}",
-						checking: check,
-					},
-					success: function(data) {
-						console.log("data: ", data);
-						count++;
-						console.log(count);
-						if(data && count % 2 == 1) {
-							createHTML();
-						} else {
-							createDiv.innerHTML = "";
-						}
-						// $('#postRequestData').html(data);
-					}
-				});
-			});
-
-			$('#addMember').click(function() {
-				var name = $('#name').val();
-
-				console.log("name:",name);
+			// 멤버 추가
+			$('#addMember').on("submit", function(event) {
+				event.preventDefault();
+				console.log('came add');
 				
-				formData = new FormData()
+				var form = $('#addMember')[0];
+				console.log('form:', form);
+				var data  = new FormData(form);
+				console.log('before sending',data);
 				$.ajax({
 					headers:{
 						'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
 					},
 					type: "POST",
-					url: "addMember",
+					url: "{{ route('members.store') }}",
 					contentType: false,
 					processData: false,
-					data: {
-						"_token": "{{ csrf_token() }}",
-						name: name,
-					},
+					// dataType: json,
+					data: data,
 					success: function(data) {
+						console.log('adding data:', data);
+						console.log(typeof(data));
+						createForm.html("");
+						var empty = $('#empty');
+						empty.html("");
+						called=false;
+						checking=false;
 						
+						addingHTML(data['id'], data['name'], data['address'], data['mottoes'], data['phone_number']);
 					}
 				});
 			});
+
+			/* $('#deleteMember').on("submit", function(event) {
+				event.preventDeafult();
+
+				var form = $('#deleteMember')[0];
+				var data = new FormData(form);
+
+
+			}); */
 
 		});
 	</script>
