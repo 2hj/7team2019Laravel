@@ -20,7 +20,7 @@ Route::resource('/japan', 'JapanController');
 
 Route::resource('/members', 'MembersController');
 
-Route::resource('/qna', 'QnAController');
+Route::resource('/qna', 'QnAsController');
 
 Route::get('/ajax', 'AjaxController@index')->name('ajax');
 
@@ -40,3 +40,4 @@ Route::post('/ajaxtest', "MembersController@ajaxtest");
 Route::post('/createMember', "MembersController@createMember");
 
 // Route::post('/addMember', "MembersController@test");
+

@@ -1,7 +1,8 @@
 @extends ('headers.header')
 
-@section('content')
 <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/QnA.css') }}">
+</head>
+<body>
 
 <div>
 	@auth
@@ -12,7 +13,7 @@
 </div>
 
 
-<!-- 
+<!--
 <div id="qna_div">
 	<table class="table-container">
 		<thead>
@@ -44,7 +45,7 @@
 					<td colspan="4">
 						<p>{{ $question->content }}</p>
 						@auth
-							@if ( Auth::user()->admin == 1 )
+							@if ( Auth::user()->admin == 1 || $question->user->name == Auth::user()->name)
 								<button class="btn-delete">
 									삭제
 								</button>
@@ -123,7 +124,7 @@
             <textarea class="form-control" name="content" id="content">{{ old('content') }}</textarea>
             <!-- {!! $errors->first('content', '<span class="form-error">:message</span>') !!} -->
           </div>
-          
+
           <div class="form-group">
             <input type="hidden" name="hidden_id" id="hidden_id" value="{{ Auth::id() }}">
             <input type="submit" name="action_button" id="action_button" class="btn btn-warning" value="Add">
@@ -134,19 +135,88 @@
       </div>
 
       <div class="modal-footer">
-        
+
         <button id="closeQuestionModal" type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
       </div>
     </div>
   </div>
 </div>
 
-@stop
+		<div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-dismiss="modal">질문 저장하기</button>
+			<!-- <button type="button" class="btn btn-primary">질문 저장</button> -->
+		</div>
+		</div>
+	</div>
+	</div>
+</body>
 
-@section('script')
 <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 <script src="{{ URL::asset('js\jquery-3.2.1.min.js') }}"></script>
 <script src="{{ URL::asset('css\styles\bootstrap-4.1.2\bootstrap.min.js') }}"></script>
 <link rel="stylesheet" type="text/css" href="{{ URL::asset('css\styles\bootstrap-4.1.2\bootstrap.min.css') }}">
 <script src="js/question.js"></script>
 @stop
+<!--
+<script>
+$(document).ready(function(){
+  $.ajaxSetup({
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+  });
+
+  $('#questionModalBtn').click(function(e){
+    e.preventDefault();
+    console.log('event emitted');
+    // $('#questionModal').modal();
+    $('#questionModal').modal('show');
+  });
+
+  $('#closeQuestionModal').click(function(e){
+    console.log('event emitted');
+
+    $.ajax({
+      type:'get',
+      url: '/ajax'
+    });
+  });
+  var selected = -1;
+
+  document.querySelectorAll('.openQuestion').forEach(function (e){
+    e.addEventListener('click',function(){
+      let id = e.querySelector('#questionId').innerHTML;
+      onClick(id);
+    });
+  });
+
+  function onClick(id){
+    $.ajax({
+      headers:{
+          'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+      },
+      type: 'get',
+      url: '/qna/' + id,
+      data: {
+        "_token": "{{ csrf_token() }}",
+        qid: id,
+      },
+      success: function(result){
+        $('p#questionValue').remove();
+        var p = document.createElement('p');
+        p.innerHTML = result['value'];
+        p.setAttribute('id', 'questionValue');
+        if(selected != result['qid']) {
+          selected = result['qid'];
+          document.getElementById('ques_'+result['qid']).appendChild(p);
+        } else {
+          selected = -1;
+        }
+      },
+      error: function(request, status, error){
+        console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+      }
+    });
+  }
+});
+</script> -->

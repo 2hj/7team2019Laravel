@@ -4,25 +4,19 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="csrf-token" content="{{ csrf_token() }}">
-    
+
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
 <meta name="description" content="Mixtape template project">
 <title>{{ config('app.name', 'Laravel') }}</title>
+
+<link rel="stylesheet" type="text/javascript" href="{{ URL::asset('js/jquery-3.2.1.min.js') }}">
+<link rel="stylesheet" type="text/javascript" href="{{ URL::asset('css/styles/bootstrap-4.1.2/bootstrap.min.js') }}">
 <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/styles/bootstrap-4.1.2/bootstrap.min.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ URL::asset('plugins/OwlCarousel2-2.2.1/owl.carousel.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ URL::asset('plugins/OwlCarousel2-2.2.1/owl.theme.default.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ URL::asset('plugins/OwlCarousel2-2.2.1/animate.css') }}">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-
-<script src="{{ URL::asset('js\jquery-3.2.1.min.js') }}"></script>
-<script src="{{ URL::asset('css\styles\bootstrap-4.1.2\bootstrap.min.js') }}"></script>
-<link rel="stylesheet" type="text/css" href="{{ URL::asset('css\styles\bootstrap-4.1.2\bootstrap.min.css') }}">
-
 
 <link rel="dns-prefetch" href="//fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-	
+
 	<!-- Select CSS -->
 	@if( 	Request::url() == 'http://127.0.0.1:8000' ||
 			Request::url() == 'http://127.0.0.1:8000/login' ||
@@ -43,8 +37,8 @@
 		<link rel="stylesheet" type="text/css" href="{{ URL::asset('css/styles/contact.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/styles/contact_responsive.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/app.css') }}">
-	
-	
+
+
 	@endif
 
 
@@ -52,10 +46,9 @@
   @include('sweetalert::alert')
 </head>
 <body>
-<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 
 <div class="super_container">
-	
+
 	<!-- Header -->
 	<header class="header">
 		<div class="header_content d-flex flex-row align-items-center justify-content-center">
@@ -94,7 +87,7 @@
 						@else
 							<li><a href="{{ route('japan.index')}}">현지 학기제</a></li>
 						@endif
-						
+
 						@if( str_replace('http://', 'https://', Request::url()) == 'https://127.0.0.1:8000/members' )
 							<li class="active"><a href="{{ route('members.index') }}">조원 소개</a></li>
 						@else
@@ -108,9 +101,9 @@
 						@endif
 				</ul>
 			</nav>
-			
+
 		</div>
-		
+
 	</header>
 </div>
 
