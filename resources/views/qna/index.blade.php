@@ -58,28 +58,46 @@
 </div>
  -->
 
+<div class="table-responsive">
+  <table class="table table-bordered table-striped" id="question_table">
+    <thead>
+      <tr>
+        <th width="10%">번호</th>
+        <th width="35%">제목</th>
+        <th width="35%">작성자</th>
+        <th width="50%">작성일</th>
+      </tr>
+    </thead>
+  </table>
+</div>
+<br>
+<br>
+
 <div class="question-list">
   <h1 style="color: #FFFFFF;">질문 목록</h1>
   <hr/>
-  <ul>
-      @forelse($questions as $question)
-        <li class="openQuestion" id="ques_{{$question->id}}">
-          <p id="questionId" style="color: #FFFFFF;">{{ $question->id }}</p>
-          <p> {{ $question->title }} </p>
-          <small style="color: #FFFFFF;"> by {{ $question->user->name }} </small>
-        </li>
-      @empty
-        <p style="color: #FFFFFF;">글이 없습니다</p>
-      @endforelse
-  </ul>
+  <div id="question-list">
+    <ul>
+        @forelse($questions as $question)
+          <li class="openQuestion" id="ques_{{$question->id}}">
+            <p id="questionId" style="color: #FFFFFF;">{{ $question->id }}</p>
+            <p> {{ $question->title }} </p>
+            <small style="color: #FFFFFF;"> by {{ $question->user->name }} </small>
+          </li>
+          <div id="option_{{$question->id}}"></div>
+        @empty
+          <p style="color: #FFFFFF;">글이 없습니다</p>
+        @endforelse
+    </ul>
+  </div>
 </div>
 
+<!-- Trigger Modal -->
+<div class="Align_Center">
+    <button type="button" id="createQuestion" name="createQuestion" class="btn btn-success btn-sm" data-toggle="modal" data-target="#questionModal" data-backdrop="false">Create Question</button>
+</div>
 
 <!-- 질문글 작성 모달창 -->
-<div class="Align_Center">
-    <button id="questionModalBtn" type="button" class="btn btn-primary" data-toggle="modal" data-target="#questionModal" >Create Question</button>
-</div>
-
 <div class="modal fade" id="questionModal" role="dialog">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -90,20 +108,34 @@
       </div>
 
       <div class="modal-body">
-        <form>
-          <div class="form-group">
-            <label for="question-title" class="col-form-label">제목</label>
-            <input type="text" class="form-control" id="question-title">
+        <span id="form_result"></span>
+        <form method="post" id="question-form">
+          @csrf
+
+          <div class="form-group {{ $errors->has('title') ? 'has-error' : '' }}">
+            <label for="title" class="col-form-label">제목</label>
+            <input type="text" class="form-control" id="title" name="title" value="{{ old('title') }}">
+            <!-- {!! $errors->first('title', '<span class="form-error">:message</span>') !!} -->
           </div>
-          <div class="form-group">
-            <label for="question-content" class="col-form-label">본문</label>
-            <textarea class="form-control" id="question-content"></textarea>
+
+          <div class="form-group {{ $errors->has('content') ? 'has-error' : '' }}">
+            <label for="content" class="col-form-label">본문</label>
+            <textarea class="form-control" name="content" id="content">{{ old('content') }}</textarea>
+            <!-- {!! $errors->first('content', '<span class="form-error">:message</span>') !!} -->
           </div>
+          
+          <div class="form-group">
+            <input type="hidden" name="hidden_id" id="hidden_id" value="{{ Auth::id() }}">
+            <input type="submit" name="action_button" id="action_button" class="btn btn-warning" value="Add">
+
+          </div>
+
         </form>
       </div>
 
       <div class="modal-footer">
-        <button id="closeQuestionModal" type="button" class="btn btn-secondary" data-dismiss="modal">질문 저장하기</button>
+        
+        <button id="closeQuestionModal" type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
       </div>
     </div>
   </div>
@@ -124,6 +156,7 @@ $(document).ready(function(){
     }
   });
 
+  // Modal 띄우기
   $('#questionModalBtn').click(function(e){
     e.preventDefault();
     console.log('event emitted');
@@ -131,14 +164,47 @@ $(document).ready(function(){
     $('#questionModal').modal('show');
   });
 
-  $('#closeQuestionModal').click(function(e){
-    console.log('event emitted');
-
-    $.ajax({
-      type:'get',
-      url: '/ajax'
-    });
+  // Create a Question ajax
+  $('#createQuestion').click(function(e){
+    $('#questionModal').modal('show');
   });
+
+  $('#question-form').on('submit', function(e){
+    e.preventDefault();
+    if( $('#action_button').val() == 'Add' ){
+      $('#questionModal').modal('hide');
+      $.ajax({
+        url: "{{ route('qna.store') }}",
+        method: "POST",
+        data: new FormData(this),
+        contentType: false,
+        cache: false,
+        processData: false,
+        dataType: 'json',
+        success: function(data){
+          console.log('success');
+          console.log(data); // {success: "Data Added Successfully!"}
+          var html = '';
+          if(data.errors){
+            html = '<div class="alert alert-danger">';
+            for(var count = 0; count < data.errors.length; count++){
+              html += '<p>' + data.errors[count] + '</p>';
+            }
+            html += '</div>';
+          }
+          
+          if(data.success){
+            html = '<div class="alert alert-success">' + data.success + '</div>';
+            $('#question-form')[0].reset();
+            $('#question-list').DataTable().ajax.reload();
+          }
+
+          $('#form_result').html(html);
+        }
+      });
+    }
+  });
+
   var selected = -1;
 
   document.querySelectorAll('.openQuestion').forEach(function (e){
@@ -149,10 +215,8 @@ $(document).ready(function(){
   });
 
   function onClick(id){
+    console.log('글 클릭함');
     $.ajax({
-      headers:{
-          'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
-      },
       type: 'get',
       url: '/qna/' + id,
       data: {
@@ -161,12 +225,27 @@ $(document).ready(function(){
       },
       success: function(result){
         $('p#questionValue').remove();
+        $('button#editQuestion').remove();
+        $('button#deleteQuestion').remove();
+
         var p = document.createElement('p');
         p.innerHTML = result['value'];
         p.setAttribute('id', 'questionValue');
         if(selected != result['qid']) {
           selected = result['qid'];
           document.getElementById('ques_'+result['qid']).appendChild(p);
+
+          // 수정버튼 : <button type="button" id="editQuestion">
+          var editBtn = document.createElement('button');
+          editBtn.innerHTML = '수정';
+          editBtn.setAttribute('id', 'editQuestion');
+          document.getElementById('option_'+result['qid']).appendChild(editBtn);
+
+          // 삭제버튼 : <button type="button" id="deleteQuestion">
+          var deleteBtn = document.createElement('button');
+          deleteBtn.innerHTML = '삭제';
+          deleteBtn.setAttribute('id', 'deleteQuestion');
+          document.getElementById('option_'+result['qid']).appendChild(deleteBtn);
         } else {
           selected = -1;
         }

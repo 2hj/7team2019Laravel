@@ -112,9 +112,9 @@
 		</div>
 		
 	</header>
-  <main>
-  
+</div>
+
+<main>
   @yield('content')
   @yield('script')
-  </main>
-</div>
+</main>

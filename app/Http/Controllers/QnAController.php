@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Question;
 
 class QnAController extends Controller
 {
@@ -73,16 +74,51 @@ class QnAController extends Controller
     }
     */
 
-    public function store(\App\Http\Requests\QuestionsRequest $request){
-        // $question = \App\User::find(1)->questions()->create($request->all());
-        $question = auth()->user()->questions()->create($request->all());
-        
-        if(! $question){
-            return back()->withErrors('flash_message', '글이 저장되지 않았습니다.')->withInput();
-        }
+    public function store(Request $request){
+      $rules = array(
+        'title'=>'required',
+        'content'=>'required|min:10',
+      );
 
-        return redirect(route('qna.index'))->with('flash_message', '작성한 글이 저장되었습니다.');
+      $validator = \Validator::make($request->all(), $rules);
+
+      if($validator->fails()){
+        return response()->json(['error'=> $validator->errors()->all()]);
+      }
+
+      $question = array(
+        'title' => $request->title,
+        'content' => $request->content,
+        'user_id' => $request->hidden_id
+      );
+
+      Question::create($question);
+
+      return response()->json(['success'=>'Data Added Successfully!']);
     }
+
+    // public function store(\App\Http\Requests\QuestionsRequest $request){
+    //     // $question = \App\User::find(1)->questions()->create($request->all());
+    //     // $question = auth()->user()->questions()->create($request->all());
+
+    //     // if(! $question){
+    //       if($request->fails()){
+    //         // return back()->withErrors('flash_message', '글이 저장되지 않았습니다.')->withInput();
+    //         return response()->json(['errors'=> $error->errors()->all()]);
+    //     }
+
+    //     $form_data = array(
+    //       'title' => $request->title,
+    //       'content' => $request->content,
+    //       'user_id' => $request->hidden_id
+    //     );
+
+    //     $question = Question::create($form_data);
+    //     return response()->json(['success'=>'Data Added Successfully.']);
+
+    //     // return response()->json();
+    //     return redirect(route('qna.index'))->with('flash_message', '작성한 글이 저장되었습니다.');
+    // }
 
     /**
      * Display the specified resource.
