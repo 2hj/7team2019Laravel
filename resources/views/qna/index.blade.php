@@ -1,7 +1,8 @@
 @extends ('headers.header')
 
-@section('content')
 <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/QnA.css') }}">
+</head>
+<body>
 
 <div>
 	@auth
@@ -44,7 +45,7 @@
 					<td colspan="4">
 						<p>{{ $question->content }}</p>
 						@auth
-							@if ( Auth::user()->admin == 1 )
+							@if ( Auth::user()->admin == 1 || $question->user->name == Auth::user()->name)
 								<button class="btn-delete">
 									삭제
 								</button>
@@ -74,6 +75,9 @@
   </ul>
 </div>
 
+	<div class="Align_Center">	
+		<button id="questionModalBtn" type="button" class="btn btn-primary" data-toggle="modal" data-target="#questionModal" >Create Question</button>
+	</div>
 
 <!-- 질문글 작성 모달창 -->
 <div class="Align_Center">
@@ -109,9 +113,15 @@
   </div>
 </div>
 
-@stop
+		<div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-dismiss="modal">질문 저장하기</button>
+			<!-- <button type="button" class="btn btn-primary">질문 저장</button> -->
+		</div>
+		</div>
+	</div>
+	</div>
+</body>
 
-@section('script')
 <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 <script src="{{ URL::asset('js\jquery-3.2.1.min.js') }}"></script>
 <script src="{{ URL::asset('css\styles\bootstrap-4.1.2\bootstrap.min.js') }}"></script>
@@ -178,4 +188,3 @@ $(document).ready(function(){
   }
 });
 </script>
-@stop
