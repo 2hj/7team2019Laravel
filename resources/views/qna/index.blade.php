@@ -246,6 +246,9 @@ $(document).ready(function(){
           deleteBtn.innerHTML = '삭제';
           deleteBtn.setAttribute('id', 'deleteQuestion');
           document.getElementById('option_'+result['qid']).appendChild(deleteBtn);
+
+          // 글 삭제
+          
         } else {
           selected = -1;
         }

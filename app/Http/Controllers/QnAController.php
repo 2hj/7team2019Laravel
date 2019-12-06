@@ -167,7 +167,10 @@ class QnAController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $question = Question::find($id);
+        $question->forceDelete();
+
+        return response()->json(['success'=>'Data Deleted in Database Successfully!']);
     }
 
 }
