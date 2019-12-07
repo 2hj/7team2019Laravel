@@ -17,13 +17,9 @@ class MembersController extends Controller
      */
     public function index()
     {
-        
         $members = \App\Member::get();
-        // $members = DB::table('members')->get();
-        // dd($members);
-
+        
         return view('members.index', compact('members'));
-        // return view('members.index');
     }
 
     /**
@@ -49,19 +45,7 @@ class MembersController extends Controller
         $members = \App\Member::create($request->all()); 
 
         return $members;
-        /* return response([
-            'name' => $members[0]['name'],
-            'address' => $members[0]['address'],
-            'mottoes' => $members[0]['mottoes'],
-            'phone_number' => $members[0]['phone_number'],
-        ]); */
         
-        /* if(!$members) {
-            return back()->with('flash_message', '글이 저장되지 않았습니다.')->withInput();
-        }
-
-        return redirect(route('members.index'))->with('flash_message', '작성하신 글이 저장되었습니다.'); */
-
     }
 
     /**
@@ -119,4 +103,5 @@ class MembersController extends Controller
 
         return response($id);
     }
+
 }
