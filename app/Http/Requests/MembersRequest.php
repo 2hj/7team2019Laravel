@@ -24,9 +24,6 @@ class MembersRequest extends FormRequest
     public function rules()
     {
         return [
-            // 이름 10, 주소 255, 전화번호 13, 좌우명 x, 이미지 255,
-            // id, created_at, updated_at
-            // 왜인지 모르겠지만 |사용시 오류025ㅠ
             'name' => ['required', 'max:10'],
             'phone_number' => ['required', 'max:13'],
             'motto' => ['required', 'min:10'],

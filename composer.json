@@ -11,12 +11,14 @@
         "php": "^7.2",
         "doctrine/dbal": "^2.10",
         "fideloper/proxy": "^4.0",
+        "guzzlehttp/guzzle": "^6.4",
         "laracasts/flash": "^3.0",
         "laravel/framework": "^6.2",
         "laravel/socialite": "^4.3",
         "laravel/tinker": "^1.0",
         "laravel/ui": "^1.1",
-        "realrashid/sweet-alert": "^3.0"
+        "realrashid/sweet-alert": "^3.0",
+        "yajra/laravel-datatables-oracle": "^9.7"
     },
     "require-dev": {
         "facade/ignition": "^1.4",

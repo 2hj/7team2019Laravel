@@ -6,7 +6,6 @@ use Vaildator;
 use Illuminate\Http\Request;
 use App\Http\Requests\MembersRequest;
 use App\Member;
-use Datatables;
 
 class MembersController extends Controller
 {
@@ -17,12 +16,14 @@ class MembersController extends Controller
      */
     public function index()
     {
-        
         $members = \App\Member::get();
+
         // $members = DB::table('members')->get();
         // dd($members);
 
         return view('members.index_before', compact('members'));
+
+
     }
 
     /**
@@ -45,26 +46,10 @@ class MembersController extends Controller
     // \App\Http\Requests\MembersRequest
     public function store(Request $request)
     {
-        // debug("store");
-        // dd('dd');
-
         $members = \App\Member::create($request->all()); 
 
-        // dd($members);
         return $members;
-        /* return response([
-            'name' => $members[0]['name'],
-            'address' => $members[0]['address'],
-            'mottoes' => $members[0]['mottoes'],
-            'phone_number' => $members[0]['phone_number'],
-        ]); */
         
-        /* if(!$members) {
-            return back()->with('flash_message', '글이 저장되지 않았습니다.')->withInput();
-        }
-
-        return redirect(route('members.index'))->with('flash_message', '작성하신 글이 저장되었습니다.'); */
-
     }
 
     /**
@@ -86,9 +71,9 @@ class MembersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
-        return view('members.edit');
+        
     }
 
     /**
@@ -100,7 +85,14 @@ class MembersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        \App\Member::where('id', '=', $id)->update([
+            'name'=>$request->name,
+            'address'=>$request->address,
+            'phone_number'=>$request->phone_number,
+            'mottoes'=>$request->mottoes
+        ]);
+
+        return $request;
     }
 
     /**
@@ -109,28 +101,39 @@ class MembersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Reqeust $request, $id)
+    public function destroy($id)
     {
-        return $request;
+        \App\Member::find($id)->delete();
+
+        return response($id);
     }
 
-    function members()
+
+
+    function action(Request $request)
     {
-        $data = DB::table('members')->get();
-
-        return $data;
+     $validation = Validator::make($request->all(), [
+      'select_file' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
+     ]);
+     if($validation->passes())
+     {
+      $image = $request->file('img');
+      $new_name = rand() . '.' . $image->getClientOriginalExtension();
+      $image->move(public_path('images'), $new_name);
+      return response()->json([
+       'message'   => 'Image Upload Successfully',
+       'memberImage_${member_id}' => '<img src="/images/'.$new_name.'" class="img-thumbnail" width="300" />',
+       'class_name'  => 'alert-success'
+      ]);
+     }
+     else
+     {
+      return response()->json([
+       'message'   => $validation->errors()->all(),
+       'memberImage_${member_id}' => '',
+       'class_name'  => 'alert-danger'
+      ]);
+     }
     }
 
-    public function test(Request $request) {
-        return $request->test;
-    }
-
-    public function ajaxtest(Request $request) {
-        return $request->test;
-    }
-
-    public function createMember(Request $request) {
-        // dd($request->testing);
-        return $request;
-    }
 }

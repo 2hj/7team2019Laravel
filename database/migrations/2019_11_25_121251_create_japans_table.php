@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateJapaneseTable extends Migration
+class CreateJapansTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class CreateJapaneseTable extends Migration
     public function up()
     {
         // img, place, explain, created_at, updated_at
-        Schema::create('japanese', function (Blueprint $table) {
+        Schema::create('japans', function (Blueprint $table) {
             //$table->engine = 'InnoDB';
 
             $table->bigIncrements('id');
@@ -38,6 +38,6 @@ class CreateJapaneseTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('japanese');
+        Schema::dropIfExists('japans');
     }
 }

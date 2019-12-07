@@ -21,7 +21,6 @@ class CreateQuestionsTable extends Migration
             // $table->unsignedBigInteger('q_id')->index()->unique();
             $table->string('title', 255);
             $table->text('content');
-
             $table->timestamps();
             
             

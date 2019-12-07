@@ -11,7 +11,7 @@
             <form class="showMember member-form" id="showMember_{{ $member->id }}" data-id="{{ $member->id }}" action="#">
                <div id="member_{{ $member->id }}">
                   <h3>{{ $member->name }}</h3>
-                  <img id="memberImage_{{ $member->id }}" width="100" src="/images/disc_1.jpg" alt="이미지가 없습니다.">
+                  <img id="memberImage_{{ $member->id }}" width="100" src="/images/" alt="이미지가 없습니다.">
                </div>
             </form>
             <div id="editAndDelete_{{ $member->id }}">
@@ -237,6 +237,7 @@
 
             <label for="img">사진</label>
             <input type="file" name="img">
+
             <button id="editSubmit" type="submit">수정완료</button>
             <button id="editCancel" type="button">취소</button>
             </form>
@@ -280,7 +281,7 @@
                      <form class="showMember" id="showMember_${member_id}" data-id="${member_id}" action="#">
                         <div id="member_${member_id}">
                            <h3>${data['name']}</h3>
-                           <img id="memberImage_${member_id}" width="100" src="/images/disc_1.jpg" alt="이미지가 없습니다.">
+                           <img id="memberImage_${member_id}" width="100" src="${data['img']}" alt="이미지가 없습니다.">
                         </div>
                      </form>
                      <div id="editAndDelete_${member_id}">
