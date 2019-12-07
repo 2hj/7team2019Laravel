@@ -1,6 +1,7 @@
 @extends ('headers.header')
 
 @section('content')
+
 <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/QnA.css') }}">
 
 <div>
@@ -93,7 +94,6 @@
             <input type="hidden" name="hidden_id" id="hidden_id" value="{{ Auth::id() }}">
             <input type="hidden" name="hidden_qid" id="hidden_qid" value="">
             <input type="submit" name="action_button" id="action_button" class="btn btn-warning" value="Add">
-
           </div>
 
         </form>
