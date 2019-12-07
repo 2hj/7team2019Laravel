@@ -5,14 +5,6 @@ $(document).ready(function(){
     }
   });
 
-  // Modal 띄우기
-  $('#questionModalBtn').click(function(e){
-    e.preventDefault();
-    console.log('event emitted');
-    // $('#questionModal').modal();
-    $('#questionModal').modal('show');
-  });
-
   // Create a Question ajax
   $('#createQuestion').click(function(e){
     $('#questionModal').modal('show');
@@ -21,7 +13,6 @@ $(document).ready(function(){
   $('#question-form').on('submit', function(e){
     e.preventDefault();
     if( $('#action_button').val() == 'Add' ){
-      $('#questionModal').modal('hide');
       $.ajax({
         url: "/qna",
         method: "POST",
@@ -33,6 +24,9 @@ $(document).ready(function(){
         success: function(data){
           console.log('success');
           console.log(data);
+          $('#title').val('');
+          $('#content').val('');
+          $('#questionModal').modal('hide');
         },
         error: function(request, status, error){
           console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -102,9 +96,11 @@ $(document).ready(function(){
           type:'delete',
           url: '/qna/'+id,
           success: function(id) {
-              $('li#ques_'+id).remove();
-              $('button#editQuestion').remove();
-              $('button#deleteQuestion').remove();
+              // $('li#ques_'+id).remove();
+              // $('button#editQuestion').remove();
+              // $('button#deleteQuestion').remove();
+              console.log(id);
+              window.location.href = '/qna';
           },
           error: function(request, status, error){
             console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
