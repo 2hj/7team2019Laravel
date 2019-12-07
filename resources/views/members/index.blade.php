@@ -1,9 +1,46 @@
 @extends ('headers.header')
 
 @section('content')
-<link rel="stylesheet" type="text/css" href="{{ URL::asset('css/member.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ URL::asset('css/styles/about.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ URL::asset('css/styles/about_responsive.css') }}">
 
-<div class="discs">
+
+<!-- Discs -->
+
+   <div class="discs">
+		<div class="container">
+			<div class="row discs_row">
+				
+            <!-- Disc -->
+            @forelse($members as $member)
+               <div class="col-xl-4 col-md-6 memberbox" id="memberbox_{{ $member->id }}">
+                  <div class="disc">
+                     <a href="single.html">
+                        <div class="disc_image">   
+                           <img id="memberImage_{{ $member->id }}" width="360" height="360" src="/img/{{ $member->img }}" alt=>
+                        </div>
+                        <div class="disc_container">
+                           <div>
+                              <div class="disc_content_6">
+                                 <div class="disc_title">Mixtape</div>
+                                 <div class="disc_subtitle">Music For the People</div>
+                              </div>
+                           </div>
+                        </div>
+                     </a>
+                  </div>
+               </div>
+            @empty
+            <p id="empty">조원이 등록되지 않았습니다.</p>
+             @endforelse
+
+
+			</div>
+		</div>
+   </div>
+   
+<!-- 구분 -->
+
    <div class="container">
       <div class="memberArea">
          @forelse($members as $member)
@@ -27,14 +64,12 @@
          <button type="submit" class="btn btn-warning" id="create">멤버추가</button>
       </form>
       <form id="addMember" action="#" enctype="multipart/form-data">
-
       </form>
       
       
       
       
    </div>
-</div>
    <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
    <script type="text/javascript">
       $(document).ready(function() {

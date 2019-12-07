@@ -23,22 +23,8 @@
 <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
 	<!-- Select CSS -->
-	@if( 	Request::url() == 'http://127.0.0.1:8000' ||
-			Request::url() == 'http://127.0.0.1:8000/login' ||
-			Request::url() == 'http://127.0.0.1:8000/register' ||
-			Request::url() == 'http://127.0.0.1:8000/password/reset')
 		<link rel="stylesheet" type="text/css" href="{{ URL::asset('css/styles/main_styles.css') }}">
 		<link rel="stylesheet" type="text/css" href="{{ URL::asset('css/styles/responsive.css') }}">
-	@elseif( Request::url() == 'http://127.0.0.1:8000/japan' )
-		<link rel="stylesheet" type="text/css" href="{{ URL::asset('css/styles/about.css') }}">
-		<link rel="stylesheet" type="text/css" href="{{ URL::asset('css/styles/about_responsive.css') }}">
-	@elseif( Request::url() == 'http://127.0.0.1:8000/members' )
-		<link rel="stylesheet" type="text/css" href="{{ URL::asset('css/styles/about.css') }}">
-		<link rel="stylesheet" type="text/css" href="{{ URL::asset('css/styles/about_responsive.css') }}">
-	@elseif( Request::url() == 'http://127.0.0.1:8000/qna' )
-		<link rel="stylesheet" type="text/css" href="{{ URL::asset('css/styles/contact.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/styles/contact_responsive.css') }}">
-	@endif
 
 
   @include('sweetalert::alert')
