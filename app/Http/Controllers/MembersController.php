@@ -46,12 +46,8 @@ class MembersController extends Controller
     // \App\Http\Requests\MembersRequest
     public function store(Request $request)
     {
-        // debug("store");
-        // dd('dd');
-
         $members = \App\Member::create($request->all()); 
 
-        // dd($members);
         return $members;
         /* return response([
             'name' => $members[0]['name'],

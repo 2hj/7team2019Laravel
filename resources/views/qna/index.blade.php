@@ -11,52 +11,6 @@
 	@endauth
 </div>
 
-
-<!-- 
-<div id="qna_div">
-	<table class="table-container">
-		<thead>
-			<tr>
-				<th><h1>번호</h1></th>
-				<th><h1>제목</h1></th>
-				<th><h1>작성자</h1></th>
-				<th><h1>작성일</h1></th>
-			</tr>
-		</thead>
-		@foreach ($questions as $question)
-			<tbody id="{{ $question->id }}">
-				<tr class="title">
-						<td>
-							<p>{{ $question->id }}</p>
-						</td>
-						<td>
-							<p>{{ $question->title }}</p>
-						</td>
-						<td>
-							<p>{{ $question->user->name }}</p>
-						</td>
-						<td>
-							<p>{{ $question->created_at }}</p>
-						</td>
-				</tr>
-				<tr name="content">
-					<td colspan="4">
-						<p>{{ $question->content }}</p>
-						@auth
-							@if ( Auth::user()->admin == 1 )
-								<button class="btn-delete">
-									삭제
-								</button>
-							@endif
-						@endauth
-					</td>
-				</tr>
-			</tbody>
-		@endforeach
-	</table>
-</div>
- -->
-
 <div class="table-responsive">
   <table class="table table-bordered table-striped" id="question_table">
     <thead>

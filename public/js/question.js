@@ -5,14 +5,6 @@ $(document).ready(function(){
     }
   });
 
-  // Modal 띄우기
-  $('#questionModalBtn').click(function(e){
-    e.preventDefault();
-    console.log('event emitted');
-    // $('#questionModal').modal();
-    $('#questionModal').modal('show');
-  });
-
   // Create a Question ajax
   $('#createQuestion').click(function(e){
     $('#questionModal').modal('show');
