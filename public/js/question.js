@@ -30,15 +30,42 @@ $(document).ready(function(){
         cache: false,
         processData: false,
         dataType: 'json',
+        // dataType: 'html',
         success: function(data){
           console.log('success');
           console.log(data);
           $('#questionModal').modal('hide');
+          reload(data);
+          // $('.idAdd')[0]['id'] = 'ques_'+data['id'];
+          // $('.addQuestionId').children().remove();
+          // $('.addQuestionId').html(data['id']);
+
+          // $('#addTitle').children().remove();
+          // $('#addTitle').html(data['title']);
+
+          // $('#addUserName').children().remove();
+          // $('#addUserName').html(data['user_id']);
+
+          // $('.option')[0]['id'] = 'option_'+data['id'];
         },
         error: function(request, status, error){
           console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
         }
       });
+    }
+
+    function reload(data){
+      $('.idAdd')[0]['id'] = 'ques_'+data['id'];
+      $('.addQuestionId').children().remove();
+      $('.addQuestionId').html(data['id']);
+
+      $('#addTitle').children().remove();
+      $('#addTitle').html(data['title']);
+
+      $('#addUserName').children().remove();
+      $('#addUserName').html(data['user_id']);
+
+      $('.option')[0]['id'] = 'option_'+data['id'];
     }
 
     if( $('#action_button').val() == 'Edit' ){
@@ -61,16 +88,17 @@ $(document).ready(function(){
           $('#content').val('');
           $('#action_button').val('Add');
           $('#questionModal').modal('hide');
+          reload(data);
 
-          $.ajax({
-            type: 'get',
-            url: '/qna/',
-            processData: false,
-            contentType: false,
-            success: function(){
-              console.log('인덱스 업데이트');
-            }
-          });
+          // $.ajax({
+          //   type: 'get',
+          //   url: '/qna/',
+          //   processData: false,
+          //   contentType: false,
+          //   success: function(){
+          //     console.log('인덱스 업데이트');
+          //   }
+          // });
 
         },
         error: function(request, status, error){

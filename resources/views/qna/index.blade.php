@@ -11,7 +11,7 @@
 	@endauth
 </div>
 
-<div class="table-responsive">
+<!-- <div class="table-responsive">
   <table class="table table-bordered table-striped" id="question_table">
     <thead>
       <tr>
@@ -24,13 +24,19 @@
   </table>
 </div>
 <br>
-<br>
+<br> -->
 
 <div class="question-list">
   <h1 style="color: #FFFFFF;">질문 목록</h1>
   <hr/>
   <div id="question-list">
-    <ul>
+    <ul id="ul">
+        <li class="openQuestion idAdd" id="add">
+          <p class="addQuestionId" id="questionId" style="color:#FFFFFF;"></p>
+          <p id="addTitle"></p>
+          <small id="addUserName" style="color: #FFFFFF;"></small>
+        </li>
+        <div class="option" id=""></div>
         @forelse($questions as $question)
           <li class="openQuestion" id="ques_{{$question->id}}">
             <p id="questionId" style="color: #FFFFFF;">{{ $question->id }}</p>
@@ -44,6 +50,12 @@
     </ul>
   </div>
 </div>
+
+@if($questions->count())
+  <div class="text-center">
+    {!! $questions->render() !!}
+  </div>
+@endif
 
 <!-- Trigger Modal -->
 <div class="Align_Center">
