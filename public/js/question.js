@@ -13,6 +13,65 @@ $(document).ready(function(){
     $('#questionModal').modal('show');
   });
 
+  function reloadAdd(data){
+    var li = document.createElement('li');
+    li.setAttribute('class', 'openQuestion');
+    li.setAttribute('id', 'ques_'+data['id']);
+    
+    var p1 = document.createElement('p');
+    p1.setAttribute('id', 'questionId');
+    p1.setAttribute('style', 'color=#FFFFFF;');
+    p1.innerHTML = data['id'];
+
+    var p2 = document.createElement('p');
+    p2.innerHTML = data['title'];
+    
+    var small = document.createElement('small');
+    small.setAttribute('style', 'color: #FFFFFF;');
+    small.innerHTML = 'by' + data['user_id'];
+
+    li.appendChild(p1);
+    li.appendChild(p2);
+    li.appendChild(small);
+
+    var optionDiv = document.createElement('div');
+    optionDiv.setAttribute('id', 'option_'+data['id']);
+
+    var parent = document.getElementById('div');
+    parent.prepend(optionDiv);
+    parent.prepend(li);
+  }
+
+  // function reloadAdd(data){
+  //   $('.idAdd')[0]['id'] = 'ques_'+data['id'];
+  //   $('.addQuestionId').children().remove();
+  //   console.log( $('.addQuestionId').children() );
+  //   $('.addQuestionId').html(data['id']);
+
+  //   $('#addTitle').children().remove();
+  //   $('#addTitle').html(data['title']);
+
+  //   $('#addUserName').children().remove();
+  //   $('#addUserName').html(data['user_id']);
+
+  //   $('.option')[0]['id'] = 'option_'+data['id'];
+  // }
+
+  function reloadEdit(data){
+    var ques_id = '#ques_'+data['hidden_qid'];
+    // var option_id = '#option_'+data['hidden_qid'];
+    // console.log(ques_id);
+    // $(ques_id)[0]['id'] = 'ques_'+(data['id']);
+    // console.log( $(ques_id).children() );
+    
+    $(ques_id).children()[1].innerHTML = data['title'];
+
+    // 글 클릭 할 때 펼쳐지면서 추가되는 #questionValue가 3번째 칠드런
+    $(ques_id).children()[3].innerHTML = data['content'];
+  }
+
+  
+
   $('#question-form').on('submit', function(e){
     e.preventDefault();
 
@@ -35,7 +94,40 @@ $(document).ready(function(){
           console.log('success');
           console.log(data);
           $('#questionModal').modal('hide');
-          reload(data);
+          reloadAdd(data);
+
+          // var parent = document.getElementById('ul');
+          // $('#ul').children().remove();
+
+          // for (var data of datas){
+          //   var li = document.createElement('li');
+          //   li.setAttribute('class', 'openQuestion');
+          //   li.setAttribute('id', 'ques_'+data['id']);
+            
+          //   var p1 = document.createElement('p');
+          //   p1.setAttribute('id', 'questionId');
+          //   p1.setAttribute('style', 'color=#FFFFFF;');
+          //   p1.innerHTML = data['id'];
+
+          //   var p2 = document.createElement('p');
+          //   p2.innerHTML = data['title'];
+            
+          //   var small = document.createElement('small');
+          //   small.setAttribute('style', 'color: #FFFFFF;');
+          //   small.innerHTML = 'by' + data['user_id'];
+
+          //   li.appendChild(p1);
+          //   li.appendChild(p2);
+          //   li.appendChild(small);
+
+          //   var optionDiv = document.createElement('div');
+          //   optionDiv.setAttribute('id', 'option_'+data['id']);
+
+          //   parent.appendChild(li);
+          //   parent.appendChild(optionDiv);
+          // }
+
+
           // $('.idAdd')[0]['id'] = 'ques_'+data['id'];
           // $('.addQuestionId').children().remove();
           // $('.addQuestionId').html(data['id']);
@@ -54,19 +146,7 @@ $(document).ready(function(){
       });
     }
 
-    function reload(data){
-      $('.idAdd')[0]['id'] = 'ques_'+data['id'];
-      $('.addQuestionId').children().remove();
-      $('.addQuestionId').html(data['id']);
 
-      $('#addTitle').children().remove();
-      $('#addTitle').html(data['title']);
-
-      $('#addUserName').children().remove();
-      $('#addUserName').html(data['user_id']);
-
-      $('.option')[0]['id'] = 'option_'+data['id'];
-    }
 
     if( $('#action_button').val() == 'Edit' ){
       var id = $('#hidden_qid')[0]['value'];
@@ -88,18 +168,8 @@ $(document).ready(function(){
           $('#content').val('');
           $('#action_button').val('Add');
           $('#questionModal').modal('hide');
-          reload(data);
-
-          // $.ajax({
-          //   type: 'get',
-          //   url: '/qna/',
-          //   processData: false,
-          //   contentType: false,
-          //   success: function(){
-          //     console.log('인덱스 업데이트');
-          //   }
-          // });
-
+          
+          reloadEdit(data);
         },
         error: function(request, status, error){
           console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -172,9 +242,15 @@ $(document).ready(function(){
               // $('li#ques_'+id).remove();
               // $('button#editQuestion').remove();
               // $('button#deleteQuestion').remove();
-              console.log(id);
-              window.location.href = '/qna';
-          },
+              // console.log(id);
+
+              // var ques_id = '#ques_'+id;
+              // $(ques_id).remove();
+              // $('button#editQuestion').remove();
+              // $('button#deleteQuestion').remove();
+              // // console.log( $(ques_id).children() );
+
+            },
           error: function(request, status, error){
             console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
           }

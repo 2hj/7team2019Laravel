@@ -58,6 +58,11 @@ class QnAsController extends Controller
       );
 
       $question = Question::create($questionArray);
+      // Question::create($questionArray);
+
+      // $questions = Question::get();
+
+
 
       return response()->json($question);
 
