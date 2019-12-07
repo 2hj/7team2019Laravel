@@ -1,0 +1,11 @@
+.memberbox {
+    width: 300px;
+    height: 400px;
+    background-color: gray;
+    border: 1px solid white;
+}
+
+.memberform {
+    width: 200px;
+    height: 250px;
+}

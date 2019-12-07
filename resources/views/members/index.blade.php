@@ -11,7 +11,7 @@
 				<form class="showMember member-form" id="showMember_{{ $member->id }}" data-id="{{ $member->id }}" action="#">
 					<div id="member_{{ $member->id }}">
 						<h3>{{ $member->name }}</h3>
-						<img width="100" src="/images/none_image.png" alt="이미지가 없습니다.">
+						<img id="memberImage_{{ $member->id }}" width="100" src="/images/none_image.png" alt="이미지가 없습니다.">
 					</div>
 				</form>
 				<div id="editAndDelete_{{ $member->id }}">
@@ -97,7 +97,7 @@
 							<form class="showMember" id="showMember_${data['id']}" data-id="${data['id']}" action="#">
 								<div id="member_${data['id']}">
 									<h3>${data['name']}</h3>
-									<img width="100" src="/images/none_image.png" alt="이미지가 없습니다.">
+									<img id="memberImage_${data['id']}" width="100" src="/images/none_image.png" alt="이미지가 없습니다.">
 								</div>
 							</form>
 							<div id="editAndDelete_${data['id']}">
@@ -123,7 +123,8 @@
 					}
 				});
 			});
-
+			
+			var edit_data = {};
 			var showMember = $('.showMember');
 			$(showMember.each(function() {
 				var showMemberId = $(`#showMember_${$(this).attr('data-id')}`);
@@ -141,11 +142,12 @@
 					type: "GET",
 					url: "/members/" + member_id, 
 					success: function(data) {
+						edit_data = data;
 						var htmlAfter = $(`
-						<h3 name="id">${data[0]['id']}</h3>
-						<h3 name="phone_number">${data[0]['phone_number']}</h3>
-						<h3 name="address">${data[0]['address']}</h3>
-						<h3 name="mottoes">${data[0]['mottoes']}</h3>
+						<h3 name="id">아이디 : ${data[0]['id']}</h3>
+						<h3 name="phone_number">전화번호 : ${data[0]['phone_number']}</h3>
+						<h3 name="address">주소 : ${data[0]['address']}</h3>
+						<h3 name="mottoes">좌우명 : ${data[0]['mottoes']}</h3>
 						`);
 
 						var editAndDelete = $(`
@@ -159,11 +161,12 @@
 
 						var htmlBefore= $(`
 						<h3>${data[0]['name']}</h3>
-						<img width="100" src="/images/none_image.png" alt="이미지가 없습니다.">
+						<img id="memberImage_${data[0]['id']}" width="100" src="/images/none_image.png" alt="이미지가 없습니다.">
 						`);
 
 						var memberDiv = $(`#member_${data[0]['id']}`);
 						var editAndDeleteDiv = $(`#editAndDelete_${data[0]['id']}`);
+						var dataArray = data[0];
 
 						count++;
 
@@ -215,19 +218,18 @@
 				var html = $(`
 				<form class="member-form-edit" id="editMember_${member_id}" data-id="${member_id}" action="#">
 				<label for="name">이름</label>
-				<input type="text" name="name">
+				<input type="text" name="name" value="${edit_data[0].name}">
 				<br>
 				<label for="phone">전화번호</label>
-				<input type="text" name="phone_number">
+				<input type="text" name="phone_number" value="${edit_data[0].phone_number}">
 				<br>
 				<label for="address">주소</label>
-				<input type="text" name="address">
+				<input type="text" name="address" value="${edit_data[0].address}">
 				<br>
 				<label for="mottoes">좌우명</label>
-				<input type="text" name="mottoes">
+				<input type="text" name="mottoes" value="${edit_data[0].mottoes}">
 				<br>
 				<button id="editSubmit" type="submit">수정완료</button>
-				<button type="button">취소</button>
 				</form>
 				`);
 
@@ -244,10 +246,8 @@
 
 			function onEditMember(member_id) {
 				var editMember_num_form = $(`#editMember_${member_id}`)[0];
-				console.log('form', editMember_num_form)
 				var data = new FormData(editMember_num_form);
 				data.append('_method','PATCH');
-				console.log('data', data);
 
 				$.ajax({
 					headers:{
@@ -265,7 +265,7 @@
 							<form class="showMember" id="showMember_${member_id}" data-id="${member_id}" action="#">
 								<div id="member_${member_id}">
 									<h3>${data['name']}</h3>
-									<img width="100" src="/images/none_image.png" alt="이미지가 없습니다.">
+									<img id="memberImage_${member_id}" width="100" src="/images/none_image.png" alt="이미지가 없습니다.">
 								</div>
 							</form>
 							<div id="editAndDelete_${member_id}">
@@ -285,7 +285,6 @@
 					}
 				});
 			}
-
 
 		});
 	</script>
