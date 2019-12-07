@@ -246,7 +246,7 @@
 
 			function onEditMember(member_id) {
 				var editMember_num_form = $(`#editMember_${member_id}`)[0];
-				var data = new FormData(editMember_num_form);
+        var data = new FormData(editMember_num_form);
 				data.append('_method','PATCH');
 
 				$.ajax({

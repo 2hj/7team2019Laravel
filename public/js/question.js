@@ -7,6 +7,9 @@ $(document).ready(function(){
 
   // Create a Question ajax
   $('#createQuestion').click(function(e){
+    $('#action_button').val('Add');
+    $('#title').val('');
+    $('#content').val('');
     $('#questionModal').modal('show');
   });
 
@@ -24,8 +27,6 @@ $(document).ready(function(){
         success: function(data){
           console.log('success');
           console.log(data);
-          $('#title').val('');
-          $('#content').val('');
           $('#questionModal').modal('hide');
         },
         error: function(request, status, error){
@@ -36,9 +37,16 @@ $(document).ready(function(){
 
     if( $('#action_button').val() == 'Edit' ){
       var id = $('#hidden_qid');
+      var form = $('#question-form')[0];
+      var data = new FormData(form);
+      data.append('_method', 'PATCH');
+      
       $.ajax({
-        type: 'PATCH',
+        type: 'POSTS',
         url: '/qna/'+id,
+        data: data,
+        processData: false,
+        contentType: false,
         success: function(data){
           console.log('success');
           console.log(data);
@@ -137,7 +145,8 @@ $(document).ready(function(){
         url: '/qna/'+id+'/edit',
         success: function(data){
           console.log(data);
-          var form = document.forms[1];
+          console.log(document.forms);
+          var form = document.forms[2];
           console.log(form.elements);
           form.elements[2]['value'] = data.title;
           form.elements[3]['value'] = data.content;
