@@ -64,6 +64,7 @@
         <span id="form_result"></span>
         <form method="post" id="question-form">
           @csrf
+          @method('PATCH')
 
           <div class="form-group {{ $errors->has('title') ? 'has-error' : '' }}">
             <label for="title" class="col-form-label">제목</label>
@@ -79,6 +80,7 @@
           
           <div class="form-group">
             <input type="hidden" name="hidden_id" id="hidden_id" value="{{ Auth::id() }}">
+            <input type="hidden" name="hidden_qid" id="hidden_qid" value="">
             <input type="submit" name="action_button" id="action_button" class="btn btn-warning" value="Add">
 
           </div>

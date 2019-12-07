@@ -33,6 +33,25 @@ $(document).ready(function(){
         }
       });
     }
+
+    if( $('#action_button').val() == 'Edit' ){
+      var id = $('#hidden_qid');
+      $.ajax({
+        type: 'PATCH',
+        url: '/qna/'+id,
+        success: function(data){
+          console.log('success');
+          console.log(data);
+          $('#title').val('');
+          $('#content').val('');
+          $('#action_button').val('Add');
+          $('#questionModal').modal('hide');
+        },
+        error: function(request, status, error){
+          console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+        }
+      });
+    }
   });
 
   var selected = -1;
@@ -69,8 +88,8 @@ $(document).ready(function(){
           var editBtn = document.createElement('button');
           editBtn.innerHTML = '수정';
           editBtn.setAttribute('id', 'editQuestion');
-          editBtn.setAttribute('data-id', result['qid'])
-          // deleteBtn.addEventListener('click', onClickEdit);
+          editBtn.setAttribute('data-id', result['qid']);
+          editBtn.addEventListener('click', onClickEdit);
           document.getElementById('option_'+result['qid']).appendChild(editBtn);
 
           var deleteBtn = document.createElement('button');
@@ -87,13 +106,6 @@ $(document).ready(function(){
         console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
       }
     });
-
-    // function onClickEdit() {
-    //   var id = $('#EditQuestion').attr('data-id'); 
-    //   $.ajax({
-    //     type: '',
-    //   });
-    // }
 
     function onClickDelete() {
       var id = $('#deleteQuestion').attr('data-id');
@@ -114,6 +126,26 @@ $(document).ready(function(){
           }
         });
       }
+    }
+    
+    function onClickEdit(){
+      var id = $('#editQuestion').attr('data-id');
+      $('#action_button').val('Edit');
+      
+      $.ajax({
+        type: 'get',
+        url: '/qna/'+id+'/edit',
+        success: function(data){
+          console.log(data);
+          var form = document.forms[1];
+          console.log(form.elements);
+          form.elements[2]['value'] = data.title;
+          form.elements[3]['value'] = data.content;
+          form.elements[5]['value'] = id
+          $('#questionModal').modal('show');
+
+        }
+      });
     }
   }
 });
