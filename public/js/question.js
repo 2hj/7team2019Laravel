@@ -33,6 +33,25 @@ $(document).ready(function(){
         }
       });
     }
+
+    if( $('#action_button').val() == 'Edit' ){
+      var id = $('#hidden_qid');
+      $.ajax({
+        type: 'PATCH',
+        url: '/qna/'+id,
+        success: function(data){
+          console.log('success');
+          console.log(data);
+          $('#title').val('');
+          $('#content').val('');
+          $('#action_button').val('Add');
+          $('#questionModal').modal('hide');
+        },
+        error: function(request, status, error){
+          console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+        }
+      });
+    }
   });
 
   var selected = -1;
@@ -111,9 +130,22 @@ $(document).ready(function(){
     
     function onClickEdit(){
       var id = $('#editQuestion').attr('data-id');
-      var data = new FormData('#question-form');
-      data.append('title', );
-      console.log(data);
+      $('#action_button').val('Edit');
+      
+      $.ajax({
+        type: 'get',
+        url: '/qna/'+id+'/edit',
+        success: function(data){
+          console.log(data);
+          var form = document.forms[1];
+          console.log(form.elements);
+          form.elements[2]['value'] = data.title;
+          form.elements[3]['value'] = data.content;
+          form.elements[5]['value'] = id
+          $('#questionModal').modal('show');
+
+        }
+      });
     }
   }
 });
