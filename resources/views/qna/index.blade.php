@@ -110,6 +110,7 @@
         <span id="form_result"></span>
         <form method="post" id="question-form">
           @csrf
+          @method('PUT')
 
           <div class="form-group {{ $errors->has('title') ? 'has-error' : '' }}">
             <label for="title" class="col-form-label">제목</label>

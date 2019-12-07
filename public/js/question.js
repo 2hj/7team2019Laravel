@@ -75,14 +75,15 @@ $(document).ready(function(){
           var editBtn = document.createElement('button');
           editBtn.innerHTML = '수정';
           editBtn.setAttribute('id', 'editQuestion');
-          editBtn.setAttribute('data-id', result['qid'])
+          editBtn.setAttribute('data-id', result['qid']);
+          editBtn.addEventListener('click', onClickEdit);
           document.getElementById('option_'+result['qid']).appendChild(editBtn);
 
           var deleteBtn = document.createElement('button');
           deleteBtn.innerHTML = '삭제';
           deleteBtn.setAttribute('id', 'deleteQuestion');
           deleteBtn.setAttribute('data-id', result['qid']);
-          deleteBtn.addEventListener('click', onClickEdit);
+          deleteBtn.addEventListener('click', onClickDelete);
           document.getElementById('option_'+result['qid']).appendChild(deleteBtn);
           } else {
           selected = -1;
@@ -93,7 +94,7 @@ $(document).ready(function(){
       }
     });
 
-    function onClickEdit() {
+    function onClickDelete() {
       var id = $('#deleteQuestion').attr('data-id');
       
       if(confirm('글을 삭제 하시겠습니까?')) {
@@ -110,6 +111,13 @@ $(document).ready(function(){
           }
         });
       }
+    }
+    
+    function onClickEdit(){
+      var id = $('#editQuestion').attr('data-id');
+      var data = new FormData('#question-form');
+      data.append('title', );
+      console.log(data);
     }
   }
 });
