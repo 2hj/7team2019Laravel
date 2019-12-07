@@ -1448,3 +1448,8 @@ a.button3{
 a.button3:hover{
 	background-color:#4095c6;
 }
+
+ul li {
+	color:#FFFFFF;
+	font-size:14px;
+}

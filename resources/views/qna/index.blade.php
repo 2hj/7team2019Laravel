@@ -1,6 +1,7 @@
 @extends ('headers.header')
 
 @section('content')
+
 <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/QnA.css') }}">
 
 <div>
@@ -94,7 +95,6 @@
             <input type="hidden" name="hidden_id" id="hidden_id" value="{{ Auth::id() }}">
             <input type="hidden" name="hidden_qid" id="hidden_qid" value="">
             <input type="submit" name="action_button" id="action_button" class="btn btn-warning" value="Add">
-
           </div>
 
         </form>
@@ -114,6 +114,5 @@
 <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 <script src="{{ URL::asset('js\jquery-3.2.1.min.js') }}"></script>
 <script src="{{ URL::asset('css\styles\bootstrap-4.1.2\bootstrap.min.js') }}"></script>
-<link rel="stylesheet" type="text/css" href="{{ URL::asset('css\styles\bootstrap-4.1.2\bootstrap.min.css') }}">
 <script src="js/question.js"></script>
 @stop

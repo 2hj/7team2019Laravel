@@ -1,7 +1,7 @@
 @extends ('headers.header')
 
 @section('content')
-<link rel="stylesheet" type="text/css" href="{{ URL::asset('css/japan.css') }}">
+
 
 <div class="discs">
 	<div class="container">
@@ -55,7 +55,7 @@
 						<label for="explain">설명</label>
 						<input type="text" name="explain">
 						<br>
-						<input type="file" name="img" id="img">
+						<input type="file" name="img" id="img" accept="image/x-png,image/gif,image/jpeg">
 						<br>
 						<input type="submit" value="생성">
 						`);
@@ -105,13 +105,13 @@
 						</div>
 						`);
 
-						var japanArea = $('.japanArea');
+						var japanArea = $('.JapanArea');
 						var addJapan = $('#addJapan');
 						var empty = $('#empty');
-
+						empty.remove();
 						japanArea.append(html);
 						addJapan.html("");
-						empty.remove();
+						
 					
 						var showJapanId = $(`#showJapan_${data['id']}`);
 						var editAndDeleteId = $(`#editAndDelete_${data['id']}`);

@@ -171,3 +171,18 @@
       position:fixed;
       margin:auto;
 }
+
+label,h5 {
+      color:#000000;
+}
+
+
+.form-group input,textarea {
+      background: #000a12;
+      color: #db5246;
+}
+
+.form-group input,textarea:focus {
+      background: #495057;
+      color: #db5246;
+}

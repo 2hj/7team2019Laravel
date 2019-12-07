@@ -172,19 +172,19 @@
 }
 
 .demo-1 .page-view .project:nth-child(1) {
-  background-image: url(../img/nature-1.jpg);
+  background-image: url(../images/bg/BG_01.jpg);
 }
 
 .demo-1 .page-view .project:nth-child(2) {
-  background-image: url(../img/nature-2.jpg);
+  background-image: url(../images/bg/BG_02.jpg);
 }
 
 .demo-1 .page-view .project:nth-child(3) {
-  background-image: url(../img/nature-3.jpg);
+  background-image: url(../images/bg/BG_03.jpg);
 }
 
 .demo-1 .page-view .project:nth-child(4) {
-  background-image: url(../img/nature-4.jpg);
+  background-image: url(../images/bg/BG_04.jpg);
 }
 
 .demo-1 .page-view .project:nth-child(even).hide {
