@@ -7,15 +7,24 @@ $(document).ready(function(){
 
   // Create a Question ajax
   $('#createQuestion').click(function(e){
+    $('#action_button').val('Add');
+    $('#title').val('');
+    $('#content').val('');
     $('#questionModal').modal('show');
   });
 
   $('#question-form').on('submit', function(e){
     e.preventDefault();
+
+    // var form = $('#question-form')[0];
+    // console.log(form);
+    // var data = new FormData(form);
+    
     if( $('#action_button').val() == 'Add' ){
       $.ajax({
         url: "/qna",
         method: "POST",
+        // data: data,
         data: new FormData(this),
         contentType: false,
         cache: false,
@@ -24,9 +33,45 @@ $(document).ready(function(){
         success: function(data){
           console.log('success');
           console.log(data);
+          $('#questionModal').modal('hide');
+        },
+        error: function(request, status, error){
+          console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+        }
+      });
+    }
+
+    if( $('#action_button').val() == 'Edit' ){
+      var id = $('#hidden_qid')[0]['value'];
+      console.log(id);
+      var form = $('#question-form')[0];
+      var data = new FormData(form);
+      data.append('_method', 'patch');
+
+      $.ajax({
+        type: 'POST',
+        url: '/qna/'+id,
+        data: data,
+        processData: false,
+        contentType: false,
+        success: function(data){
+          console.log('success');
+          console.log(data);
           $('#title').val('');
           $('#content').val('');
+          $('#action_button').val('Add');
           $('#questionModal').modal('hide');
+
+          $.ajax({
+            type: 'get',
+            url: '/qna/',
+            processData: false,
+            contentType: false,
+            success: function(){
+              console.log('인덱스 업데이트');
+            }
+          });
+
         },
         error: function(request, status, error){
           console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -69,8 +114,8 @@ $(document).ready(function(){
           var editBtn = document.createElement('button');
           editBtn.innerHTML = '수정';
           editBtn.setAttribute('id', 'editQuestion');
-          editBtn.setAttribute('data-id', result['qid'])
-          // deleteBtn.addEventListener('click', onClickEdit);
+          editBtn.setAttribute('data-id', result['qid']);
+          editBtn.addEventListener('click', onClickEdit);
           document.getElementById('option_'+result['qid']).appendChild(editBtn);
 
           var deleteBtn = document.createElement('button');
@@ -87,13 +132,6 @@ $(document).ready(function(){
         console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
       }
     });
-
-    // function onClickEdit() {
-    //   var id = $('#EditQuestion').attr('data-id'); 
-    //   $.ajax({
-    //     type: '',
-    //   });
-    // }
 
     function onClickDelete() {
       var id = $('#deleteQuestion').attr('data-id');
@@ -114,6 +152,27 @@ $(document).ready(function(){
           }
         });
       }
+    }
+    
+    function onClickEdit(){
+      var id = $('#editQuestion').attr('data-id');
+      $('#action_button').val('Edit');
+      
+      $.ajax({
+        type: 'get',
+        url: '/qna/'+id+'/edit',
+        success: function(data){
+          console.log(data);
+          console.log(document.forms);
+          var form = document.forms[2];
+          console.log(form.elements);
+          form.elements[1]['value'] = data.title;
+          form.elements[2]['value'] = data.content;
+          form.elements[4]['value'] = id
+          $('#questionModal').modal('show');
+
+        }
+      });
     }
   }
 });
