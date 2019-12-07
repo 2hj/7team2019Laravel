@@ -18,7 +18,7 @@ class CreateJapansTable extends Migration
             //$table->engine = 'InnoDB';
 
             $table->bigIncrements('id');
-            $table->string('img', 255);
+            $table->string('img', 255)->nullable();
             $table->text('place');
             $table->text('explain');
 

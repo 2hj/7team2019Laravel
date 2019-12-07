@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Japan;
-
+use Illuminate\Support\Str;
 
 class JapanController extends Controller
 {
@@ -15,17 +14,19 @@ class JapanController extends Controller
      */
     public function index()
     {
-        return view('japan.index');
+        $japans = \App\Japan::get();
+         
+        return view('japan.index', compact('japans'));
     }
 
     /**
      * Show the form for creating a new resource.
-     *
+     * @param \Illuminate\Http\Request
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        return view('japan.create');
+        return $request;
     }
 
     /**
@@ -36,14 +37,26 @@ class JapanController extends Controller
      */
     public function store(Request $request)
     {
-        if($request->hasFile('files')) {
-            $files = $request->file('files');
+        if($request->has('img')) {
+            $image = $request->file("img");
+            $filename = Str::random(15).filter_var($image->getClientOriginalName(),FILTER_SANITIZE_URL);
+            $image->move(public_path('img'),$filename);
 
-            foreach($files as $file) {
-                $filename = str_random().filter_var($file->getClientOriginalName(), FILTER_SANITIZE_URL);
-                $file = move(attachments_path(), $filename);
-            }
+            $japans = \App\Japan::create([
+                'place'=>$request->place,
+                'explain'=>$request->explain,
+                'img'=>$filename,
+            ]); 
+        } 
+        else {
+            $japans = \App\Japan::create([
+                'place'=>$request->place,
+                'explain'=>$request->explain,
+                'img'=>null,
+            ]); 
         }
+
+        return $japans;
     }
 
     /**
@@ -54,7 +67,9 @@ class JapanController extends Controller
      */
     public function show($id)
     {
-        //
+        $japan = \App\Japan::where('id', '=', $id)->get();
+
+        return $japan;
     }
 
     /**
@@ -77,7 +92,25 @@ class JapanController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+        if($request->has('img')) {
+            $image = $request->file("img");
+            $filename = Str::random(15).filter_var($image->getClientOriginalName(),FILTER_SANITIZE_URL);
+            $image->move(public_path('img'),$filename);
+
+            \App\Japan::where('id', '=', $id)->update([
+                'place'=>$request->place,
+                'explain'=>$request->explain,
+                'img'=>$filename,
+            ]);
+        } else {
+            \App\Japan::where('id', '=', $id)->update([
+                'place'=>$request->place,
+                'explain'=>$request->explain,
+            ]);
+        }
+
+        return $request;
     }
 
     /**
@@ -88,6 +121,8 @@ class JapanController extends Controller
      */
     public function destroy($id)
     {
-        //
+        \App\Japan::find($id)->delete();
+
+        return response($id);
     }
 }

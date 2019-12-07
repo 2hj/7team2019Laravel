@@ -11,7 +11,7 @@
             <form class="showMember member-form" id="showMember_{{ $member->id }}" data-id="{{ $member->id }}" action="#">
                <div id="member_{{ $member->id }}">
                   <h3>{{ $member->name }}</h3>
-                  <img id="memberImage_{{ $member->id }}" width="100" src="/images/" alt="이미지가 없습니다.">
+                  <img id="memberImage_{{ $member->id }}" width="100" src="" alt="이미지가 없습니다.">
                </div>
             </form>
             <div id="editAndDelete_{{ $member->id }}">
@@ -104,7 +104,7 @@
                      <form class="showMember" id="showMember_${data['id']}" data-id="${data['id']}" action="#">
                         <div id="member_${data['id']}">
                            <h3>${data['name']}</h3>
-                           <img id="memberImage_${data['id']}" width="100" src="/images/disc_1.jpg" alt="이미지가 없습니다.">
+                           <img id="memberImage_${data['id']}" width="100" src="/images/disc_2.jpg" alt="이미지가 없습니다.">
                         </div>
                      </form>
                      <div id="editAndDelete_${data['id']}">
@@ -170,7 +170,7 @@
                   `);
 
                   var memberDiv = $(`#member_${data[0]['id']}`);
-                  var editAndDeleteDiv = $(`#editAndDelete_${data[0]['id']}`);
+                  var editAndDeleteDiv = $(`#editAndDelete_${data[0]['id']}`); 
 
                   count++;
 

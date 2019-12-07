@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use Vaildator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use App\Http\Requests\MembersRequest;
 use App\Member;
+use Datatables;
 
 class MembersController extends Controller
 {
@@ -17,13 +19,8 @@ class MembersController extends Controller
     public function index()
     {
         $members = \App\Member::get();
-
-        // $members = DB::table('members')->get();
-        // dd($members);
-
-        return view('members.index_before', compact('members'));
-
-
+        
+        return view('members.index', compact('members'));
     }
 
     /**
@@ -46,7 +43,30 @@ class MembersController extends Controller
     // \App\Http\Requests\MembersRequest
     public function store(Request $request)
     {
-        $members = \App\Member::create($request->all()); 
+        if($request->has('img')) {
+            $image = $request->file("img");
+            $filename = Str::random(15).filter_var($image->getClientOriginalName(),FILTER_SANITIZE_URL);
+            $image->move(public_path('img'),$filename);
+
+            $members = \App\Member::create([
+                'name'=>$request->name,
+                'address'=>$request->address,
+                'phone_number'=>$request->phone_number,
+                'mottoes'=>$request->mottoes,
+                'img'=>$filename,
+            ]); 
+        } 
+        else {
+            $members = \App\Member::create([
+                'name'=>$request->name,
+                'address'=>$request->address,
+                'phone_number'=>$request->phone_number,
+                'mottoes'=>$request->mottoes,
+                'img'=>null,
+            ]); 
+        }
+        
+        
 
         return $members;
         
@@ -73,7 +93,7 @@ class MembersController extends Controller
      */
     public function edit(Request $request, $id)
     {
-      
+        
     }
 
     /**
@@ -85,12 +105,30 @@ class MembersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        \App\Member::where('id', '=', $id)->update([
-            'name'=>$request->name,
-            'address'=>$request->address,
-            'phone_number'=>$request->phone_number,
-            'mottoes'=>$request->mottoes
-        ]);
+        // if($request->has('img')) {
+            $image = $request->file("img");
+            $filename = Str::random(15).filter_var($image->getClientOriginalName(),FILTER_SANITIZE_URL);
+            $image->move(public_path('img'),$filename);
+
+            \App\Member::where('id', '=', $id)->update([
+                'name'=>$request->name,
+                'address'=>$request->address,
+                'phone_number'=>$request->phone_number,
+                'mottoes'=>$request->mottoes,
+                'img'=>$filename,
+            ]);
+        /* }
+        else {
+            \App\Member::where('id', '=', $id)->update([
+                'name'=>$request->name,
+                'address'=>$request->address,
+                'phone_number'=>$request->phone_number,
+                'mottoes'=>$request->mottoes,
+                'img'=>null,
+            ]);
+        } */
+
+        
 
         return $request;
     }
@@ -106,34 +144,6 @@ class MembersController extends Controller
         \App\Member::find($id)->delete();
 
         return response($id);
-    }
-
-
-
-    function action(Request $request)
-    {
-     $validation = Validator::make($request->all(), [
-      'select_file' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
-     ]);
-     if($validation->passes())
-     {
-      $image = $request->file('img');
-      $new_name = rand() . '.' . $image->getClientOriginalExtension();
-      $image->move(public_path('images'), $new_name);
-      return response()->json([
-       'message'   => 'Image Upload Successfully',
-       'memberImage_${member_id}' => '<img src="/images/'.$new_name.'" class="img-thumbnail" width="300" />',
-       'class_name'  => 'alert-success'
-      ]);
-     }
-     else
-     {
-      return response()->json([
-       'message'   => $validation->errors()->all(),
-       'memberImage_${member_id}' => '',
-       'class_name'  => 'alert-danger'
-      ]);
-     }
     }
 
 }
