@@ -13,28 +13,36 @@ class QnAsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+
+    public function index()
     {
-
-        if ($request->ajax()) {
-            $data = Question::latest()->get();
-            return Datatables::of($data)
-                    ->addIndexColumn()
-                    ->addColumn('action', function($row){
-
-                           $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editBook">Edit</a>';
-
-                           $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteBook">Delete</a>';
-
-                            return $btn;
-                    })
-                    ->rawColumns(['action'])
-                    ->make(true);
-        }
-
-        return view('qna');
-
+        $questions = \App\Question::with('user')->latest()->paginate(10);
+        
+        return view('qna.index', compact('questions'));
     }
+
+     // public function index(Request $request)
+    // {
+
+    //     if ($request->ajax()) {
+    //         $data = Question::latest()->get();
+    //         return Datatables::of($data)
+    //                 ->addIndexColumn()
+    //                 ->addColumn('action', function($row){
+
+    //                        $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editBook">Edit</a>';
+
+    //                        $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteBook">Delete</a>';
+
+    //                         return $btn;
+    //                 })
+    //                 ->rawColumns(['action'])
+    //                 ->make(true);
+    //     }
+
+    //     return view('qna');
+
+    // }
 
     /**
      * Show the form for creating a new resource.
@@ -110,6 +118,8 @@ class QnAsController extends Controller
       Question::create($question);
 
       return response()->json(['success'=>'Data Added Successfully!']);
+
+    }
     // public function store(\App\Http\Requests\QuestionsRequest $request){
     //     // $question = \App\User::find(1)->questions()->create($request->all());
     //     $question = auth()->user()->questions()->create($request->all());
@@ -160,7 +170,12 @@ class QnAsController extends Controller
      */
     public function show($id)
     {
-        //
+      $search = \App\Question::where('id', '=', $id)->get();
+        
+      return response([
+          'qid' => $search[0]['id'],
+          'value' => $search[0]['content'],
+      ]);
     }
 
     /**
