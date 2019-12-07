@@ -78,8 +78,28 @@
 						@if( str_replace('http://', 'https://', Request::url()) == 'https://127.0.0.1:8000' )
 						<li class="active"><a href="{{ route('Mainpage') }}">Home</a></li>
 						@else
-						<li ><a href="{{ route('Mainpage') }}">Home</a></li>
-						@endif
+							<li>{{ Auth::user()->name }}</li>
+							<li>
+								<a href="{{ route('logout') }}"
+									onclick="event.preventDefault();
+													document.getElementById('logout-form').submit();">
+									{{ __('Logout') }}
+								</a>
+								<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+									@csrf
+								</form>
+							</li>
+						@endguest
+					</ul>
+				</div>
+				<nav class="main_nav">
+					<ul class="d-flex flex-row align-items-start justify-content-start">
+							<!-- Select Active-->
+							@if( str_replace('http://', 'https://', Request::url()) == 'https://127.0.0.1:8000' )
+							<li class="active"><a href="{{ route('Mainpage') }}">Home</a></li>
+							@else
+							<li ><a href="{{ route('Mainpage') }}">Home</a></li>
+							@endif
 
 						@if( str_replace('http://', 'https://', Request::url()) == 'https://127.0.0.1:8000/japan' )
 							<li class="active"><a href="{{ route('japan.index')}}">현지 학기제</a></li>
