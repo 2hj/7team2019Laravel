@@ -36,13 +36,13 @@ $(document).ready(function(){
     }
 
     if( $('#action_button').val() == 'Edit' ){
-      var id = $('#hidden_qid');
+      var id = $('#hidden_qid')[0]['value'];
+      console.log(id);
       var form = $('#question-form')[0];
       var data = new FormData(form);
-      data.append('_method', 'PATCH');
       
       $.ajax({
-        type: 'POSTS',
+        type: 'POST',
         url: '/qna/'+id,
         data: data,
         processData: false,

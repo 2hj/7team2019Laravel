@@ -99,9 +99,12 @@ class QnAsController extends Controller
      */
     public function update(Request $request, $id)
     {
-      // $question = Question::find($id);
-      // return response()->json($question);
-      return response()->json($id);
+      $question = \App\Question::where('id', '=', $id)->update([
+        'title'=>$request->title,
+        'content'=>$request->content
+      ]);
+
+      return $request;
     }
 
     /**
