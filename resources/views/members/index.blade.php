@@ -10,7 +10,7 @@
 						<div class="disc">
 							<form class="showMember" data-id="{{$member->id}}" action="#">
 								<a href="">
-									<div class="disc_image"><img src="images/disc_2.jpg" alt="https://unsplash.com/@kasperrasmussen"></div>
+									<div class="disc_image" id="uploaded_image"><img src="images/disc_2.jpg" alt="https://unsplash.com/@kasperrasmussen"></div>
 									<div class="disc_container">
 										<div>
 											<div class="disc_content_2 d-flex flex-column align-items-center justify-content-center">
@@ -45,6 +45,9 @@
 
 	</div>
 </div>
+
+
+
 
 	<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
 	<script type="text/javascript">

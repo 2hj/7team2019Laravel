@@ -22,7 +22,7 @@ class MembersController extends Controller
         // $members = DB::table('members')->get();
         // dd($members);
 
-        return view('members.index', compact('members'));
+        return view('members.index_before', compact('members'));
     }
 
     /**
