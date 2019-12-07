@@ -23,6 +23,7 @@ class MembersController extends Controller
         // dd($members);
 
         return view('members.index', compact('members'));
+        // return view('members.index');
     }
 
     /**
@@ -86,9 +87,9 @@ class MembersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
-        return view('members.edit');
+        
     }
 
     /**
@@ -100,7 +101,14 @@ class MembersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        \App\Member::where('id', '=', $id)->update([
+            'name'=>$request->name,
+            'address'=>$request->address,
+            'phone_number'=>$request->phone_number,
+            'mottoes'=>$request->mottoes
+        ]);
+
+        return $request;
     }
 
     /**
@@ -109,9 +117,11 @@ class MembersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Reqeust $request, $id)
+    public function destroy($id)
     {
-        return $request;
+        \App\Member::find($id)->delete();
+
+        return response($id);
     }
 
     function members()

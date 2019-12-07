@@ -1,215 +1,295 @@
 @extends ('headers.header')
 
 @section('content')
+<link rel="stylesheet" type="text/css" href="{{ URL::asset('css/member.css') }}">
+
 <div class="discs">
-		<div class="container">
-
-			<div id="addingMember" class="row discs_row">
-				@forelse($members as $member)
-					<div class="col-xl-4 col-md-6">
-						<div class="disc">
-							<form class="showMember" data-id="{{$member->id}}" action="#">
-								<a href="">
-									<div class="disc_image"><img src="images/disc_2.jpg" alt="https://unsplash.com/@kasperrasmussen"></div>
-									<div class="disc_container">
-										<div>
-											<div class="disc_content_2 d-flex flex-column align-items-center justify-content-center">
-												<div>
-													<div id="member_name" name="member_name" class="disc_title">{{ $member->name }}</div>
-													<div id="member_id" name="member_id" class="disc_subtitle">{{ $member->id }}</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</a>
-							</form>
-						</div>
+	<div class="container">
+		<div class="memberArea">
+			@forelse($members as $member)
+			<div class="memberbox" id="memberbox_{{ $member->id }}">
+				<form class="showMember member-form" id="showMember_{{ $member->id }}" data-id="{{ $member->id }}" action="#">
+					<div id="member_{{ $member->id }}">
+						<h3>{{ $member->name }}</h3>
+						<img width="100" src="/images/none_image.png" alt="이미지가 없습니다.">
 					</div>
-				@empty
-					<p id="empty">조원이 등록되지 않았습니다.</p>
-				@endforelse	
-			</div>
-			<form id="createMember" action="#">
-				<button type="button" class="btn btn-warning" id="create">멤버추가</button>
-			</form>
-			<!-- <form id="deleteMember" action="#">
-				<button type="button" class="btn btn-waring" id="delete">멤버삭제</button>				
-			</form> -->
-
-			<div id="createDiv">
-				<form id="addMember">
-					
-				
 				</form>
-			</div>	
+				<div id="editAndDelete_{{ $member->id }}">
 
+				</div>
+			</div>
+			@empty
+				<p id="empty">조원이 등록되지 않았습니다.</p>
+			@endforelse
+		</div>
+
+		<form id="createMember" action="#">
+			<button type="submit" class="btn btn-warning" id="create">멤버추가</button>
+		</form>
+		<form id="addMember" action="#">
+
+		</form>
+		
+		
+		
+		
 	</div>
 </div>
-
 	<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
 
-			// 불렀는지 유무
-			// 전역변수
-			var called = false;
 			var count = 0;
 
-			// 멤버 생성 제한
-			var memberCreateLimit = 0;
-			// var createForm = document.getElementById('addMember');
-			// jquery랑 javascript를 같이 사용할 수 없다.
-			var createForm = $('#addMember');
-			var addingMember = $('#addingMember');
-
-			$('.showMember').on('click', function(event) {
+			$('#createMember').on("submit", function(event) {
 				event.preventDefault();
 
-				var num = $(this).attr('data-id');
 				$.ajax({
 					headers:{
 						'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
 					},
 					type: "GET",
-					url: '/members/'+num, 
+					url: "{{ route('members.create') }}", 
 					success: function(data) {
-						console.log('show data:', data);
-					}
-				});
-			});
+						var html = $(`
+						<label for="name">이름</label>
+						<input type="text" name="name">
+						<label for="phone">전화번호</label>
+						<input type="text" name="phone_number">
+						<label for="address">주소</label>
+						<input type="text" name="address">
+						<label for="mottoes">좌우명</label>
+						<input type="text" name="mottoes">
+						<input type="submit" value="제출">
+						`);
 
-			// 멤버 추가 버튼 생성 함수
-			function createHTML() {
-				var html = $(`
-				<label for="name">이름</label>
-				<input type="text" name="name" id="name" value="{!! old('name') !!}">
-				<label for="phone_number">전화번호</label>
-				<input type="text" name="phone_number" id="phone_number" value="{!! old('phone_number') !!}">
-				<label for="address">주소</label>
-				<input type="text" name="address" id="address" value="{!! old('address') !!}">
-				<label for="mottoes">좌우명</label>
-				<input type="text" name="mottoes" id="mottoes" value="{!! old('mottoes') !!}">
-				
-				<button type="submit" >조원추가</button>
-				`);
-
-				createForm.append(html);
-
-				console.log('function count', count);
-
-				called=false;
-			}
-
-			// 멤버 추가 버튼 클릭 함수
-			$('#create').click(function() {
-				console.log('createMember');
-				called = true;
-				var check = false;
-
-				if(called) {
-					console.log('called');
-					check = true;
-				}
-
-				$.ajax({
-					headers:{
-						'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
-					},
-					type: "GET",
-					url: "{{ route('members.create') }}",
-					data: {
-						checking: check,
-					},
-					success: function(data) {
-						console.log("data.checking: ", data.checking);
+						var addMember = $('#addMember');
 						count++;
-						console.log('success data', count);
-
-						if(memberCreateLimit == 6) {
-							alert('멤버를 더 이상 추가할 수 없습니다!!');
+						if(count % 2 == 1) {
+							addMember.append(html);
 						} else {
-							if(data.checking && count % 2 == 1) {
-								createHTML();
-							} else {
-								createForm.html("");
-								console.log('createForm: ', createForm);
-							}
+							addMember.html("");
 						}
-						
+
 					}
 				});
 			});
-			
-			// 멤버 추가 html 추가 함수
-			function addingHTML(id, name, address, mottoes, phone_number) {
-				var html = $(`
-				<div class="col-xl-4 col-md-6">
-					<div class="disc">
-						<form class="showMember" data-id="${id}" action="#">
-							<a href="">
-								<div class="disc_image"><img src="images/disc_2.jpg" alt="https://unsplash.com/@kasperrasmussen"></div>
-								<div class="disc_container">
-									<div>
-										<div class="disc_content_2 d-flex flex-column align-items-center justify-content-center">
-											<div>
-												<div name="member_name" class="disc_title">${name}</div>
-												<div name="member_id" class="disc_subtitle">${id}</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</a>
-						</form>
-					</div>
-				</div>
-				`);
 
-				memberCreateLimit++;
-				addingMember.append(html);
-			}
-
-			// 멤버 추가
 			$('#addMember').on("submit", function(event) {
 				event.preventDefault();
-				console.log('came add');
-				
+
 				var form = $('#addMember')[0];
-				console.log('form:', form);
-				var data  = new FormData(form);
-				console.log('before sending',data);
+				var data = new FormData(form);
+
 				$.ajax({
 					headers:{
 						'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
 					},
 					type: "POST",
-					url: "{{ route('members.store') }}",
+					url: "{{ route('members.store') }}", 
 					contentType: false,
 					processData: false,
-					// dataType: json,
 					data: data,
 					success: function(data) {
-						console.log('adding data:', data);
-						console.log(typeof(data));
-						createForm.html("");
+						// name, address, mottoes, phone_number
+						var html = $(`
+						<div class='memberbox' id="memberbox_${data['id']}">
+							<form class="showMember" id="showMember_${data['id']}" data-id="${data['id']}" action="#">
+								<div id="member_${data['id']}">
+									<h3>${data['name']}</h3>
+									<img width="100" src="/images/none_image.png" alt="이미지가 없습니다.">
+								</div>
+							</form>
+							<div id="editAndDelete_${data['id']}">
+
+							</div>
+						</div>
+						`);
+
+						var memberArea = $('.memberArea');
+						var addMember = $('#addMember');
 						var empty = $('#empty');
-						empty.html("");
-						called=false;
-						checking=false;
+
+						memberArea.append(html);
+						addMember.html("");
+						empty.remove();
+					
+						var showMemberId = $(`#showMember_${data['id']}`);
+						var editAndDeleteId = $(`#editAndDelete_${data['id']}`);
+
+						editAndDeleteId.on("click", onDeleteMember);
+						showMemberId.on("click", onShowMember);
 						
-						addingHTML(data['id'], data['name'], data['address'], data['mottoes'], data['phone_number']);
 					}
 				});
 			});
 
-			/* $('#deleteMember').on("submit", function(event) {
-				event.preventDeafult();
+			var showMember = $('.showMember');
+			$(showMember.each(function() {
+				var showMemberId = $(`#showMember_${$(this).attr('data-id')}`);
 
-				var form = $('#deleteMember')[0];
-				var data = new FormData(form);
+				showMemberId.on("click", onShowMember);
+			}));
 
+			function onShowMember() {
+				var member_id = $(this).attr('data-id');
 
-			}); */
+				$.ajax({
+					headers:{
+						'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+					},
+					type: "GET",
+					url: "/members/" + member_id, 
+					success: function(data) {
+						var htmlAfter = $(`
+						<h3 name="id">${data[0]['id']}</h3>
+						<h3 name="phone_number">${data[0]['phone_number']}</h3>
+						<h3 name="address">${data[0]['address']}</h3>
+						<h3 name="mottoes">${data[0]['mottoes']}</h3>
+						`);
+
+						var editAndDelete = $(`
+						<form class="editMember" id="editMember_${data[0]['id']}" data-id="${data[0]['id']}" action="#">
+							<button type="button" name="edit">수정</button>
+						</form>
+						<form class="deleteMember" id="deleteMember_${data[0]['id']}" data-id="${data[0]['id']}" action="#">
+							<button type="button" name="delete">삭제</button>
+						</form>
+						`);
+
+						var htmlBefore= $(`
+						<h3>${data[0]['name']}</h3>
+						<img width="100" src="/images/none_image.png" alt="이미지가 없습니다.">
+						`);
+
+						var memberDiv = $(`#member_${data[0]['id']}`);
+						var editAndDeleteDiv = $(`#editAndDelete_${data[0]['id']}`);
+
+						count++;
+
+						if(count % 2 == 1) {
+							memberDiv.append(htmlAfter);
+							editAndDeleteDiv.append(editAndDelete);
+
+							var deleteMember = $(`#deleteMember_${data[0]['id']}`);
+							var editMember = $(`#editMember_${data[0]['id']}`);
+
+							editMember.on("click", onEditMemberCreateInput);
+							deleteMember.on("click", onDeleteMember);
+
+						} else {
+							memberDiv.html(htmlBefore);
+							editAndDeleteDiv.html("");
+						}
+					}
+				});
+
+			}
+
+			function onDeleteMember() {
+				var member_id = $(this).attr('data-id');
+
+				$.ajax({
+					headers:{
+						'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+					},
+					type: "DELETE",
+					url: "/members/" + member_id,
+					success: function(data) {
+						var memberBoxId = $(`#memberbox_${data}`);
+
+						memberBoxId.remove();
+					},
+					error: function(request, status, error){
+						console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+					}
+				});
+
+			}
+
+			function onEditMemberCreateInput() {
+
+				var member_id = $(this).attr('data-id');
+				var editMember = $(`#memberbox_${member_id}`);
+
+				var html = $(`
+				<form class="member-form-edit" id="editMember_${member_id}" data-id="${member_id}" action="#">
+				<label for="name">이름</label>
+				<input type="text" name="name">
+				<br>
+				<label for="phone">전화번호</label>
+				<input type="text" name="phone_number">
+				<br>
+				<label for="address">주소</label>
+				<input type="text" name="address">
+				<br>
+				<label for="mottoes">좌우명</label>
+				<input type="text" name="mottoes">
+				<br>
+				<button id="editSubmit" type="submit">수정완료</button>
+				<button type="button">취소</button>
+				</form>
+				`);
+
+				editMember.html("");
+				editMember.append(html);
+
+				var goEditMember = $('.member-form-edit');
+				goEditMember.bind("submit",function(e){ 
+					e.preventDefault();
+					onEditMember(member_id);
+				});
+
+			}
+
+			function onEditMember(member_id) {
+				var editMember_num_form = $(`#editMember_${member_id}`)[0];
+				console.log('form', editMember_num_form)
+				var data = new FormData(editMember_num_form);
+				data.append('_method','PATCH');
+				console.log('data', data);
+
+				$.ajax({
+					headers:{
+						'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+					},
+					type: "POST",
+					url: "/members/" + member_id,
+					contentType: false,
+					processData: false,
+					data: data,
+					success: function(data) {
+						console.log('data', data);
+						var memberBox = $(`#memberbox_${member_id}`);
+						var html = $(`
+							<form class="showMember" id="showMember_${member_id}" data-id="${member_id}" action="#">
+								<div id="member_${member_id}">
+									<h3>${data['name']}</h3>
+									<img width="100" src="/images/none_image.png" alt="이미지가 없습니다.">
+								</div>
+							</form>
+							<div id="editAndDelete_${member_id}">
+
+							</div>
+						`);
+
+						memberBox.html("");
+						memberBox.append(html);
+
+						var showMember_id = $(`#showMember_${member_id}`);
+						showMember_id.bind("click", onShowMember);
+
+					},
+					error: function(request, status, error){
+						console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+					}
+				});
+			}
+
 
 		});
 	</script>
+
+
+	
 @stop
