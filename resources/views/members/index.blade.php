@@ -237,7 +237,7 @@
             <label for="mottoes">좌우명</label>
             <input type="text" name="mottoes" value="${edit_data[0].mottoes}">
             <br>
-            <input type="file" name="img">
+            <input type="file" name="img" accept="image/x-png,image/gif,image/jpeg">
             <br>
             <button id="editSubmit" type="submit">수정완료</button>
             </form>

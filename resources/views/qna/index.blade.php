@@ -113,6 +113,5 @@
 <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 <script src="{{ URL::asset('js\jquery-3.2.1.min.js') }}"></script>
 <script src="{{ URL::asset('css\styles\bootstrap-4.1.2\bootstrap.min.js') }}"></script>
-<link rel="stylesheet" type="text/css" href="{{ URL::asset('css\styles\bootstrap-4.1.2\bootstrap.min.css') }}">
 <script src="js/question.js"></script>
 @stop
