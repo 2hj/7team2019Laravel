@@ -22,12 +22,8 @@ Route::resource('/members', 'MembersController');
 
 Route::resource('/qna', 'QnAsController');
 
-Route::get('/ajax', 'AjaxController@index')->name('ajax');
-
 /* Social Login */
 Route::get('social/{provider}', [
     'as' => 'social.login',
     'uses' => 'SocialController@execute',
 ]);
-
-Route::post('/createMember', "MembersController@createMember");

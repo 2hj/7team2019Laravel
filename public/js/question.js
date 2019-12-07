@@ -13,7 +13,6 @@ $(document).ready(function(){
   $('#question-form').on('submit', function(e){
     e.preventDefault();
     if( $('#action_button').val() == 'Add' ){
-      $('#questionModal').modal('hide');
       $.ajax({
         url: "/qna",
         method: "POST",
@@ -25,6 +24,9 @@ $(document).ready(function(){
         success: function(data){
           console.log('success');
           console.log(data);
+          $('#title').val('');
+          $('#content').val('');
+          $('#questionModal').modal('hide');
         },
         error: function(request, status, error){
           console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -68,13 +70,14 @@ $(document).ready(function(){
           editBtn.innerHTML = '수정';
           editBtn.setAttribute('id', 'editQuestion');
           editBtn.setAttribute('data-id', result['qid'])
+          // deleteBtn.addEventListener('click', onClickEdit);
           document.getElementById('option_'+result['qid']).appendChild(editBtn);
 
           var deleteBtn = document.createElement('button');
           deleteBtn.innerHTML = '삭제';
           deleteBtn.setAttribute('id', 'deleteQuestion');
           deleteBtn.setAttribute('data-id', result['qid']);
-          deleteBtn.addEventListener('click', onClickEdit);
+          deleteBtn.addEventListener('click', onClickDelete);
           document.getElementById('option_'+result['qid']).appendChild(deleteBtn);
           } else {
           selected = -1;
@@ -85,7 +88,14 @@ $(document).ready(function(){
       }
     });
 
-    function onClickEdit() {
+    // function onClickEdit() {
+    //   var id = $('#EditQuestion').attr('data-id'); 
+    //   $.ajax({
+    //     type: '',
+    //   });
+    // }
+
+    function onClickDelete() {
       var id = $('#deleteQuestion').attr('data-id');
       
       if(confirm('글을 삭제 하시겠습니까?')) {
@@ -93,9 +103,11 @@ $(document).ready(function(){
           type:'delete',
           url: '/qna/'+id,
           success: function(id) {
-              $('li#ques_'+id).remove();
-              $('button#editQuestion').remove();
-              $('button#deleteQuestion').remove();
+              // $('li#ques_'+id).remove();
+              // $('button#editQuestion').remove();
+              // $('button#deleteQuestion').remove();
+              console.log(id);
+              window.location.href = '/qna';
           },
           error: function(request, status, error){
             console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);

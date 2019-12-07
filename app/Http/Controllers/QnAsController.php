@@ -28,7 +28,7 @@ class QnAsController extends Controller
      */
     public function create()
     {
-        //
+        return response();
     }
 
     /**
