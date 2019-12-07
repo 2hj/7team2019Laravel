@@ -27,28 +27,16 @@
 		
 		<div class="page-view">
 			<div class="project">
-				<div class="text">
-					<h1>“All good things are <br> wild &amp; free”</h1>
-					<p>Photo by Andreas Rønningen</p>
-				</div>
+				
 			</div>
 			<div class="project">
-				<div class="text">
-					<h1>“Into the wild”</h1>
-					<p>Photo by John Price</p>
-				</div>
+				
 			</div>
 			<div class="project">
-				<div class="text">
-					<h1>“Is spring coming?”</h1>
-					<p>Photo by Thomas Lefebvre</p>
-				</div>
+				
 			</div>
 			<div class="project">
-				<div class="text">
-					<h1>“Stay curious”</h1>
-					<p>Photo by Maria</p>
-				</div>
+				
 			</div>
 			
 		</div>
