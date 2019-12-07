@@ -123,24 +123,4 @@ class MembersController extends Controller
 
         return response($id);
     }
-
-    function members()
-    {
-        $data = DB::table('members')->get();
-
-        return $data;
-    }
-
-    public function test(Request $request) {
-        return $request->test;
-    }
-
-    public function ajaxtest(Request $request) {
-        return $request->test;
-    }
-
-    public function createMember(Request $request) {
-        // dd($request->testing);
-        return $request;
-    }
 }
