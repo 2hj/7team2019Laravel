@@ -16,7 +16,8 @@ class QnAsController extends Controller
 
     public function index()
     {
-        $questions = \App\Question::with('user')->latest()->paginate(10);
+        // $questions = \App\Question::with('user')->latest()->paginate(10);
+        $questions = \App\Question::latest()->paginate(10);
         
         return view('qna.index', compact('questions'));
     }

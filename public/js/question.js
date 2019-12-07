@@ -15,10 +15,16 @@ $(document).ready(function(){
 
   $('#question-form').on('submit', function(e){
     e.preventDefault();
+
+    // var form = $('#question-form')[0];
+    // console.log(form);
+    // var data = new FormData(form);
+    
     if( $('#action_button').val() == 'Add' ){
       $.ajax({
         url: "/qna",
         method: "POST",
+        // data: data,
         data: new FormData(this),
         contentType: false,
         cache: false,
@@ -40,7 +46,8 @@ $(document).ready(function(){
       console.log(id);
       var form = $('#question-form')[0];
       var data = new FormData(form);
-      
+      data.append('_method', 'patch');
+
       $.ajax({
         type: 'POST',
         url: '/qna/'+id,
@@ -54,6 +61,17 @@ $(document).ready(function(){
           $('#content').val('');
           $('#action_button').val('Add');
           $('#questionModal').modal('hide');
+
+          $.ajax({
+            type: 'get',
+            url: '/qna/',
+            processData: false,
+            contentType: false,
+            success: function(){
+              console.log('인덱스 업데이트');
+            }
+          });
+
         },
         error: function(request, status, error){
           console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -148,9 +166,9 @@ $(document).ready(function(){
           console.log(document.forms);
           var form = document.forms[2];
           console.log(form.elements);
-          form.elements[2]['value'] = data.title;
-          form.elements[3]['value'] = data.content;
-          form.elements[5]['value'] = id
+          form.elements[1]['value'] = data.title;
+          form.elements[2]['value'] = data.content;
+          form.elements[4]['value'] = id
           $('#questionModal').modal('show');
 
         }
