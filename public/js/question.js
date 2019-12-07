@@ -13,6 +13,7 @@ $(document).ready(function(){
     $('#questionModal').modal('show');
   });
 
+
   function reloadAdd(data){
     var li = document.createElement('li');
     li.setAttribute('class', 'openQuestion');
@@ -40,22 +41,9 @@ $(document).ready(function(){
     var parent = document.getElementById('div');
     parent.prepend(optionDiv);
     parent.prepend(li);
+
+    // document.querySelector('.openQuestion').addEventListener('click', onClick(data['id']));
   }
-
-  // function reloadAdd(data){
-  //   $('.idAdd')[0]['id'] = 'ques_'+data['id'];
-  //   $('.addQuestionId').children().remove();
-  //   console.log( $('.addQuestionId').children() );
-  //   $('.addQuestionId').html(data['id']);
-
-  //   $('#addTitle').children().remove();
-  //   $('#addTitle').html(data['title']);
-
-  //   $('#addUserName').children().remove();
-  //   $('#addUserName').html(data['user_id']);
-
-  //   $('.option')[0]['id'] = 'option_'+data['id'];
-  // }
 
   function reloadEdit(data){
     var ques_id = '#ques_'+data['hidden_qid'];
@@ -95,50 +83,7 @@ $(document).ready(function(){
           console.log(data);
           $('#questionModal').modal('hide');
           reloadAdd(data);
-
-          // var parent = document.getElementById('ul');
-          // $('#ul').children().remove();
-
-          // for (var data of datas){
-          //   var li = document.createElement('li');
-          //   li.setAttribute('class', 'openQuestion');
-          //   li.setAttribute('id', 'ques_'+data['id']);
-            
-          //   var p1 = document.createElement('p');
-          //   p1.setAttribute('id', 'questionId');
-          //   p1.setAttribute('style', 'color=#FFFFFF;');
-          //   p1.innerHTML = data['id'];
-
-          //   var p2 = document.createElement('p');
-          //   p2.innerHTML = data['title'];
-            
-          //   var small = document.createElement('small');
-          //   small.setAttribute('style', 'color: #FFFFFF;');
-          //   small.innerHTML = 'by' + data['user_id'];
-
-          //   li.appendChild(p1);
-          //   li.appendChild(p2);
-          //   li.appendChild(small);
-
-          //   var optionDiv = document.createElement('div');
-          //   optionDiv.setAttribute('id', 'option_'+data['id']);
-
-          //   parent.appendChild(li);
-          //   parent.appendChild(optionDiv);
-          // }
-
-
-          // $('.idAdd')[0]['id'] = 'ques_'+data['id'];
-          // $('.addQuestionId').children().remove();
-          // $('.addQuestionId').html(data['id']);
-
-          // $('#addTitle').children().remove();
-          // $('#addTitle').html(data['title']);
-
-          // $('#addUserName').children().remove();
-          // $('#addUserName').html(data['user_id']);
-
-          // $('.option')[0]['id'] = 'option_'+data['id'];
+          // document.querySelector('.openQuestion').addEventListener('click');
         },
         error: function(request, status, error){
           console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -244,11 +189,11 @@ $(document).ready(function(){
               // $('button#deleteQuestion').remove();
               // console.log(id);
 
-              // var ques_id = '#ques_'+id;
-              // $(ques_id).remove();
-              // $('button#editQuestion').remove();
-              // $('button#deleteQuestion').remove();
-              // // console.log( $(ques_id).children() );
+              var ques_id = '#ques_'+id;
+              $(ques_id).remove();
+              $('button#editQuestion').remove();
+              $('button#deleteQuestion').remove();
+              // console.log( $(ques_id).children() );
 
             },
           error: function(request, status, error){
