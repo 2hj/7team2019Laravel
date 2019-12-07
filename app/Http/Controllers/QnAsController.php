@@ -51,15 +51,15 @@ class QnAsController extends Controller
         return response()->json(['error'=> $validator->errors()->all()]);
       }
 
-      $question = array(
+      $questionArray = array(
         'title' => $request->title,
         'content' => $request->content,
         'user_id' => $request->hidden_id,
       );
 
-      Question::create($question);
+      $question = Question::create($questionArray);
 
-      return response()->json(['success'=>'Data Added Successfully!']);
+      return response()->json($question);
 
     }
 
