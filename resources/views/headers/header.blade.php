@@ -46,99 +46,15 @@
 
 <body>
 
-<div class="super_container">
+	<div class="super_container">
 
-	<!-- Header -->
-	<header class="header">
-		<div class="header_content d-flex flex-row align-items-center justify-content-center">
-			<div class="logo"><a href="{{ route('Mainpage') }}">Seven_Team</a></div>
-			<div class="log_reg">
-				<ul class="d-flex flex-row align-items-start justify-content-start">
-                    @guest
-    					<li><a href="{{ route('login') }}">Login</a></li>
-                        <li><a href="{{ route('register') }}">Register</a></li>
-                    @else
-                        <li>{{ Auth::user()->name }}</li>
-                        <li>
-                            <a href="{{ route('logout') }}"
-                                onclick="event.preventDefault();
-                                                document.getElementById('logout-form').submit();">
-                                {{ __('Logout') }}
-                            </a>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                @csrf
-                            </form>
-                        </li>
-                    @endguest
-				</ul>
-			</div>
-			<nav class="main_nav">
-				<ul class="d-flex flex-row align-items-start justify-content-start">
-						<!-- Select Active-->
-						@if( str_replace('http://', 'https://', Request::url()) == 'https://127.0.0.1:8000' )
-						<li class="active"><a href="{{ route('Mainpage') }}">Home</a></li>
-						@else
-							<li>{{ Auth::user()->name }}</li>
-							<li>
-								<a href="{{ route('logout') }}"
-									onclick="event.preventDefault();
-													document.getElementById('logout-form').submit();">
-									{{ __('Logout') }}
-								</a>
-								<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-									@csrf
-								</form>
-							</li>
-						@endguest
-					</ul>
-				</div>
-				<nav class="main_nav">
-					<ul class="d-flex flex-row align-items-start justify-content-start">
-							<!-- Select Active-->
-							@if( str_replace('http://', 'https://', Request::url()) == 'https://127.0.0.1:8000' )
-							<li class="active"><a href="{{ route('Mainpage') }}">Home</a></li>
-							@else
-							<li ><a href="{{ route('Mainpage') }}">Home</a></li>
-							@endif
+		<!-- Header -->
 
-						@if( str_replace('http://', 'https://', Request::url()) == 'https://127.0.0.1:8000/japan' )
-							<li class="active"><a href="{{ route('japan.index')}}">현지 학기제</a></li>
-						@else
-							<li><a href="{{ route('japan.index')}}">현지 학기제</a></li>
-						@endif
+		<header class="header">
 
-						@if( str_replace('http://', 'https://', Request::url()) == 'https://127.0.0.1:8000/members' )
-							<li class="active"><a href="{{ route('members.index') }}">조원 소개</a></li>
-						@else
-							<li><a href="{{ route('members.index') }}">조원 소개</a></li>
-						@endif
-
-						@if( str_replace('http://', 'https://', Request::url()) == 'https://127.0.0.1:8000/qna' )
-							<li class="active"><a href="{{ route('qna.index') }}">QnA</a></li>
-						@else
-							<li><a href="{{ route('qna.index') }}">QnA</a></li>
-						@endif
-				</ul>
-			</nav>
-			<div class="hamburger ml-auto">
-				<div class="d-flex flex-column align-items-end justify-content-between">
-					<div></div>
-					<div></div>
-					<div></div>
-				</div>
-			</div>					
-		</div>
-
-	</header>
-</div>
-
-<!-- Menu -->
-
-<div class="menu">
-		<div>
-			<div class="menu_overlay"></div>
-			<div class="menu_container d-flex flex-column align-items-start justify-content-center">
-				<div class="menu_log_reg">
+			<div class="header_content d-flex flex-row align-items-center justify-content-center">
+				<div class="logo"><a href="{{ route('Mainpage') }}">Seven_Team</a></div>
+				<div class="log_reg">
 					<ul class="d-flex flex-row align-items-start justify-content-start">
 						@guest
 							<li><a href="{{ route('login') }}">Login</a></li>
@@ -158,13 +74,14 @@
 						@endguest
 					</ul>
 				</div>
-				<nav class="menu_nav">
-					<ul class="d-flex flex-column align-items-start justify-content-start">
+				
+				<nav class="main_nav">
+					<ul class="d-flex flex-row align-items-start justify-content-start">
 						<!-- Select Active-->
 						@if( str_replace('http://', 'https://', Request::url()) == 'https://127.0.0.1:8000' )
-						<li class="active"><a href="{{ route('Mainpage') }}">Home</a></li>
+							<li class="active"><a href="{{ route('Mainpage') }}">Home</a></li>
 						@else
-						<li ><a href="{{ route('Mainpage') }}">Home</a></li>
+							<li><a href="{{ route('Mainpage') }}">Home</a></li>
 						@endif
 
 						@if( str_replace('http://', 'https://', Request::url()) == 'https://127.0.0.1:8000/japan' )
@@ -186,8 +103,80 @@
 						@endif
 					</ul>
 				</nav>
+
+				<div class="hamburger ml-auto">
+					<div class="d-flex flex-column align-items-end justify-content-between">
+						<div></div>
+						<div></div>
+						<div></div>
+					</div>
+				</div>
+
 			</div>
-		</div>
+
+		</header>
+
+		<!-- Menu -->
+		<div class="menu">
+			<div>
+				<div class="menu_overlay"></div>
+
+				<div class="menu_container d-flex flex-column align-items-start justify-content-center">
+					<div class="menu_log_reg">
+						<ul class="d-flex flex-row align-items-start justify-content-start">
+							@guest
+								<li><a href="{{ route('login') }}">Login</a></li>
+								<li><a href="{{ route('register') }}">Register</a></li>
+							@else
+								<li>{{ Auth::user()->name }}</li>
+								<li>
+									<a href="{{ route('logout') }}"
+										onclick="event.preventDefault();
+														document.getElementById('logout-form').submit();">
+										{{ __('Logout') }}
+									</a>
+									<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+										@csrf
+									</form>
+								</li>
+							@endguest
+						</ul>
+					</div>
+
+					<nav class="menu_nav">
+						<ul class="d-flex flex-column align-items-start justify-content-start">
+							<!-- Select Active-->
+							@if( str_replace('http://', 'https://', Request::url()) == 'https://127.0.0.1:8000' )
+								<li class="active"><a href="{{ route('Mainpage') }}">Home</a></li>
+							@else
+								<li><a href="{{ route('Mainpage') }}">Home</a></li>
+							@endif
+
+							@if( str_replace('http://', 'https://', Request::url()) == 'https://127.0.0.1:8000/japan' )
+								<li class="active"><a href="{{ route('japan.index')}}">현지 학기제</a></li>
+							@else
+								<li><a href="{{ route('japan.index')}}">현지 학기제</a></li>
+							@endif
+
+							@if( str_replace('http://', 'https://', Request::url()) == 'https://127.0.0.1:8000/members' )
+								<li class="active"><a href="{{ route('members.index') }}">조원 소개</a></li>
+							@else
+								<li><a href="{{ route('members.index') }}">조원 소개</a></li>
+							@endif
+
+							@if( str_replace('http://', 'https://', Request::url()) == 'https://127.0.0.1:8000/qna' )
+								<li class="active"><a href="{{ route('qna.index') }}">QnA</a></li>
+							@else
+								<li><a href="{{ route('qna.index') }}">QnA</a></li>
+							@endif
+						</ul>
+					</nav>
+
+				</div>
+
+			</div>
+		</div>	
+
 	</div>
 
 </body>
