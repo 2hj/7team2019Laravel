@@ -171,3 +171,8 @@
       position:fixed;
       margin:auto;
 }
+
+header div div ul li {
+      color: #FFFFFF;
+      font-size: 14px;
+}
