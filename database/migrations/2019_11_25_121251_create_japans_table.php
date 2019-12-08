@@ -23,12 +23,7 @@ class CreateJapansTable extends Migration
             $table->text('explain');
 
             $table->timestamps();
-
-            
-
         });
-
-    
     }
 
     /**
