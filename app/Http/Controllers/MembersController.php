@@ -105,10 +105,11 @@ class MembersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // if($request->has('img')) {
+        if($request->has('img')) {
             $image = $request->file("img");
             $filename = Str::random(15).filter_var($image->getClientOriginalName(),FILTER_SANITIZE_URL);
             $image->move(public_path('img'),$filename);
+            dd($filename);
 
             \App\Member::where('id', '=', $id)->update([
                 'name'=>$request->name,
@@ -117,19 +118,16 @@ class MembersController extends Controller
                 'mottoes'=>$request->mottoes,
                 'img'=>$filename,
             ]);
-        /* }
+        }
         else {
             \App\Member::where('id', '=', $id)->update([
                 'name'=>$request->name,
                 'address'=>$request->address,
                 'phone_number'=>$request->phone_number,
                 'mottoes'=>$request->mottoes,
-                'img'=>null,
+                
             ]);
-        } */
-
-        
-
+        } 
         return $request;
     }
 
