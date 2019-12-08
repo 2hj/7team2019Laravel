@@ -38,7 +38,7 @@ class JapanController extends Controller
     public function store(Request $request)
     {
         if($request->has('img')) {
-            $image = $request->file("img");
+            $image = $request->file('img');
             $filename = Str::random(15).filter_var($image->getClientOriginalName(),FILTER_SANITIZE_URL);
             $image->move(public_path('img'),$filename);
 
@@ -94,7 +94,7 @@ class JapanController extends Controller
     {
 
         if($request->has('img')) {
-            $image = $request->file("img");
+            $image = $request->file('img');
             $filename = Str::random(15).filter_var($image->getClientOriginalName(),FILTER_SANITIZE_URL);
             $image->move(public_path('img'),$filename);
 
@@ -110,7 +110,9 @@ class JapanController extends Controller
             ]);
         }
 
-        return $request;
+        $respon = \App\User::where('id', '=', $id)->get();
+
+        return $respon;
     }
 
     /**
