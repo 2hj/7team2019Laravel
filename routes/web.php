@@ -20,7 +20,9 @@ Route::resource('/japan', 'JapanController');
 
 Route::resource('/members', 'MembersController');
 
-Route::resource('/qna', 'QnAsController');
+Route::resource('/qna', 'QuestionsController');
+
+Route::resource('qna.answer', 'AnswersController');
 
 /* Social Login */
 Route::get('social/{provider}', [
