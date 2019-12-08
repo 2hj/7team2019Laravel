@@ -87,7 +87,8 @@ $(document).ready(function(){
         // dataType: 'html',
         success: function(data){
           console.log('success');
-          console.log(data);
+          console.log(data[0]);
+          // if(data[0])
           $('#questionModal').modal('hide');
           reloadAdd(data);
           // $('#ul').load('/qna #loadDiv');

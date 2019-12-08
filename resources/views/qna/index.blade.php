@@ -83,13 +83,17 @@
           <div class="form-group {{ $errors->has('title') ? 'has-error' : '' }}">
             <label for="title" class="col-form-label">제목</label>
             <input type="text" class="form-control" id="title" name="title" value="{{ old('title') }}">
-            <!-- {!! $errors->first('title', '<span class="form-error">:message</span>') !!} -->
+            <!-- @include('flash::message') -->
+
+            {!! $errors->first('title', '<span class="form-error">:message</span>') !!}
           </div>
 
           <div class="form-group {{ $errors->has('content') ? 'has-error' : '' }}">
             <label for="content" class="col-form-label">본문</label>
             <textarea class="form-control" name="content" id="content">{{ old('content') }}</textarea>
-            <!-- {!! $errors->first('content', '<span class="form-error">:message</span>') !!} -->
+            <!-- @include('flash::message') -->
+
+            {!! $errors->first('content', '<span class="form-error">:message</span>') !!}
           </div>
           
           <div class="form-group">

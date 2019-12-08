@@ -14,6 +14,10 @@ class QnAsController extends Controller
      * @return \Illuminate\Http\Response
      */
 
+    public function __construct(){
+      $this->middleware('auth', ['except'=>['index', 'show']]);
+    }
+
     public function index()
     {
         // $questions = \App\Question::with('user')->latest()->paginate(10);
@@ -40,21 +44,32 @@ class QnAsController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     /*
+  /*  
     public function store(\App\Http\Requests\QuestionsRequest $request){
       $question = $request->user()->questions()->create($request->all());
 
       if(!$question){
         flash()->error('작성을 실패했읍니다');
-        return back()->withInput();
+        // return back()->with('flash_message', '작성을 실패했습니다.')->withInput();
       }
 
+      // $questionArray = array(
+      //   'title' => $request->title,
+      //   'content' => $request->content,
+      //   'user_id' => $request->hidden_id,
+      // );
+
+      // $question = Question::create($questionArray);
+      // Question::create($questionArray);
+
+      // $questions = Question::get();
       flash()->success('질문을 성공적으로 저장했습니다.');
-      
-      return response()->json([], 204);
+
+      return response()->json($question);
+      // return response()->json([], 204);
     }
     */
-    
+
     public function store(Request $request){
       $rules = array(
         'title'=>'required',
@@ -64,7 +79,9 @@ class QnAsController extends Controller
       $validator = \Validator::make($request->all(), $rules);
 
       if($validator->fails()){
+        // flash()->error('작성을 실패했습니다.');
         return response()->json(['error'=> $validator->errors()->all()]);
+        // return back()->with('flash_message', '글이 저장되지 않았습니다.')->withInput();
       }
 
       $questionArray = array(
@@ -74,11 +91,10 @@ class QnAsController extends Controller
       );
 
       $question = Question::create($questionArray);
-      // Question::create($questionArray);
+      Question::create($questionArray);
+      flash()->success('질문을 성공적으로 저장했습니다.');
 
       // $questions = Question::get();
-
-
 
       return response()->json($question);
 
