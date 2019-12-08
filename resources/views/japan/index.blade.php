@@ -2,6 +2,7 @@
 
 @section('content')
 
+<link rel="stylesheet" type="text/css" href="{{ URL::asset('css/styles/about.css') }}">
 
 <div class="discs">
 	<div class="container">
@@ -145,7 +146,7 @@
 						edit_data = data;
 						var htmlAfter = $(`
 						<h3 name="id">아이디 : ${data[0]['id']}</h3>
-						<img id="japanImage_${data[0]['id']}" width="100" src="/img/${data[0]['img']}" alt="이미지가 등록되어있지 않습니다.">
+						<img id="japanImage_${data[0]['id']}" width="400" src="/img/${data[0]['img']}" alt="이미지가 등록되어있지 않습니다.">
 						<h3 name="explain">주소 : ${data[0]['explain']}</h3>
 						`);
 
