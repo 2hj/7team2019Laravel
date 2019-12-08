@@ -42,7 +42,9 @@ $(document).ready(function(){
     parent.prepend(optionDiv);
     parent.prepend(li);
 
-    // document.querySelector('.openQuestion').addEventListener('click', onClickEvent(data['id']));
+    document.getElementById('ques_'+data['id']).addEventListener('click', function(){
+        onClickEvent(data['id']);
+    });
   }
 
   // 수정 후 리로드
@@ -58,6 +60,7 @@ $(document).ready(function(){
     // 글 클릭 할 때 펼쳐지면서 추가되는 #questionValue가 3번째 칠드런
     $(ques_id).children()[3].innerHTML = data['content'];
   }
+
 
   $('#question-form').on('submit', function(e){
     e.preventDefault();
@@ -84,9 +87,6 @@ $(document).ready(function(){
             reloadAdd(data);
           }
           // document.querySelector('.openQuestion').addEventListener('click');
-        },
-        error: function(request, status, error){
-          console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
         }
       });
     }
@@ -114,9 +114,6 @@ $(document).ready(function(){
           $('#questionModal').modal('hide');
           
           reloadEdit(data);
-        },
-        error: function(request, status, error){
-          console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
         }
       });
     }
@@ -141,11 +138,10 @@ $(document).ready(function(){
       url: '/qna/' + selectOpen,
       data: selectOpen,
       success: function(result){      
-        deleteModule(result['qid']);
+          deleteModule(result['qid']);
           var p = document.createElement('p');
           p.innerHTML = result['content'];
           p.setAttribute('id', 'questionValue');
-          
           if(selected != result['qid']) {
             selected = result['qid'];
             document.getElementById('ques_'+result['qid']).appendChild(p);
@@ -158,11 +154,13 @@ $(document).ready(function(){
             document.getElementById('option_'+result['qid']).appendChild(editBtn);
 
             var showAnswerBtn = document.createElement('button');
-            showAnswerBtn.innerHTML = '답글 보기';
+            showAnswerBtn.innerHTML = '답변';
             showAnswerBtn.setAttribute('id', 'showAnswer');
             showAnswerBtn.setAttribute('data-answer-id', result['qid']);
             showAnswerBtn.addEventListener('click', onClickShowAnswer);
             document.getElementById('option_'+result['qid']).appendChild(showAnswerBtn);
+            console.log(result['qid']);
+
 
             var deleteBtn = document.createElement('button');
             deleteBtn.innerHTML = '삭제';
@@ -174,9 +172,6 @@ $(document).ready(function(){
           } else {
             selected = -1;
           }
-      },
-      error: function(request, status, error){
-        console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
       }
     });
   }
@@ -184,6 +179,7 @@ $(document).ready(function(){
   // 수정 버튼을 누른 경우
   function onClickEdit(){
     var editID = $('#editQuestion').attr('data-edit-id');
+    $('div#answer_'+selectedAnswer).html('');
     $('#action_button').val('Edit');
     
     $.ajax({
@@ -195,7 +191,7 @@ $(document).ready(function(){
         var form = document.forms[2];
         form.elements[1]['value'] = data.title;
         form.elements[2]['value'] = data.content;
-        form.elements[4]['value'] = id
+        form.elements[4]['value'] = data.id;
         $('#questionModal').modal('show');
       }
     });
@@ -204,6 +200,7 @@ $(document).ready(function(){
   // 삭제 버튼을 누른 경우
   function onClickDelete() {
     var deleteId = $('#deleteQuestion').attr('data-delete-id');
+    $('div#answer_'+selectedAnswer).html('');
     
     if(confirm('글을 삭제 하시겠습니까?')) {
       $.ajax({
@@ -212,9 +209,6 @@ $(document).ready(function(){
         success: function(deleteId) {
           $('li#ques_'+deleteId).remove();
           deleteModule(deleteId)
-        },
-        error: function(request, status, error){
-          console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
         }
       });
     }
@@ -265,39 +259,35 @@ $(document).ready(function(){
             selectedAnswer = result['id'];
           }
         } else {
-
           $.ajax({
             type:'get',
             url: '/qna/'+showAns+'/answer/create',
             data: showAns,
             success: function(result) {
+              console.log(result);
+              
               if(selectedAnswer != result) {
+                selectedAnswer = result;
                 var html = $(`
                   <form id="answer-form">
-                  <div class="form-group {{ $errors->has('answer_content') ? 'has-error' : '' }}">
-                    <label for="answer_content" class="col-form-label">본문</label>
-                    <textarea class="form-control" name="answer_content" id="answer_content" cols="10"></textarea>
-                    <input type="submit" name="action_button" id="action_button" class="btn btn-warning" value="Add Ans">
-                  </div>
+                    <div class="answer-group" data-ans-in-id="${selectedAnswer}">
+                      <label for="answer_content" class="col-form-label">본문</label>
+                      <textarea class="form-control" name="answer_content" id="answer_content"></textarea>
+                    </div>
+                    <div class="answer-group">
+                      <input type="submit" name="answer_button" id="answer_button" class="btn btn-warning" value="Add Ans">
+                    </div>
                   </form>
                 `);
-                selectedAnswer = result;
                 $('div#answer_'+selectedAnswer).append(html);
-                // $('div#answer_'+selectedAnswer).html(html);
               } else {
                 $('div#answer_'+selectedAnswer).html('');
                 selectedAnswer = -1;
               }
-            },
-            error: function(request, status, error){
-              console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
             }
           });
 
         }
-      },
-      error: function(request, status, error){
-        console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
       }
     });
   }
@@ -314,9 +304,6 @@ $(document).ready(function(){
           $('p#ans_'+id).remove();
           $('button#ansEditBtn').remove();
           $('button#ansDeleteBtn').remove();
-        },
-        error: function(request, status, error){
-          console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
         }
       });
     }
@@ -331,5 +318,34 @@ $(document).ready(function(){
     $('p#ans_'+id).remove();
     $('button#ansEditBtn').remove();
     $('button#ansDeleteBtn').remove();
+    $('div#answer_'+selectedAnswer).html('');
   }
+
+
+  $('#answer-form').on('submit', function(e){
+    e.preventDefault();
+    console.log('에이작스 전');
+    // 답변 저장
+    if( $('#answer_button').val() == 'Add Ans' ){
+      var aid = $('div#answer-group').attr('data-ans-in-id');
+      console.log(aid);
+
+      $.ajax({
+        url: "/qna/"+ aid + '/answer',
+        method: "POST",
+        data: {
+          aid: aid,
+          answer_content: answer_content,
+        },
+        success: function(data){
+          console.log('success');
+          console.log(data);
+        },
+        error: function(request, status, error){
+          console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+        }
+      });
+    }
+  });
 });
+
