@@ -120,9 +120,9 @@
 
                   
                   var html = $(`
-                     <div class="col-xl-4 col-md-6 memberbox" id="memberbox_{{ $member->id }}">
-                        <div class="disc" id="memberbox_disc_{{ $member->id }}">
-                        <form class="showMember member-form" id="showMember_{{ $member->id }}" data-id="{{ $member->id }}" action="#" enctype="multipart/form-data">
+                     <div class="col-xl-4 col-md-6 memberbox" id="memberbox_${data['id']}">
+                        <div class="disc" id="memberbox_disc_${data['id']}">
+                        <form class="showMember member-form" id="showMember_${data['id']}" data-id="${data['id']}" action="#" enctype="multipart/form-data">
                            <a class="member-form" id="showMember_${data['id']}" data-id="${data['id']}">
                               <div class="disc_image" id="member_img_${data['id']}">   
                                  <img id="memberImage_${data['id']}" width="360" height="360" src="/img/${data['img']}">

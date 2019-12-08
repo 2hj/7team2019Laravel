@@ -2,6 +2,7 @@
 
 @section('content')
 
+<link rel="stylesheet" type="text/css" href="{{ URL::asset('css/styles/about.css') }}">
 
 <div class="discs">
 	<div class="container">

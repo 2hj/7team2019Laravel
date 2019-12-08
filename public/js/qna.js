@@ -195,7 +195,7 @@ $(document).ready(function(){
         var form = document.forms[2];
         form.elements[1]['value'] = data.title;
         form.elements[2]['value'] = data.content;
-        form.elements[4]['value'] = id
+        form.elements[4]['value'] = editID;
         $('#questionModal').modal('show');
       }
     });
