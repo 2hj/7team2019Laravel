@@ -32,21 +32,23 @@
   <hr/>
   <div id="question-list">
     <ul id="ul">
-        <li class="openQuestion idAdd" id="add">
+      <div id="div"></div>
+      
+        <!-- <li class="openQuestion idAdd" id="add">
           <p class="addQuestionId" id="questionId" style="color:#FFFFFF;"></p>
           <p id="addTitle"></p>
           <small id="addUserName" style="color: #FFFFFF;"></small>
         </li>
-        <div class="option" id=""></div>
+        <div class="option" id=""></div> -->
         @forelse($questions as $question)
-          <li class="openQuestion" id="ques_{{$question->id}}">
-            <p id="questionId" style="color: #FFFFFF;">{{ $question->id }}</p>
-            <p> {{ $question->title }} </p>
-            <small style="color: #FFFFFF;"> by {{ $question->user->name }} </small>
-          </li>
-          <div id="option_{{$question->id}}"></div>
+        <li class="openQuestion" id="ques_{{$question->id}}">
+          <p id="questionId" style="color: #FFFFFF;">{{ $question->id }}</p>
+          <p> {{ $question->title }} </p>
+          <small style="color: #FFFFFF;"> by {{ $question->user->name }} </small>
+        </li>
+        <div id="option_{{$question->id}}"></div>
         @empty
-          <p style="color: #FFFFFF;">글이 없습니다</p>
+        <p style="color: #FFFFFF;">글이 없습니다</p>
         @endforelse
     </ul>
   </div>

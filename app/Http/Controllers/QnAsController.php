@@ -17,9 +17,10 @@ class QnAsController extends Controller
     public function index()
     {
         // $questions = \App\Question::with('user')->latest()->paginate(10);
-        $questions = \App\Question::latest()->paginate(10);
-        
-        return view('qna.index', compact('questions'));
+        $questions = Question::latest()->paginate(10);
+        $allQuestions = new Question;
+
+        return view('qna.index', compact('allQuestions','questions'));
     }
 
     /**
@@ -39,6 +40,21 @@ class QnAsController extends Controller
      * @return \Illuminate\Http\Response
      */
 
+     /*
+    public function store(\App\Http\Requests\QuestionsRequest $request){
+      $question = $request->user()->questions()->create($request->all());
+
+      if(!$question){
+        flash()->error('작성을 실패했읍니다');
+        return back()->withInput();
+      }
+
+      flash()->success('질문을 성공적으로 저장했습니다.');
+      
+      return response()->json([], 204);
+    }
+    */
+    
     public function store(Request $request){
       $rules = array(
         'title'=>'required',
@@ -58,11 +74,16 @@ class QnAsController extends Controller
       );
 
       $question = Question::create($questionArray);
+      // Question::create($questionArray);
+
+      // $questions = Question::get();
+
+
 
       return response()->json($question);
 
     }
-
+  
     /**
      * Display the specified resource.
      *
