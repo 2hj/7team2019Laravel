@@ -33,6 +33,7 @@
   <div id="question-list">
     <ul id="ul">
       <div id="div"></div>
+      
         <!-- <li class="openQuestion idAdd" id="add">
           <p class="addQuestionId" id="questionId" style="color:#FFFFFF;"></p>
           <p id="addTitle"></p>
@@ -46,6 +47,7 @@
           <small style="color: #FFFFFF;"> by {{ $question->user->name }} </small>
         </li>
         <div id="option_{{$question->id}}"></div>
+        <div id="answer_{{$question->id}}"></div>
         @empty
         <p style="color: #FFFFFF;">글이 없습니다</p>
         @endforelse
@@ -53,15 +55,21 @@
   </div>
 </div>
 
+<br>
+
 @if($questions->count())
   <div class="text-center">
     {!! $questions->render() !!}
   </div>
 @endif
 
+<br>
+
 <!-- Trigger Modal -->
 <div class="Align_Center">
-    <button type="button" id="createQuestion" name="createQuestion" class="btn btn-success btn-sm" data-toggle="modal" data-target="#questionModal" data-backdrop="false">Create Question</button>
+  {{ $questions->links() }}
+  
+  <button type="button" id="createQuestion" name="createQuestion" class="btn btn-success btn-sm" data-toggle="modal" data-target="#questionModal" data-backdrop="false">Create Question</button>
 </div>
 
 <!-- 질문글 작성 모달창 -->
@@ -82,13 +90,17 @@
           <div class="form-group {{ $errors->has('title') ? 'has-error' : '' }}">
             <label for="title" class="col-form-label">제목</label>
             <input type="text" class="form-control" id="title" name="title" value="{{ old('title') }}">
-            <!-- {!! $errors->first('title', '<span class="form-error">:message</span>') !!} -->
+            <!-- @include('flash::message') -->
+
+            {!! $errors->first('title', '<span class="form-error">:message</span>') !!}
           </div>
 
           <div class="form-group {{ $errors->has('content') ? 'has-error' : '' }}">
             <label for="content" class="col-form-label">본문</label>
             <textarea class="form-control" name="content" id="content">{{ old('content') }}</textarea>
-            <!-- {!! $errors->first('content', '<span class="form-error">:message</span>') !!} -->
+            <!-- @include('flash::message') -->
+
+            {!! $errors->first('content', '<span class="form-error">:message</span>') !!}
           </div>
           
           <div class="form-group">
@@ -114,5 +126,5 @@
 <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 <script src="{{ URL::asset('js\jquery-3.2.1.min.js') }}"></script>
 <script src="{{ URL::asset('css\styles\bootstrap-4.1.2\bootstrap.min.js') }}"></script>
-<script src="js/question.js"></script>
+<script src="js/qna.js"></script>
 @stop

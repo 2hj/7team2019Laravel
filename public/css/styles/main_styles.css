@@ -46,7 +46,7 @@ body
 	font-family: 'Futura', sans-serif;
 	font-size: 14px;
 	font-weight: 400;
-	background: #000000;
+	background-color: #ffebee;
 	color: #FFFFFF;
 }
 div
@@ -1452,4 +1452,8 @@ a.button3:hover{
 ul li {
 	color:#FFFFFF;
 	font-size:14px;
+}
+
+.super_container .header{
+	background-color:#ccb9bc;;
 }
