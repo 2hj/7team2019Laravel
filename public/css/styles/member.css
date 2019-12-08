@@ -1,0 +1,39 @@
+#createMember {
+    text-align: center;
+    margin: 0% 40%;
+}
+
+#addMember {
+    box-sizing: border-box;
+    width: 250px;
+    height: 300px;
+    margin: 20px auto;
+    background-color: #b8b8b8;
+    opacity: 80%;
+    text-align: right;
+    padding: 0.5%;
+
+    color: black;
+}
+
+#addMember input{
+    margin-top: 5%;
+    background: orange;
+      text-decoration: none;
+      -webkit-transition-duration: 0.4s; /* Safari */
+      transition-duration: 0.4s;
+
+      border-radius: 5px;
+}
+
+#addMember #img {
+    width: 90%;
+}
+
+#addMember input:nth-last-child(1){
+    width: 60%;
+}
+
+#addMember input:nth-last-child(1):hover{
+    background: #c77800;
+}
