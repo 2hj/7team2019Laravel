@@ -1,3 +1,10 @@
+// var q_id = null;
+// var question = [];
+// var cnt = '{{ $allQuestions->count() }}';
+// for(var i = cnt ; i < cnt ; i++){
+//   question[i+1] = 0;
+// }
+
 $(document).ready(function(){
   $.ajaxSetup({
     headers: {
@@ -83,15 +90,13 @@ $(document).ready(function(){
           console.log(data);
           $('#questionModal').modal('hide');
           reloadAdd(data);
-          // document.querySelector('.openQuestion').addEventListener('click');
+          // $('#ul').load('/qna #loadDiv');
         },
         error: function(request, status, error){
           console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
         }
       });
     }
-
-
 
     if( $('#action_button').val() == 'Edit' ){
       var id = $('#hidden_qid')[0]['value'];
