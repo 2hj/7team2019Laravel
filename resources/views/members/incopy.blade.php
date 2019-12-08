@@ -14,7 +14,7 @@
             <!-- Disc -->
             @forelse($members as $member)
                <div class="col-xl-4 col-md-6 memberbox" id="memberbox_{{ $member->id }}">
-                  <div class="disc" id="memberbox_disc_{{ $member->id }}">
+                  <div class="disc" id="memberbox_{{ $member->id }}">
                   <form class="showMember member-form" id="showMember_{{ $member->id }}" data-id="{{ $member->id }}" action="#" enctype="multipart/form-data">
                      <a class="member-form" id="showMember_{{ $member->id }}" data-id="{{ $member->id }}">
                         <div class="disc_image" id="member_img_{{ $member->id }}">   
@@ -41,17 +41,21 @@
 			</div>
 		</div>
    </div>
+   
+<!-- 구분 -->
 
-      <form id="createMember" action="#" style="margin-left:82%">
+   
+
+      <form id="createMember" action="#">
          <button type="submit" class="btn btn-warning" id="create">멤버추가</button>
       </form>
-      <form id="addMember" action="#" enctype="multipart/form-data" style="margin-left:80%;margin-top:5%">
+      <form id="addMember" action="#" enctype="multipart/form-data">
       </form>
       
+      
+      
+      
    </div>
-
-</body>
-
    <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
    <script type="text/javascript">
       $(document).ready(function() {
@@ -116,37 +120,26 @@
                data: data,
                success: function(data) {
                   // name, address, mottoes, phone_number
-                  console.log('data', data)
-
-                  
+                  console.log('data img', data['img'])
                   var html = $(`
-                     <div class="col-xl-4 col-md-6 memberbox" id="memberbox_{{ $member->id }}">
-                        <div class="disc" id="memberbox_disc_{{ $member->id }}">
-                        <form class="showMember member-form" id="showMember_{{ $member->id }}" data-id="{{ $member->id }}" action="#" enctype="multipart/form-data">
-                           <a class="member-form" id="showMember_${data['id']}" data-id="${data['id']}">
-                              <div class="disc_image" id="member_img_${data['id']}">   
-                                 <img id="memberImage_${data['id']}" width="360" height="360" src="/img/${data['img']}">
-                              </div>
-                              <div class="disc_container">
-                                 <div>
-                                    <div class="disc_content_6" id="member_${data['id']}">
-                                       <div class="disc_title">${data['name']}</div>
-                                       <div class="disc_subtitle">${data['mottoes']}</div>
-                                    </div>
-                                    <div id="editAndDelete_${data['id']}"></div>
-                                 </div>
-                              </div>
-                           </a>
-                        </form>
+                  <div class='memberbox' id="memberbox_${data['id']}">
+                     <form class="showMember" id="showMember_${data['id']}" data-id="${data['id']}" action="#">
+                        <div id="member_${data['id']}">
+                           <h3>${data['name']}</h3>
+                           <img id="memberImage_${data['img']}" width="100" src="/img/${data['img']}" alt="이미지가 등록되어있지 않습니다.">
                         </div>
+                     </form>
+                     <div id="editAndDelete_${data['id']}">
+
                      </div>
+                  </div>
                   `);
 
-                  var row = $('.row');
+                  var memberArea = $('.memberArea');
                   var addMember = $('#addMember');
                   var empty = $('#empty');
 
-                  row.append(html);
+                  memberArea.append(html);
                   addMember.html("");
                   empty.remove();
                
@@ -183,7 +176,7 @@
                   console.log(edit_data);
 
                   var htmlAfter = $(`
-                  <h3 name="id">아이디 : ${data[0]['name']}</h3>
+                  <h3 name="id">아이디 : ${data[0]['id']}</h3>
                   <h3 name="phone_number">전화번호 : ${data[0]['phone_number']}</h3>
                   <h3 name="address">주소 : ${data[0]['address']}</h3>
                   <h3 name="mottoes">좌우명 : ${data[0]['mottoes']}</h3>
@@ -246,8 +239,6 @@
                type: "DELETE",
                url: "/members/" + member_id,
                success: function(data) {
-                  //data값 - id값만 들어있음
-
                   var memberBoxId = $(`#memberbox_${data}`);
 
                   memberBoxId.remove();
@@ -267,23 +258,23 @@
             var editMember = $(`#memberbox_${member_id}`);
 
             var html = $(`
-               <form class="member-form-edit" id="editMember_${member_id}" data-id="${member_id}" action="#" enctype="multipart/form-data">
-               <label for="name">이름</label>
-               <input type="text" name="name" value="${edit_data[0].name}">
-               <br>
-               <label for="phone">전화번호</label>
-               <input type="text" name="phone_number" value="${edit_data[0].phone_number}">
-               <br>
-               <label for="address">주소</label>
-               <input type="text" name="address" value="${edit_data[0].address}">
-               <br>
-               <label for="mottoes">좌우명</label>
-               <input type="text" name="mottoes" value="${edit_data[0].mottoes}">
-               <br>
-               <input type="file" name="img" accept="image/x-png,image/gif,image/jpeg">
-               <br>
-               <button id="editSubmit" type="submit">수정완료</button>
-               </form>
+            <form class="member-form-edit" id="editMember_${member_id}" data-id="${member_id}" action="#" enctype="multipart/form-data">
+            <label for="name">이름</label>
+            <input type="text" name="name" value="${edit_data[0].name}">
+            <br>
+            <label for="phone">전화번호</label>
+            <input type="text" name="phone_number" value="${edit_data[0].phone_number}">
+            <br>
+            <label for="address">주소</label>
+            <input type="text" name="address" value="${edit_data[0].address}">
+            <br>
+            <label for="mottoes">좌우명</label>
+            <input type="text" name="mottoes" value="${edit_data[0].mottoes}">
+            <br>
+            <input type="file" name="img" accept="image/x-png,image/gif,image/jpeg">
+            <br>
+            <button id="editSubmit" type="submit">수정완료</button>
+            </form>
             `);
 
             editMember.html("");
@@ -314,11 +305,11 @@
                data: data,
                success: function(data) {
                   console.log('data',data);
-                  var memberBox = $(`#showMember_${member_id}`);
+                  var memberBox = $(`#memberbox_${member_id}`);
                   var html = $(`
                   <a class="member-form" id="showMember_${member_id}" data-id="${member_id}">
                      <div class="disc_image" id="member_img_${member_id}">   
-                        <img id="memberImage_${member_id}" width="360" height="360" src="/img/${data.img}">
+                        <img id="memberImage_${member_id}" width="360" height="360" src="${data.img}">
                      </div>
                      <div class="disc_container">
                         <div>
