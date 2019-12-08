@@ -21,9 +21,9 @@ class AnswersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id)
     {
-        return response();
+        return response($id);
     }
 
     /**

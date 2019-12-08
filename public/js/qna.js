@@ -80,7 +80,9 @@ $(document).ready(function(){
           console.log('success');
           console.log(data);
           $('#questionModal').modal('hide');
-          reloadAdd(data);
+          if(data['content']) {
+            reloadAdd(data);
+          }
           // document.querySelector('.openQuestion').addEventListener('click');
         },
         error: function(request, status, error){
@@ -233,10 +235,12 @@ $(document).ready(function(){
 
         if(data[0] != null) {
           console.log(result['id']);
+
           if(result['id'] == selectedAnswer) { 
             $('#ans_'+result['id']).remove();
             $('button#ansEditBtn').remove();
             $('button#ansDeleteBtn').remove();
+            
             selectedAnswer = -1;
           } else {
             var p = document.createElement('p');
@@ -260,6 +264,36 @@ $(document).ready(function(){
 
             selectedAnswer = result['id'];
           }
+        } else {
+
+          $.ajax({
+            type:'get',
+            url: '/qna/'+showAns+'/answer/create',
+            data: showAns,
+            success: function(result) {
+              if(selectedAnswer != result) {
+                var html = $(`
+                  <form id="answer-form">
+                  <div class="form-group {{ $errors->has('answer_content') ? 'has-error' : '' }}">
+                    <label for="answer_content" class="col-form-label">본문</label>
+                    <textarea class="form-control" name="answer_content" id="answer_content" cols="10"></textarea>
+                    <input type="submit" name="action_button" id="action_button" class="btn btn-warning" value="Add Ans">
+                  </div>
+                  </form>
+                `);
+                selectedAnswer = result;
+                $('div#answer_'+selectedAnswer).append(html);
+                // $('div#answer_'+selectedAnswer).html(html);
+              } else {
+                $('div#answer_'+selectedAnswer).html('');
+                selectedAnswer = -1;
+              }
+            },
+            error: function(request, status, error){
+              console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+            }
+          });
+
         }
       },
       error: function(request, status, error){
