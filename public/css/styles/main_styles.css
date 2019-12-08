@@ -46,7 +46,13 @@ body
 	font-family: 'Futura', sans-serif;
 	font-size: 14px;
 	font-weight: 400;
-	background-color: #ffebee;
+
+	background: url("/img/BG_000.jpg");
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-attachment: fixed;
+	-webkit-background-size: 100%;
+
 	color: #FFFFFF;
 }
 div
