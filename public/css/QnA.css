@@ -187,6 +187,10 @@ label,h5 {
       color: #db5246;
 }
 
+#question-list {
+      margin: 5% 10%;
+}
+
 #question-list ul {
       background-color: #000e2e;
 }

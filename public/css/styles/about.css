@@ -50,7 +50,6 @@ body
 	font-family: 'Futura', sans-serif;
 	font-size: 14px;
 	font-weight: 400;
-	background: #000000;
 	color: #FFFFFF;
 }
 div
@@ -645,7 +644,6 @@ section
 
 .discs
 {
-	background: #000000;
 	padding-top: 105px;
 	padding-bottom: 78px;
 }
@@ -1237,3 +1235,4 @@ section
 	color: #6d6d6d;
 	line-height: 67px;
 }
+

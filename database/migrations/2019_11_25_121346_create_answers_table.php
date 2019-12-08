@@ -23,7 +23,7 @@ class CreateAnswersTable extends Migration
             // $table->string('answer_title', 255);
             $table->text('answer_content');
             
-            $table->timestamps();            
+            $table->timestamps();
 
         });
     }
