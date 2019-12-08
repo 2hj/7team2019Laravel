@@ -20,6 +20,13 @@ class UsersTableSeeder extends Seeder
         ]);
 
         // 일반사용자 시더
+        App\User::create([
+            'name' => 'test',
+            'email' => 'test@test.com',
+            'password' => bcrypt('testtest'),
+            'admin'=>0,
+        ]);
+
         factory(App\User::class)->create(['email'=>'user@php.com']);
 
     }

@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Question;
 // use DataTables;
 
-class QnAsController extends Controller
+class QuestionsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -62,8 +62,6 @@ class QnAsController extends Controller
 
       // $questions = Question::get();
 
-
-
       return response()->json($question);
 
     }
@@ -80,7 +78,7 @@ class QnAsController extends Controller
         
       return response([
           'qid' => $search[0]['id'],
-          'value' => $search[0]['content'],
+          'content' => $search[0]['content'],
       ]);
     }
 
