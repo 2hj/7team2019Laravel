@@ -34,7 +34,24 @@ class AnswersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $rules = [
+            'answer_content'=>'required',
+        ];
+    
+          $validator = \Validator::make($request->all(), $rules);
+    
+          if($validator->fails()){
+            return response()->json(['error'=> $validator->errors()->all()]);
+          }
+    
+          $answerArray = array(
+            'target_id'=>$request->aid,
+            'answer_content' => $request->content,
+          );
+    
+          $question =\App\Answer::create($answerArray);
+    
+          return response($answer);
     }
 
     /**

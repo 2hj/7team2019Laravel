@@ -4,6 +4,7 @@
 <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/styles/about.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/japan.css') }}">
 
+
 <div class="discs">
    <div class="container">
       <div class="japanArea">
