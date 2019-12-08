@@ -190,10 +190,10 @@
                   `);
 
                   var editAndDelete = $(`
-                  <form class="editMember" id="editMember_${data[0]['id']}" data-id="${data[0]['id']}" action="#">
+                  <form class="editMember" id="editMember_${data[0]['id']}" data-id="${data[0]['id']}" action="#" enctype="multipart/form-data">
                      <button type="button" name="edit">수정</button>
                   </form>
-                  <form class="deleteMember" id="deleteMember_${data[0]['id']}" data-id="${data[0]['id']}" action="#">
+                  <form class="deleteMember" id="deleteMember_${data[0]['id']}" data-id="${data[0]['id']}" action="#" enctype="multipart/form-data">
                      <button type="button" name="delete">삭제</button>
                   </form>
                   `);
@@ -301,6 +301,8 @@
 
             var editMember_num_form = $(`#editMember_${member_id}`)[0];
             var data = new FormData(editMember_num_form);
+            
+
             data.append('_method','PATCH');
 
             $.ajax({
@@ -313,18 +315,19 @@
                processData: false,
                data: data,
                success: function(data) {
-                  console.log('data',data);
+
+                  
                   var memberBox = $(`#showMember_${member_id}`);
                   var html = $(`
                   <a class="member-form" id="showMember_${member_id}" data-id="${member_id}">
                      <div class="disc_image" id="member_img_${member_id}">   
-                        <img id="memberImage_${member_id}" width="360" height="360" src="/img/${data.img}">
+                        <img id="memberImage_${member_id}" width="360" height="360" src="/img/${data[img]}">
                      </div>
                      <div class="disc_container">
                         <div>
                            <div class="disc_content_6" id="member_${member_id}">
-                              <div class="disc_title">${data.name}</div>
-                              <div class="disc_subtitle">${data.mottoes}</div>
+                              <div class="disc_title">${data[0]['name']}</div>
+                              <div class="disc_subtitle">${data[0]['mottoes']}</div>
                            </div>
                            <div id="editAndDelete_${member_id}"></div>
                         </div>
@@ -341,19 +344,10 @@
                   var showMember_id = $(`#showMember_${member_id}`);
                   showMember_id.bind("click", onShowMember);
 
-               },
-               error: function(request, status, error){
-                  console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
                }
             });
          }
 
       });
    </script>
-
-
-
-
-
-   
 @stop

@@ -1,12 +1,14 @@
 @extends ('headers.header')
 
 @section('content')
+<link rel="stylesheet" type="text/css" href="{{ URL::asset('css/styles/about.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ URL::asset('css/styles/about_responsive.css') }}">
 
 <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/styles/about.css') }}">
 
 <div class="discs">
 	<div class="container">
-		<div class="JapanArea">
+		<div class="row discs_row">
 			@forelse($japans as $japan)
 				<div class="japanbox" id="japanbox_{{ $japan->id }}">
 					<form class="showJapan japan-form" id="showJapan_{{ $japan->id }}" data-id="{{ $japan->id }}" action="#" enctype="multipart/form-data">
@@ -106,11 +108,11 @@
 						</div>
 						`);
 
-						var japanArea = $('.JapanArea');
+						var row = $('.row');
 						var addJapan = $('#addJapan');
 						var empty = $('#empty');
 						empty.remove();
-						japanArea.append(html);
+						row.append(html);
 						addJapan.html("");
 						
 					

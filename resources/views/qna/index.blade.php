@@ -67,7 +67,9 @@
 
 <!-- Trigger Modal -->
 <div class="Align_Center">
-    <button type="button" id="createQuestion" name="createQuestion" class="btn btn-success btn-sm" data-toggle="modal" data-target="#questionModal" data-backdrop="false">Create Question</button>
+  {{ $questions->links() }}
+  
+  <button type="button" id="createQuestion" name="createQuestion" class="btn btn-success btn-sm" data-toggle="modal" data-target="#questionModal" data-backdrop="false">Create Question</button>
 </div>
 
 <!-- 질문글 작성 모달창 -->
