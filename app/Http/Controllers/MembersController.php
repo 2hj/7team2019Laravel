@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Vaildator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\MembersRequest;
 use App\Member;
 use Datatables;
@@ -19,8 +20,18 @@ class MembersController extends Controller
     public function index()
     {
         $members = \App\Member::get();
+      
+        if(Auth::check()) {
+            $user = Auth::user();
+
+            $admin = $user->admin;
+
+            return view('members.index', compact('members', 'admin'));
+        }
+        else {
+            return view('members.index', compact('members'));            
+        }
         
-        return view('members.index', compact('members'));
     }
 
     /**
@@ -82,7 +93,17 @@ class MembersController extends Controller
     {
         $member = \App\Member::where('id', '=', $id)->get();
 
-        return $member;
+        if(Auth::check()) {
+            $user = Auth::user();
+
+            $admin = $user->admin;
+
+            return compact('member', 'admin');
+        }
+        else {
+            $admin = 0;
+            return compact('member', 'admin');
+        }
     }
 
     /**
@@ -105,32 +126,57 @@ class MembersController extends Controller
      */
     public function update(Request $request, $id)
     {
-      if($request->has('img')) {
-        $image = $request->file("img");
-        $filename = Str::random(15).filter_var($image->getClientOriginalName(),FILTER_SANITIZE_URL);
-        $image->move(public_path('img'),$filename);
 
-        $update_member = \App\Member::where('id', '=', $id)->update([
-            'name'=>$request->name,
-            'address'=>$request->address,
-            'phone_number'=>$request->phone_number,
-            'mottoes'=>$request->mottoes,
-            'img'=>$filename,
-        ]);
-      }
-      else {
-          $update_member = \App\Member::where('id', '=', $id)->update([
-              'name'=>$request->name,
-              'address'=>$request->address,
-              'phone_number'=>$request->phone_number,
-              'mottoes'=>$request->mottoes,
-              'img'=>$request->img,
-          ]);
-      } 
+      // if($request->has('img')) {
+      //   $image = $request->file("img");
+      //   $filename = Str::random(15).filter_var($image->getClientOriginalName(),FILTER_SANITIZE_URL);
+      //   $image->move(public_path('img'),$filename);
 
-      $member = $update_member::get();
+      //   $update_member = \App\Member::where('id', '=', $id)->update([
+      //       'name'=>$request->name,
+      //       'address'=>$request->address,
+      //       'phone_number'=>$request->phone_number,
+      //       'mottoes'=>$request->mottoes,
+      //       'img'=>$filename,
+      //   ]);
+      // }
+      // else {
+      //     $update_member = \App\Member::where('id', '=', $id)->update([
+      //         'name'=>$request->name,
+      //         'address'=>$request->address,
+      //         'phone_number'=>$request->phone_number,
+      //         'mottoes'=>$request->mottoes,
+      //         'img'=>$request->img,
+      //     ]);
+      // } 
 
-      return $member;
+      // $member = $update_member::get();
+
+      // return $member;
+
+        if($request->has('img')) {
+            $image = $request->file("img");
+            $filename = Str::random(15).filter_var($image->getClientOriginalName(),FILTER_SANITIZE_URL);
+            $image->move(public_path('img'),$filename);
+
+            \App\Member::where('id', '=', $id)->update([
+                'name'=>$request->name,
+                'address'=>$request->address,
+                'phone_number'=>$request->phone_number,
+                'mottoes'=>$request->mottoes,
+                'img'=>$filename,
+            ]);
+        }
+        else {
+            \App\Member::where('id', '=', $id)->update([
+                'name'=>$request->name,
+                'address'=>$request->address,
+                'phone_number'=>$request->phone_number,
+                'mottoes'=>$request->mottoes,
+                'img'=>$request->img,
+            ]);
+        } 
+        return $request;
     }
 
     /**
