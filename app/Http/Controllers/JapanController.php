@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 
 class JapanController extends Controller
 {
@@ -15,8 +16,17 @@ class JapanController extends Controller
     public function index()
     {
         $japans = \App\Japan::get();
-         
-        return view('japan.index', compact('japans'));
+
+        if(Auth::check()) {
+            $user = Auth::user();
+
+            $admin = $user->admin;
+
+            return view('japan.index', compact('japans', 'admin'));
+        }
+        else {
+            return view('japan.index', compact('japans'));            
+        }
     }
 
     /**
@@ -69,7 +79,17 @@ class JapanController extends Controller
     {
         $japan = \App\Japan::where('id', '=', $id)->get();
 
-        return $japan;
+        if(Auth::check()) {
+            $user = Auth::user();
+
+            $admin = $user->admin;
+
+            return compact('japan', 'admin');
+        }
+        else {
+            $admin = 0;
+            return compact('japan', 'admin');
+        }
     }
 
     /**

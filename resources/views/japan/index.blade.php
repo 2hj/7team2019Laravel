@@ -23,13 +23,14 @@
             <p id="empty">등록 된 자료가 없습니다.</p>
          @endforelse
       </div>
+      @if( isset($admin) && $admin == true )
+         <form id="createJapan" action="#">
+            <button type="submit" class="btn btn-warning" id="create">자료추가</button>
+         </form>
+         <form id="addJapan" action="#" enctype="multipart/form-data">
 
-      <form id="createJapan" action="#">
-         <button type="submit" class="btn btn-warning" id="create">자료추가</button>
-      </form>
-      <form id="addJapan" action="#" enctype="multipart/form-data">
-
-      </form>
+         </form>
+      @endif
 
    </div>
 </div>
@@ -38,7 +39,7 @@
    <script type="text/javascript">
       $(document).ready(function() {
 
-         var count = 0;
+         var create_count = 0;
 
          $('#createJapan').on("submit", function(event) {
             event.preventDefault();
@@ -63,8 +64,8 @@
                   `);
 
                   var addJapan = $('#addJapan');
-                  count++;
-                  if(count % 2 == 1) {
+                  create_count++;
+                  if(create_count % 2 == 1) {
                      addJapan.append(html);
                   } else {
                      addJapan.html("");
@@ -133,8 +134,11 @@
             showJapanId.bind("click", onShowJapan);
          }));
 
+         var show_count = 0;
+
          function onShowJapan() {
             var japan_id = $(this).attr('data-id');
+            console.log('japan_id', japan_id);
 
             $.ajax({
                headers:{
@@ -143,39 +147,43 @@
                type: "GET",
                url: "/japan/" + japan_id, 
                success: function(data) {
-                  console.log('data', data[0]);
+                  console.log('data', data);
                   edit_data = data;
+                  japan = data.japan;
+
                   var htmlAfter = $(`
                   <hr>
-                  <img id="japanImage_${data[0]['id']}" width="400" src="/img/${data[0]['img']}" alt="이미지가 등록되어있지 않습니다.">
-                  <h3 name="explain">설명 : ${data[0]['explain']}</h3>
+                  <img id="japanImage_${japan[0]['id']}" width="400" src="/img/${japan[0]['img']}" alt="이미지가 등록되어있지 않습니다.">
+                  <h3 name="explain">설명 : ${japan[0]['explain']}</h3>
                   `);
 
                   var editAndDelete = $(`
-                  <form class="editJapan" id="editJapan_${data[0]['id']}" data-id="${data[0]['id']}" action="#">
-                     <button class="btn btn-warning" type="button" name="edit">수정</button>
-                  </form>
-                  <form class="deleteJapan" id="deleteJapan_${data[0]['id']}" data-id="${data[0]['id']}" action="#">
-                     <button class="btn btn-warning" type="button" name="delete">삭제</button>
-                  </form>
+                  @if( isset($admin) && $admin == true)
+                     <form class="editJapan" id="editJapan_${japan[0]['id']}" data-id="${japan[0]['id']}" action="#">
+                        <button class="btn btn-warning" type="button" name="edit">수정</button>
+                     </form>
+                     <form class="deleteJapan" id="deleteJapan_${japan[0]['id']}" data-id="${japan[0]['id']}" action="#">
+                        <button class="btn btn-warning" type="button" name="delete">삭제</button>
+                     </form>
+                  @endif
                   `);
 
                   var htmlBefore= $(`
-                  <h3 class="placebar">${data[0]['place']}</h3>
+                  <h3 class="placebar">${japan[0]['place']}</h3>
                   `);
 
-                  var japanDiv = $(`#japan_${data[0]['id']}`);
-                  var editAndDeleteDiv = $(`#editAndDelete_${data[0]['id']}`);
+                  var japanDiv = $(`#japan_${japan[0]['id']}`);
+                  var editAndDeleteDiv = $(`#editAndDelete_${japan[0]['id']}`);
                   
 
-                  count++;
+                  show_count++;
 
-                  if(count % 2 == 1) {
+                  if(show_count % 2 == 1) {
                      japanDiv.append(htmlAfter);
                      editAndDeleteDiv.append(editAndDelete);
 
-                     var deleteJapan = $(`#deleteJapan_${data[0]['id']}`);
-                     var editJapan = $(`#editJapan_${data[0]['id']}`);
+                     var deleteJapan = $(`#deleteJapan_${japan[0]['id']}`);
+                     var editJapan = $(`#editJapan_${japan[0]['id']}`);
 
                      editJapan.on("click", onEditJapanCreateInput);
                      deleteJapan.on("click", onDeleteJapan);
@@ -202,6 +210,7 @@
                   var japanBoxId = $(`#japanbox_${data}`);
 
                   japanBoxId.remove();
+                  show_count = 0;
                },
                error: function(request, status, error){
                   console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -215,13 +224,15 @@
             var japan_id = $(this).attr('data-id');
             var editJapan = $(`#japanbox_${japan_id}`);
 
+            console.log('edit_data', edit_data.japan[0].place);
+
             var html = $(`
             <form class="japan-form-edit" id="editJapan_${japan_id}" data-id="${japan_id}" action="#" enctype="multipart/form-data">
             <label for="place">장소</label>
-            <input type="text" name="place" value="${edit_data[0].place}">
+            <input type="text" name="place" value="${edit_data.japan[0].place}">
             <br>
             <label for="explain">설명</label>
-            <input type="text" name="explain" value="${edit_data[0].explain}">
+            <input type="text" name="explain" value="${edit_data.japan[0].explain}">
             <br>
             <input type="file" name="img">
             <br>
@@ -272,7 +283,7 @@
                   japanBox.append(html);
 
                   var japanImage = $(`#japanImage_${japan_id}`);
-                  japanImage.attr("src", `/img/${data['img']}`)
+                  japanImage.attr("src", `/img/${data['img']}`);
 
                   var showJapan_id = $(`#showJapan_${japan_id}`);
                   showJapan_id.bind("click", onShowJapan);
