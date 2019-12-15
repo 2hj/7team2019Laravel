@@ -23,7 +23,7 @@ class AnswersController extends Controller
      */
     public function create($id)
     {
-        return response($id);
+        return $id;
     }
 
     /**
@@ -35,7 +35,7 @@ class AnswersController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'answer_content'=>'required',
+            'content'=>'required',
         ];
     
           $validator = \Validator::make($request->all(), $rules);
@@ -45,11 +45,11 @@ class AnswersController extends Controller
           }
     
           $answerArray = array(
-            'target_id'=>$request->aid,
+            'target_id'=>$request->id,
             'answer_content' => $request->content,
           );
     
-          $question =\App\Answer::create($answerArray);
+          $answer =\App\Answer::create($answerArray);
     
           return response($answer);
     }
@@ -79,7 +79,9 @@ class AnswersController extends Controller
      */
     public function edit($id)
     {
-        //
+        $answer = \App\Answer::where('target_id', '=', $id)->get();
+
+        return response($answer[0]);
     }
 
     /**
@@ -91,7 +93,11 @@ class AnswersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $answer = \App\Answer::where('target_id', '=', $id)->update([
+            'answer_content'=>$request->content,
+          ]);
+    
+          return $request;
     }
 
     /**
@@ -102,7 +108,7 @@ class AnswersController extends Controller
      */
     public function destroy($id)
     {
-        \App\Answer::find($id)->delete();
+        \App\Answer::where('target_id', '=', $id)->delete();
 
         return response($id);
     }

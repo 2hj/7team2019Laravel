@@ -197,5 +197,20 @@ label,h5 {
 
 #question-list ul  li {
       background-color: #1565c0;
-      margin-bottom: 5%;
+}
+div {
+      margin: 5px;
+}
+
+button {
+      margin-left: 10px;
+      margin-right: 10px;
+}
+
+.pagination {
+      justify-content: center; 
+}
+
+#createQuestion {
+      margin: 30px;
 }
