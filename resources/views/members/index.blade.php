@@ -35,7 +35,7 @@
                </div>
             @empty
             <p id="empty">조원이 등록되지 않았습니다.</p>
-             @endforelse
+            @endforelse
 
 
 			</div>
@@ -58,6 +58,9 @@
 
          var count = 0;
 
+
+
+         /////멤버 추가////////
          $('#createMember').on("submit", function(event) {
             event.preventDefault();
 
@@ -98,6 +101,8 @@
             });
          });
 
+
+         ///////멤버 저장///////
          $('#addMember').on("submit", function(event) {
             event.preventDefault();
 
@@ -142,11 +147,11 @@
                      </div>
                   `);
 
-                  var row = $('.row');
+                  
                   var addMember = $('#addMember');
                   var empty = $('#empty');
 
-                  row.append(html);
+                  
                   addMember.html("");
                   empty.remove();
                
@@ -160,6 +165,8 @@
             });
          });
          
+
+
          var edit_data = {};
          var showMember = $('.showMember');
          $(showMember.each(function() {
@@ -168,6 +175,9 @@
             showMemberId.on("click", onShowMember);
          }));
 
+
+
+         /////클릭 후 쇼//////
          function onShowMember() {
             var member_id = $(this).attr('data-id');
 
@@ -236,6 +246,9 @@
 
          }
 
+
+
+         ///////////삭제//////////
          function onDeleteMember() {
             var member_id = $(this).attr('data-id');
 
@@ -261,6 +274,10 @@
 
          }
 
+
+
+
+         //////멤버 수정///////
          function onEditMemberCreateInput() {
 
             var member_id = $(this).attr('data-id');
@@ -297,6 +314,10 @@
 
          }
 
+
+
+
+         //////
          function onEditMember(member_id) {
 
             var editMember_num_form = $(`#editMember_${member_id}`)[0];
@@ -321,7 +342,7 @@
                   var html = $(`
                   <a class="member-form" id="showMember_${member_id}" data-id="${member_id}">
                      <div class="disc_image" id="member_img_${member_id}">   
-                        <img id="memberImage_${member_id}" width="360" height="360" src="/img/${data[img]}">
+                        <img id="memberImage_${member_id}" width="360" height="360" src="/img/${data['img']}">
                      </div>
                      <div class="disc_container">
                         <div>
@@ -339,7 +360,7 @@
                   memberBox.append(html);
 
                   var memberImage = $(`#memberImage_${member_id}`);
-                  memberImage.attr("src", `/img/${data['img']}`)
+                  memberImage.attr("src", `/img/${data['img']}`);
 
                   var showMember_id = $(`#showMember_${member_id}`);
                   showMember_id.bind("click", onShowMember);

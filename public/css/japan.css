@@ -1,0 +1,30 @@
+* {
+    text-align: left;
+}
+
+.japanbox {
+    width: 1200px;
+    background-color: gray;
+    border: 2px solid white;
+}
+
+.japanform {
+    width: 200px;
+    height: 250px;
+}
+
+.btn {
+    display: inline-block;
+}
+
+#createJapan {
+    display:inline-block;
+    float: right;
+}
+
+.placebar {
+    background-color: rgb(134, 134, 35);
+    color:white;
+    font-weight: 800;
+    text-align: center;
+}
