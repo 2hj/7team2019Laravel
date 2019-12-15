@@ -4,7 +4,7 @@
 
 .japanbox {
     width: 1200px;
-    background-color: gray;
+    background-color: #111111;
     border: 2px solid white;
 }
 
@@ -23,8 +23,18 @@
 }
 
 .placebar {
-    background-color: rgb(134, 134, 35);
+
+    background-color: #1565c0;
     color:white;
     font-weight: 800;
     text-align: center;
+}
+
+.container {
+    opacity: 80%;
+}
+
+.japanbox {
+    margin-top: 5%;
+
 }

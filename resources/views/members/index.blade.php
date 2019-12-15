@@ -3,14 +3,15 @@
 @section('content')
 <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/styles/about.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/styles/about_responsive.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ URL::asset('css/styles/member.css') }}">
 
 
 <!-- Discs -->
 
    <div class="discs">
-		<div class="container">
-			<div class="row discs_row">
-				
+      <div class="container">
+         <div class="row discs_row">
+            
             <!-- Disc -->
             @forelse($members as $member)
                <div class="col-xl-4 col-md-6 memberbox" id="memberbox_{{ $member->id }}">
@@ -18,7 +19,7 @@
                   <form class="showMember member-form" id="showMember_{{ $member->id }}" data-id="{{ $member->id }}" action="#" enctype="multipart/form-data">
                      <a class="member-form" id="showMember_{{ $member->id }}" data-id="{{ $member->id }}">
                         <div class="disc_image" id="member_img_{{ $member->id }}">   
-                           <img id="memberImage_{{ $member->id }}" width="360" height="360" src="/img/{{ $member->img }}">
+                           <img id="memberImage_{{ $member->id }}" width="560" height="360" src="/img/{{ $member->img }}">
                         </div>
                         <div class="disc_container">
                            <div>
@@ -38,21 +39,21 @@
             @endforelse
 
 
-			</div>
-		</div>
+         </div>
+      </div>
    </div>
 
-      <form id="createMember" action="#" style="margin-left:82%">
+      <form id="createMember" action="#" >
          <button type="submit" class="btn btn-warning" id="create">멤버추가</button>
       </form>
-      <form id="addMember" action="#" enctype="multipart/form-data" style="margin-left:80%;margin-top:5%">
+      <form id="addMember" action="#" enctype="multipart/form-data" >
       </form>
       
    </div>
 
 </body>
 
-   <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+
    <script type="text/javascript">
       $(document).ready(function() {
 
@@ -196,7 +197,7 @@
                   <h3 name="id">아이디 : ${data[0]['name']}</h3>
                   <h3 name="phone_number">전화번호 : ${data[0]['phone_number']}</h3>
                   <h3 name="address">주소 : ${data[0]['address']}</h3>
-                  <h3 name="mottoes">좌우명 : ${data[0]['mottoes']}</h3>
+                  
                   `);
 
                   var editAndDelete = $(`
@@ -214,7 +215,7 @@
                   `);
 
                   var imgFile= $(`
-                     <img id="memberImage_${data[0]['id']}" width="360" height="360" src="/img/${data[0]['img']}">
+                     <img id="memberImage_${data[0]['id']}" width="560" height="360" src="/img/${data[0]['img']}">
                   `);
 
                   var member_img_Div = $(`#member_img_${data[0]['id']}`);
