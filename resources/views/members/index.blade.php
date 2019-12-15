@@ -155,7 +155,7 @@
                   
                   addMember.html("");
                   empty.remove();
-               
+                  var row=$('.row');
                   var showMemberId = $(`#showMember_${data['id']}`);
                   var editAndDeleteId = $(`#editAndDelete_${data['id']}`);
 
