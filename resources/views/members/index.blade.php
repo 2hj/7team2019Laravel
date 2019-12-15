@@ -3,14 +3,15 @@
 @section('content')
 <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/styles/about.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/styles/about_responsive.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ URL::asset('css/styles/member.css') }}">
 
 
 <!-- Discs -->
 
    <div class="discs">
-		<div class="container">
-			<div class="row discs_row">
-				
+      <div class="container">
+         <div class="row discs_row">
+            
             <!-- Disc -->
             @forelse($members as $member)
                <div class="col-xl-4 col-md-6 memberbox" id="memberbox_{{ $member->id }}">
@@ -38,21 +39,21 @@
              @endforelse
 
 
-			</div>
-		</div>
+         </div>
+      </div>
    </div>
 
-      <form id="createMember" action="#" style="margin-left:82%">
+      <form id="createMember" action="#" >
          <button type="submit" class="btn btn-warning" id="create">멤버추가</button>
       </form>
-      <form id="addMember" action="#" enctype="multipart/form-data" style="margin-left:80%;margin-top:5%">
+      <form id="addMember" action="#" enctype="multipart/form-data" >
       </form>
       
    </div>
 
 </body>
 
-   <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+
    <script type="text/javascript">
       $(document).ready(function() {
 

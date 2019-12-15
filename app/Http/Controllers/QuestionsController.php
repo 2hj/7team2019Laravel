@@ -95,6 +95,8 @@ class QuestionsController extends Controller
     public function edit($id)
     {
         $question = Question::find($id);
+        $this->authorize('update', $question);
+
         return response()->json($question);
     }
 
@@ -123,7 +125,10 @@ class QuestionsController extends Controller
      */
     public function destroy($id)
     {
-        \App\Question::find($id)->delete();
+        $question = Question::find($id);
+        $this->authorize('delete', $question);
+
+        $question->delete();
 
         return response($id);
     }
