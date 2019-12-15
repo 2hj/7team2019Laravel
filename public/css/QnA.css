@@ -198,6 +198,24 @@ label,h5 {
 
 #question-list ul  li {
       background-color: #1565c0;
+
+}
+div {
+      margin: 5px;
+}
+
+button {
+      margin-left: 10px;
+      margin-right: 10px;
+}
+
+.pagination {
+      justify-content: center; 
+}
+
+#createQuestion {
+      margin: 30px;
+
       margin-bottom: 5%;
       border-radius: 10px;
 
@@ -232,4 +250,5 @@ label,h5 {
       background-color: #4CAF50; /* Green */
       color: white;
       border-radius: 5px;
+
 }
