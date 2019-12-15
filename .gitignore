@@ -9,6 +9,7 @@ composer.phar
 /_ide_helper.php
 /app/config/packages
 /public/packages
+/public/img
 /node_modules
 .env
 /public/hot

@@ -148,6 +148,8 @@
                   var empty = $('#empty');
 
                   row.append(html);
+                  row.append(html);
+
                   addMember.html("");
                   empty.remove();
                
@@ -156,6 +158,7 @@
 
                   editAndDeleteId.on("click", onDeleteMember);
                   showMemberId.on("click", onShowMember);
+                  var row = $('.row');
                   
                }
             });
@@ -322,7 +325,7 @@
                   var html = $(`
                   <a class="member-form" id="showMember_${member_id}" data-id="${member_id}">
                      <div class="disc_image" id="member_img_${member_id}">   
-                        <img id="memberImage_${member_id}" width="360" height="360" src="/img/${data[img]}">
+                        <img id="memberImage_${member_id}" width="360" height="360" src="/img/${data['img']}">
                      </div>
                      <div class="disc_container">
                         <div>
