@@ -293,6 +293,8 @@
 
             var member_id = $(this).attr('data-id');
             var editMember = $(`#memberbox_${member_id}`);
+            console.log(member_id);
+            console.log(editMember[0]);
 
             var html = $(`
                <form class="member-form-edit" id="editCommitMember_${member_id}" data-id="${member_id}" action="#" enctype="multipart/form-data">
@@ -329,7 +331,7 @@
 
             var editMember_num_form = $(`#editCommitMember_${member_id}`)[0];
             var data = new FormData(editMember_num_form);
-            
+            console.log(editMember_num_form);
 
             data.append('_method','PATCH');
 
@@ -344,12 +346,13 @@
                data: data,
                success: function(data) {
                   console.log('edit data' ,data);
-
+                  console.log('img data' ,data[0]['img']);
+                  
                   
                   var memberBox = $(`#showMember_${member_id}`);
                   var html = $(`
 
-                  <a class="member-form" id="showingMember_${member_id}" data-id="${member_id}">
+                  <a class="member-form" id="showMember_${member_id}" data-id="${member_id}">
                      <div class="disc_image" id="member_img_${member_id}">
                         @if( $member->img != null )
                            <img id="memberImage_${member_id}" width="360" height="360" src="/img/${data[0]['img']}">
@@ -368,7 +371,7 @@
                      </div>
                   </a>
                   `);
-
+                  console.log(memberBox);
                   memberBox.html("");
                   memberBox.append(html);
 
