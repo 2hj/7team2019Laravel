@@ -40,6 +40,7 @@
                      </div>
                   </div>
                @empty
+                  
                   <p id="empty">조원이 등록되지 않았습니다.</p>
                @endforelse
             @endif

@@ -22,9 +22,9 @@ class QuestionsController extends Controller
     {
         // $questions = \App\Question::with('user')->latest()->paginate(10);
         $questions = Question::latest()->paginate(10);
-        $allQuestions = new Question;
+        // $allQuestions = new Question;
 
-        return view('qna.index', compact('allQuestions','questions'));
+        return view('qna.index', compact('questions'));
     }
 
     /**
