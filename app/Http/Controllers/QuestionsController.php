@@ -22,7 +22,6 @@ class QuestionsController extends Controller
     {
         // $questions = \App\Question::with('user')->latest()->paginate(10);
         $questions = Question::latest()->paginate(10);
-        // $allQuestions = new Question;
 
         return view('qna.index', compact('questions'));
     }
@@ -32,6 +31,7 @@ class QuestionsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function create()
     {
         return response();
@@ -47,7 +47,7 @@ class QuestionsController extends Controller
     public function store(Request $request){
       $rules = array(
         'title'=>'required',
-        'content'=>'required|min:10',
+        'content'=>'required',
       );
 
       $validator = \Validator::make($request->all(), $rules);
@@ -63,8 +63,10 @@ class QuestionsController extends Controller
       );
 
       $question = Question::create($questionArray);
-      Question::create($questionArray);
+
+      // Question::create($questionArray);
       flash()->success('질문을 성공적으로 저장했습니다.');
+
 
       return response()->json($question);
 
@@ -95,7 +97,7 @@ class QuestionsController extends Controller
     public function edit($id)
     {
         $question = Question::find($id);
-        $this->authorize('update', $question);
+
 
         return response()->json($question);
     }
@@ -125,12 +127,10 @@ class QuestionsController extends Controller
      */
     public function destroy($id)
     {
-        $question = Question::find($id);
-        $this->authorize('delete', $question);
+      \App\Question::find($id)->delete();
 
-        $question->delete();
 
-        return response($id);
+      return response($id);
     }
 
 }
