@@ -168,7 +168,8 @@ class MembersController extends Controller
             ]);
         }
         else {
-            \App\Member::where('id', '=', $id)->update([
+           /*  $update_member = \App\Member::where('id', '=', $id)->update([ */
+                \App\Member::where('id','=',$id)->update([
                 'name'=>$request->name,
                 'address'=>$request->address,
                 'phone_number'=>$request->phone_number,
@@ -177,9 +178,9 @@ class MembersController extends Controller
             ]);
         } 
 
-        $member = \App\Member::where('id', '=', $id)->get();
+        $member =  \App\Member::where('id','=',$id)->get();
 
-        return response()->json($member);
+        return $member;
     }
 
     /**
