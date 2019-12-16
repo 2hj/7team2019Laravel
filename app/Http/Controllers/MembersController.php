@@ -59,7 +59,7 @@ class MembersController extends Controller
             $filename = Str::random(15).filter_var($image->getClientOriginalName(),FILTER_SANITIZE_URL);
             $image->move(public_path('img'),$filename);
 
-            $members = \App\Member::create([
+            $member = \App\Member::create([
                 'name'=>$request->name,
                 'address'=>$request->address,
                 'phone_number'=>$request->phone_number,
@@ -68,7 +68,7 @@ class MembersController extends Controller
             ]); 
         } 
         else {
-            $members = \App\Member::create([
+            $member = \App\Member::create([
                 'name'=>$request->name,
                 'address'=>$request->address,
                 'phone_number'=>$request->phone_number,
@@ -79,7 +79,7 @@ class MembersController extends Controller
         
         
 
-        return $members;
+        return $member;
         
     }
 

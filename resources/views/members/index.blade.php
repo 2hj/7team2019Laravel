@@ -65,6 +65,8 @@
 
          var create_count = 0;
 
+
+// 멤버 추가 버튼 눌렀을 때-> 양식 띄움
          $('#createMember').on("submit", function(event) {
             event.preventDefault();
 
@@ -107,6 +109,8 @@
             });
          });
 
+
+// 양식 입력 후 submit 눌렀을 때 (request던짐)
          $('#addMember').on("submit", function(event) {
             event.preventDefault();
 
@@ -127,34 +131,35 @@
                   // name, address, mottoes, phone_number
                   console.log('data', data)
 
-                  
-                  var html = $(`
-                     <div class="col-xl-4 col-md-6 memberbox" id="memberbox_${data['id']}">
-                        <div class="disc" id="memberbox_disc_${data['id']}">
-                        <form class="showMember member-form" id="showMember_${data['id']}" data-id="${data['id']}" action="#" enctype="multipart/form-data">
-                           <a class="member-form" id="showingMember_${data['id']}" data-id="${data['id']}">
-                              <div class="disc_image" id="member_img_${data['id']}">   
-                                 @if( $member->img != null )
-                                    <img id="memberImage_${data['id']}" width="360" height="360" src="/img/${data['img']}">
-                                 @elseif( $member->img == null ) 
-                                    <img id="memberImage_${data['id']}" width="360" height="360" src="/images/none_image.png">
-                                 @endif
-                              </div>
-                              <div class="disc_container">
-                                 <div>
-                                    <div class="disc_content_6" id="member_${data['id']}">
-                                       <div class="disc_title">${data['name']}</div>
-                                       <div class="disc_subtitle">${data['mottoes']}</div>
+                  // var members = data;
+                  // members.forEach(function(member){
+                    var html = $(`
+                      <div class="col-xl-4 col-md-6 memberbox" id="memberbox_${data['id']}">
+                          <div class="disc" id="memberbox_disc_${data['id']}">
+                            <form class="showMember member-form" id="showMember_${data['id']}" data-id="${data['id']}" action="" enctype="multipart/form-data">
+                              <a class="member-form" id="showingMember_${data['id']}" data-id="${data['id']}">
+                                  <div class="disc_image" id="member_img_${data['id']}">   
+                                    @if( $member->img != null )
+                                        <img id="memberImage_${data['id']}" width="360" height="360" src="/img/${data['img']}">
+                                    @elseif( $member->img == null ) 
+                                        <img id="memberImage_${data['id']}" width="360" height="360" src="/images/none_image.png">
+                                    @endif
+                                  </div>
+                                  <div class="disc_container">
+                                    <div>
+                                        <div class="disc_content_6" id="member_${data['id']}">
+                                          <div class="disc_title">${data['name']}</div>
+                                          <div class="disc_subtitle">${data['mottoes']}</div>
+                                        </div>
+                                        <div id="editAndDelete_${data['id']}"></div>
                                     </div>
-                                    <div id="editAndDelete_${data['id']}"></div>
-                                 </div>
-                              </div>
-                           </a>
-                        </form>
-                        </div>
-                     </div>
-                  `);
-
+                                  </div>
+                              </a>
+                            </form>
+                          </div>
+                      </div>
+                    `);
+                  // })
                   var addMember = $('#addMember');
                   var empty = $('#empty');
 
