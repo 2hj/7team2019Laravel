@@ -20,7 +20,10 @@ class MembersController extends Controller
     public function index()
     {
         $members = \App\Member::get();
-      
+        
+        
+
+
         if(Auth::check()) {
             $user = Auth::user();
 

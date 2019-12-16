@@ -12,6 +12,7 @@
       <div class="container">
          <div class="row discs_row">
             
+            
             <!-- Disc -->
             @if( isset($members) )
                @forelse($members as $member)
