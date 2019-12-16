@@ -41,6 +41,8 @@
 
          var create_count = 0;
 
+
+         /////////생성버튼/////////
          $('#createJapan').on("submit", function(event) {
             event.preventDefault();
 
@@ -75,6 +77,10 @@
             });
          });
 
+
+
+
+         ////////생성 후 폼////////
          $('#addJapan').on("submit", function(event) {
             event.preventDefault();
 
@@ -128,6 +134,10 @@
 
          var edit_data = {};
          var showJapan = $('.showJapan');
+
+
+
+         ////////클릭 각각///////
          $(showJapan.each(function() {
             var showJapanId = $(`#showJapan_${$(this).attr('data-id')}`);
 
@@ -136,6 +146,8 @@
 
          var show_count = 0;
 
+
+         //////클릭하면 보이는거/////
          function onShowJapan() {
             var japan_id = $(this).attr('data-id');
             console.log('japan_id', japan_id);
@@ -197,6 +209,10 @@
 
          }
 
+
+
+
+         ///////삭제////////
          function onDeleteJapan() {
             var japan_id = $(this).attr('data-id');
 
@@ -219,6 +235,9 @@
 
          }
 
+
+
+         /////////수정 폼//////
          function onEditJapanCreateInput() {
 
             var japan_id = $(this).attr('data-id');
@@ -251,6 +270,8 @@
 
          }
 
+
+         ///////수정 후 폼////////
          function onEditJapan(japan_id) {
             var editJapan_num_form = $(`#editJapan_${japan_id}`)[0];
             var data = new FormData(editJapan_num_form);

@@ -68,7 +68,7 @@
          var create_count = 0;
 
 
-// 멤버 추가 버튼 눌렀을 때-> 양식 띄움
+         // 멤버 추가 버튼 눌렀을 때-> 양식 띄움
          $('#createMember').on("submit", function(event) {
             event.preventDefault();
 
@@ -112,7 +112,7 @@
          });
 
 
-// 양식 입력 후 submit 눌렀을 때 (request던짐)
+         // 양식 입력 후 submit 눌렀을 때 (request던짐)
          $('#addMember').on("submit", function(event) {
             event.preventDefault();
 
@@ -185,6 +185,9 @@
          
          var edit_data = {};
          var showMember = $('.showMember');
+
+
+         ///////////클릭 각각//////
          $(showMember.each(function() {
             var showMemberId = $(`#showMember_${$(this).attr('data-id')}`);
 
@@ -193,6 +196,9 @@
 
          var show_count = 0;
 
+
+
+         ////////클릭하면 보여지는 폼////////
          function onShowMember() {
             var member_id = $(this).attr('data-id');
             console.log('member_id', member_id);
@@ -266,6 +272,9 @@
 
          }
 
+
+
+         /////////삭제 /////////
          function onDeleteMember() {
             var member_id = $(this).attr('data-id');
 
@@ -291,6 +300,11 @@
 
          }
 
+
+
+
+
+         /////////수정 폼////////
          function onEditMemberCreateInput() {
 
             var member_id = $(this).attr('data-id');
@@ -327,11 +341,14 @@
 
          }
 
+
+
+         ///////수정 후 폼///////
          function onEditMember(member_id) {
 
             var editMember_num_form = $(`#editCommitMember_${member_id}`)[0];
             var data = new FormData(editMember_num_form);
-            
+            console.log(editMember_num_form);
 
             data.append('_method','PATCH');
 
@@ -346,11 +363,9 @@
                data: data,
                success: function(data) {
                   console.log('edit data' ,data);
-
+                  console.log('img data' ,data[0]['img']);
                   
-                  var memberBox = $(`#showMember_${member_id}`);
                   var html = $(`
-
                   <a class="member-form" id="showingMember_${member_id}" data-id="${member_id}">
                      <div class="disc_image" id="member_img_${member_id}">
                         @if( $member->img != null )
@@ -362,8 +377,8 @@
                      <div class="disc_container">
                         <div>
                            <div class="disc_content_6" id="member_${member_id}">
-                              <div class="disc_title">${data['name']}</div>
-                              <div class="disc_subtitle">${data['mottoes']}</div>
+                              <div class="disc_title">${data[0]['name']}</div>
+                              <div class="disc_subtitle">${data[0]['mottoes']}</div>
                            </div>
                            <div id="editAndDelete_${member_id}"></div>
                         </div>
@@ -371,11 +386,11 @@
                   </a>
                   `);
 
-                  memberBox.html("");
-                  memberBox.append(html);
+                  $(`#memberbox_${member_id}`).html("");
+                  $(`#memberbox_${member_id}`).append(html);
 
                   var memberImage = $(`#memberImage_${member_id}`);
-                  memberImage.attr("src", `/img/${data['img']}`);
+                  memberImage.attr("src", `/img/${data[0]['img']}`);
 
                   var showMember_id = $(`#showingMember_${member_id}`);
                   showMember_id.bind("click", onShowMember);
