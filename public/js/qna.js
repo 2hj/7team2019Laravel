@@ -35,18 +35,30 @@ $(document).ready(function(){
     
     var small = document.createElement('small');
     small.setAttribute('style', 'color: #FFFFFF;');
-    small.innerHTML = 'by' + data['user_id'];
+    small.innerHTML = 'by ' + data['user_id'];
+
+    var userDiv = document.createElement('div');
+    userDiv.innerHTML = $('input.userinput').val();
+    userDiv.setAttribute('style', 'display: none;');
+
+    var optionDiv = document.createElement('div');
+    optionDiv.setAttribute('id', 'option_'+data['id']);
+    optionDiv.setAttribute('style', 'padding: 10px;');
+    
+    var answerDiv = document.createElement('div');
+    answerDiv.setAttribute('id', 'answer'+data['id']);
+    answerDiv.setAttribute('style', 'padding: 10px;');
+
+    var parent = document.getElementById('div');
 
     li.appendChild(p1);
     li.appendChild(p2);
     li.appendChild(small);
+    li.appendChild(userDiv);
 
-    var optionDiv = document.createElement('div');
-    optionDiv.setAttribute('id', 'option_'+data['id']);
-
-    var parent = document.getElementById('div');
-    parent.prepend(optionDiv);
-    parent.prepend(li);
+    parent.appendChild(li);
+    parent.appendChild(optionDiv);
+    parent.appendChild(answerDiv);
 
     document.getElementById('ques_'+data['id']).addEventListener('click', function(){
         onClickEvent(data['id']);
@@ -56,10 +68,8 @@ $(document).ready(function(){
   // 수정 후 리로드
   function reloadEdit(data){
     console.log(data);
-    var ques_id = '#ques_'+data['hidden_qnaid'];
-
-    $(ques_id).children()[1].innerHTML = data['title'];
-    $(ques_id).children()[3].innerHTML = data['content'];
+    $('#ques_'+data['hidden_qnaid']).children()[1].innerHTML = data['title'];
+    $('#option_'+data['hidden_qnaid']).children()[0].innerHTML = data['content'];
   }
 
 
@@ -83,7 +93,6 @@ $(document).ready(function(){
           if(data['content']) {
             reloadAdd(data);
           }
-          // document.querySelector('.openQuestion').addEventListener('click');
         }
       });
     }
@@ -228,38 +237,60 @@ $(document).ready(function(){
   // 수정 버튼을 누른 경우
   function onClickEdit(){
     var editID = $('#editQuestion').attr('data-edit-id');
-    $('div#modalTitle').css('display', 'inline');
-    $('#action_button').val('Edit');
+    console.log(editID);
+    var user = $('#ques_'+editID).children()[3].innerHTML;
+
+    console.log(user);
     
-    $.ajax({
-      type: 'get',
-      url: '/qna/'+editID+'/edit',
-      success: function(data){
-        console.log(data);
-        console.log(document.forms);
-        var form = document.forms[2];
-        form.elements[1]['value'] = data.title;
-        form.elements[2]['value'] = data.content;
-        form.elements[4]['value'] = data.id;
-        $('#qnaModal').modal('show');
-      }
-    });
+    if(user == document.getElementsByClassName('userinput')[0].value ||
+    document.getElementsByClassName('useradmininput')[0].value == 1) {
+      $('div#modalTitle').css('display', 'inline');
+      $('#action_button').val('Edit');
+      
+      $.ajax({
+        type: 'get',
+        url: '/qna/'+editID+'/edit',
+        success: function(data){
+          console.log(data);
+          console.log(document.forms);
+          var form = document.forms[2];
+          form.elements[1]['value'] = data.title;
+          form.elements[2]['value'] = data.content;
+          form.elements[4]['value'] = data.id;
+          $('#qnaModal').modal('show');
+        }
+      });
+    } else {
+      alert('다른 사용자의 글은 수정할 수 없습니다.');
+    }
   }
 
   // 삭제 버튼을 누른 경우
   function onClickDelete() {
     var deleteId = $('#deleteQuestion').attr('data-delete-id');
-    $('div#answer_'+selectedAnswer).html('');
+    var user = $('#ques_'+deleteId).children()[3].innerHTML;
     
-    if(confirm('글을 삭제 하시겠습니까?')) {
-      $.ajax({
-        type:'delete',
-        url: '/qna/'+deleteId,
-        success: function(deleteId) {
-          $('li#ques_'+deleteId).remove();
-          deleteModule(deleteId)
-        }
-      });
+    console.log(user);
+    console.log(document.getElementsByClassName('userinput')[0].value);
+    
+    if(user == document.getElementsByClassName('userinput')[0].value ||
+    document.getElementsByClassName('useradmininput')[0].value == 1) {
+      $('div#answer_'+selectedAnswer).html('');
+      
+      if(confirm('글을 삭제 하시겠습니까?')) {
+        $.ajax({
+          type:'delete',
+          url: '/qna/'+deleteId,
+          success: function(deleteId) {
+            $('li#ques_'+deleteId).remove();
+            deleteModule(deleteId);
+            $('div#option_'+deleteId).remove();
+            $('div#answer_'+deleteId).remove();
+          }
+        });
+      }
+    } else {
+      alert('타인의 글을 삭제할 수 없습니다.');
     }
   }
 
@@ -327,10 +358,19 @@ $(document).ready(function(){
                 $('#hidden_qnaid').val(result);
                 $('#qnaModal').modal('show');
               } else {
-                var div = document.createElement('div');
-                div.innerHTML = '답변이 없습니다.';
-                console.log(result);
-                document.getElementById('answer_'+result).appendChild(div);
+                if(selectedAnswer != result) {
+                  var div = document.createElement('div');
+                  div.innerHTML = '답변이 없습니다.';
+                  console.log(selectedAnswer);
+                  console.log(result);
+                  console.log(selectedAnswer);
+                  document.getElementById('answer_'+result).appendChild(div);
+                  div.setAttribute('id', 'noans');
+                  selectedAnswer = result;
+                } else {
+                  $('#noans').remove();
+                  selectedAnswer = -1;
+                }
               }
             }
           });
@@ -386,7 +426,7 @@ $(document).ready(function(){
     $('p#ans_'+id).remove();
     $('button#ansEditBtn').remove();
     $('button#ansDeleteBtn').remove();
-    $('div#answer_'+selectedAnswer).html('');
+    $('div#answer_'+id).html('');
   }
 
 });

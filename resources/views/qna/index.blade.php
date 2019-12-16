@@ -5,7 +5,8 @@
 
 <div>
 	@auth
-		<input class="useradmininput" type="hidden" value="{{ Auth::user()->admin }}">
+    <input class="useradmininput" type="hidden" value="{{ Auth::user()->admin }}">
+    <input class="userinput" type="hidden" value="{{ Auth::user()->id }}">
 	@else
 		<input class="useradmininput" type="hidden" value="-1">
 	@endauth
@@ -23,6 +24,7 @@
           <p id="questionId" style="color: #FFFFFF;">{{ $question->id }}</p>
           <p> {{ $question->title }} </p>
           <small style="color: #FFFFFF;"> by {{ $question->user->name }} </small>
+          <div style="display: none;">{{$question->user->id}}</div>
         </li>
           <div style="padding: 10px;" id="option_{{$question->id}}"></div>
           <div style="padding: 10px;" id="answer_{{$question->id}}"></div>
