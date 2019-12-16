@@ -27,6 +27,9 @@ class DatabaseSeeder extends Seeder
         App\Answer::truncate();
         $this->call(AnswersTableSeeder::class);
 
+        App\Member::truncate();
+        $this->call(MembersTableSeeder::class);
+
         if(config('database.default') !== 'sqlite'){
           DB::statement('SET FOREIGN_KEY_CHECKS=1');
         }

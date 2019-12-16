@@ -4,6 +4,10 @@ $(document).ready(function(){
       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
   });
+  // ready() 함수는 HTML 이 준비가(로딩이) 완료되면 매개 변수로 전달된 함수를 실행하라는 명령어
+  // $(document) == 웹 페이지 전체(document)를 대상으로 하고 있음.
+  // == 웹 페이지를 모두 읽어들이고, 준비가 되었다면 인자로 주어진 함수를 통해 처리를 하라.
+  
 
   // Create a Question ajax
   $('#createQuestion').click(function(e){

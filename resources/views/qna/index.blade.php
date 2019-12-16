@@ -4,12 +4,12 @@
 <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/QnA.css') }}">
 
 <div>
-	@auth
+   @auth
     <input class="useradmininput" type="hidden" value="{{ Auth::user()->admin }}">
     <input class="userinput" type="hidden" value="{{ Auth::user()->id }}">
-	@else
-		<input class="useradmininput" type="hidden" value="-1">
-	@endauth
+   @else
+      <input class="useradmininput" type="hidden" value="-1">
+   @endauth
 </div>
 
 
