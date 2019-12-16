@@ -179,7 +179,10 @@ class MembersController extends Controller
                 'img'=>$request->img,
             ]);
         } 
-        return $request;
+
+        $member = \App\Member::where('id', '=', $id)->get();
+
+        return response()->json($member);
     }
 
     /**

@@ -354,7 +354,7 @@
                   <a class="member-form" id="showingMember_${member_id}" data-id="${member_id}">
                      <div class="disc_image" id="member_img_${member_id}">
                         @if( $member->img != null )
-                           <img id="memberImage_${member_id}" width="360" height="360" src="/img/${data[0]['img']}">
+                           <img id="memberImage_${member_id}" width="360" height="360" src="/img/${data['img']}">
                         @elseif( $member->img == null ) 
                            <img id="memberImage_${member_id}" width="360" height="360" src="/images/none_image.png">
                         @endif
