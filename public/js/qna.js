@@ -76,7 +76,7 @@ $(document).ready(function(){
     $('#option_'+data['hidden_qnaid']).children()[0].innerHTML = data['content'];
   }
 
-
+  // 폼 데이터 전송
   $('#qna-form').on('submit', function(e){
     e.preventDefault();
 
