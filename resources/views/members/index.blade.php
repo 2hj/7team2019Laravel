@@ -163,8 +163,9 @@
                   var addMember = $('#addMember');
                   var empty = $('#empty');
 
+                  var row = $('.row');
                   row.append(html);
-                  row.append(html);
+                  // row.append(html);
 
                   addMember.html("");
                   empty.remove();
@@ -174,7 +175,7 @@
 
                   editAndDeleteId.on("click", onDeleteMember);
                   showMemberId.on("click", onShowMember);
-                  var row = $('.row');
+                  // var row = $('.row');
                   
                }
             });
