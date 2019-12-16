@@ -59,7 +59,7 @@ class MembersController extends Controller
             $filename = Str::random(15).filter_var($image->getClientOriginalName(),FILTER_SANITIZE_URL);
             $image->move(public_path('img'),$filename);
 
-            $members = \App\Member::create([
+            $member = \App\Member::create([
                 'name'=>$request->name,
                 'address'=>$request->address,
                 'phone_number'=>$request->phone_number,
@@ -68,7 +68,7 @@ class MembersController extends Controller
             ]); 
         } 
         else {
-            $members = \App\Member::create([
+            $member = \App\Member::create([
                 'name'=>$request->name,
                 'address'=>$request->address,
                 'phone_number'=>$request->phone_number,
@@ -79,7 +79,7 @@ class MembersController extends Controller
         
         
 
-        return $members;
+        return $member;
         
     }
 
@@ -126,12 +126,40 @@ class MembersController extends Controller
      */
     public function update(Request $request, $id)
     {
+
+      // if($request->has('img')) {
+      //   $image = $request->file("img");
+      //   $filename = Str::random(15).filter_var($image->getClientOriginalName(),FILTER_SANITIZE_URL);
+      //   $image->move(public_path('img'),$filename);
+
+      //   $update_member = \App\Member::where('id', '=', $id)->update([
+      //       'name'=>$request->name,
+      //       'address'=>$request->address,
+      //       'phone_number'=>$request->phone_number,
+      //       'mottoes'=>$request->mottoes,
+      //       'img'=>$filename,
+      //   ]);
+      // }
+      // else {
+      //     $update_member = \App\Member::where('id', '=', $id)->update([
+      //         'name'=>$request->name,
+      //         'address'=>$request->address,
+      //         'phone_number'=>$request->phone_number,
+      //         'mottoes'=>$request->mottoes,
+      //         'img'=>$request->img,
+      //     ]);
+      // } 
+
+      // $member = $update_member::get();
+
+      // return $member;
+
         if($request->has('img')) {
             $image = $request->file("img");
             $filename = Str::random(15).filter_var($image->getClientOriginalName(),FILTER_SANITIZE_URL);
             $image->move(public_path('img'),$filename);
 
-            $update_member = \App\Member::where('id', '=', $id)->update([
+            \App\Member::where('id', '=', $id)->update([
                 'name'=>$request->name,
                 'address'=>$request->address,
                 'phone_number'=>$request->phone_number,
@@ -140,7 +168,8 @@ class MembersController extends Controller
             ]);
         }
         else {
-            $update_member = \App\Member::where('id', '=', $id)->update([
+           /*  $update_member = \App\Member::where('id', '=', $id)->update([ */
+                \App\Member::where('id','=',$id)->update([
                 'name'=>$request->name,
                 'address'=>$request->address,
                 'phone_number'=>$request->phone_number,
@@ -149,7 +178,7 @@ class MembersController extends Controller
             ]);
         } 
 
-        $member = $update_member::get();
+        $member =  \App\Member::where('id','=',$id)->get();
 
         return $member;
     }

@@ -63,7 +63,7 @@ class QuestionsController extends Controller
       );
 
       $question = Question::create($questionArray);
-      Question::create($questionArray);
+      // Question::create($questionArray);
       flash()->success('질문을 성공적으로 저장했습니다.');
 
       return response()->json($question);
@@ -95,8 +95,6 @@ class QuestionsController extends Controller
     public function edit($id)
     {
         $question = Question::find($id);
-        $this->authorize('update', $question);
-
         return response()->json($question);
     }
 
@@ -125,10 +123,7 @@ class QuestionsController extends Controller
      */
     public function destroy($id)
     {
-        $question = Question::find($id);
-        $this->authorize('delete', $question);
-
-        $question->delete();
+        \App\Question::find($id)->delete();
 
         return response($id);
     }
