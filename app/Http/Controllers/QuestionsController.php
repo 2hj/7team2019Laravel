@@ -31,6 +31,7 @@ class QuestionsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function create()
     {
         return response();
@@ -46,7 +47,7 @@ class QuestionsController extends Controller
     public function store(Request $request){
       $rules = array(
         'title'=>'required',
-        'content'=>'required|min:10',
+        'content'=>'required',
       );
 
       $validator = \Validator::make($request->all(), $rules);
@@ -62,7 +63,7 @@ class QuestionsController extends Controller
       );
 
       $question = Question::create($questionArray);
-      
+
       return response()->json($question);
 
     }
@@ -92,8 +93,7 @@ class QuestionsController extends Controller
     public function edit($id)
     {
         $question = Question::find($id);
-        $this->authorize('update', $question);
-
+        
         return response()->json($question);
     }
 
@@ -122,12 +122,9 @@ class QuestionsController extends Controller
      */
     public function destroy($id)
     {
-        $question = Question::find($id);
-        $this->authorize('delete', $question);
+      \App\Question::find($id)->delete();
 
-        $question->delete();
-
-        return response($id);
+      return response($id);
     }
 
 }
