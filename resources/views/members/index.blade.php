@@ -366,24 +366,28 @@
                   console.log('img data' ,data[0]['img']);
                   
                   var html = $(`
-                  <a class="member-form" id="showingMember_${member_id}" data-id="${member_id}">
-                     <div class="disc_image" id="member_img_${member_id}">
-                        @if( $member->img != null )
-                           <img id="memberImage_${member_id}" width="360" height="360" src="/img/${data['img']}">
-                        @elseif( $member->img == null ) 
-                           <img id="memberImage_${member_id}" width="360" height="360" src="/images/none_image.png">
-                        @endif
-                     </div>
-                     <div class="disc_container">
-                        <div>
-                           <div class="disc_content_6" id="member_${member_id}">
-                              <div class="disc_title">${data[0]['name']}</div>
-                              <div class="disc_subtitle">${data[0]['mottoes']}</div>
+                  <div class="disc" id="memberbox_disc_${member_id}">
+                     <form class="showMember member-form" id="showMember_${member_id}" data-id="${member_id}" action="#" enctype="multipart/form-data">
+                        <a class="member-form" id="showingMember_${member_id}" data-id="${member_id}">
+                           <div class="disc_image" id="member_img_${member_id}">
+                              @if( $member->img != null )
+                                 <img id="memberImage_${member_id}" width="360" height="360" src="/img/${data['img']}">
+                              @elseif( $member->img == null ) 
+                                 <img id="memberImage_${member_id}" width="360" height="360" src="/images/none_image.png">
+                              @endif
                            </div>
-                           <div id="editAndDelete_${member_id}"></div>
-                        </div>
-                     </div>
-                  </a>
+                           <div class="disc_container">
+                              <div>
+                                 <div class="disc_content_6" id="member_${member_id}">
+                                    <div class="disc_title">${data[0]['name']}</div>
+                                    <div class="disc_subtitle">${data[0]['mottoes']}</div>
+                                 </div>
+                                 <div id="editAndDelete_${member_id}"></div>
+                              </div>
+                           </div>
+                        </a>
+                     </form>
+                  </div>
                   `);
 
                   $(`#memberbox_${member_id}`).html("");
