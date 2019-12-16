@@ -38,20 +38,20 @@ class AnswersController extends Controller
             'content'=>'required',
         ];
     
-          $validator = \Validator::make($request->all(), $rules);
-    
-          if($validator->fails()){
-            return response()->json(['error'=> $validator->errors()->all()]);
-          }
-    
-          $answerArray = array(
-            'target_id'=>$request->id,
-            'answer_content' => $request->content,
-          );
-    
-          $answer =\App\Answer::create($answerArray);
-    
-          return response($answer);
+        $validator = \Validator::make($request->all(), $rules);
+
+        if($validator->fails()){
+        return response()->json(['error'=> $validator->errors()->all()]);
+        }
+
+        $answerArray = array(
+        'target_id'=>$request->id,
+        'answer_content' => $request->content,
+        );
+
+        $answer =\App\Answer::create($answerArray);
+
+        return response($answer);
     }
 
     /**
@@ -95,9 +95,9 @@ class AnswersController extends Controller
     {
         $answer = \App\Answer::where('target_id', '=', $id)->update([
             'answer_content'=>$request->content,
-          ]);
+        ]);
     
-          return $request;
+        return $request;
     }
 
     /**
