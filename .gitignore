@@ -12,6 +12,7 @@ composer.phar
 /node_modules
 .env
 /public/hot
+/public/css/img
 /public/storage
 /storage/*.key
 .env.backup
