@@ -44,6 +44,8 @@ class LoginController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+     // handleProviderCallback() : 깃허
     public function handleProviderCallback()
     {
         $user = Socialite::driver('github')->user();

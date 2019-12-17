@@ -240,10 +240,6 @@
                   <div class="disc_subtitle">${member[0]['mottoes']}</div>
                   `);
 
-                  /* var imgFile= $(`
-                     <img name="img" id="memberImage_${member[0]['id']}" width="360" height="360" src="/img/${member[0]['img']}" alt="No Image">
-                  `); */
-
                   var member_img_Div = $(`#member_img_${member[0]['id']}`);
                   var memberDiv = $(`#member_${member[0]['id']}`);
                   var editAndDeleteDiv = $(`#editAndDelete_${member[0]['id']}`);
