@@ -24,10 +24,10 @@
          @endforelse
       </div>
       @if( isset($admin) && $admin == true )
-         <form id="createJapan" action="#">
+         <form id="createJapan" action="">
             <button type="submit" class="btn btn-warning" id="create">자료추가</button>
          </form>
-         <form id="addJapan" action="#" enctype="multipart/form-data">
+         <form id="addJapan" action="" enctype="multipart/form-data">
 
          </form>
       @endif
@@ -62,7 +62,7 @@
                   <hr>
                   <input type="file" name="img" id="img" accept="image/x-png,image/gif,image/jpeg">
                   <br>
-                  <input type="submit" value="생성">
+                  <input type="submit" id="addJapanBtn" value="생성">
                   `);
 
                   var addJapan = $('#addJapan');
@@ -84,6 +84,7 @@
          $('#addJapan').on("submit", function(event) {
             event.preventDefault();
 
+            console.log($('addJapan'));
             var form = $('#addJapan')[0];
             console.log('form', form);
             var data = new FormData(form);
@@ -104,7 +105,7 @@
                   var html = $(`
                   <div class='japanbox' id="japanbox_${data['id']}">
                      <form class="showJapan" id="showJapan_${data['id']}" data-id="${data['id']}" action="#">
-                        <div id="Japan_${data['id']}">
+                        <div id="japan_${data['id']}">
                            <h3 class="placebar">${data['place']}</h3>
                         </div>
                      </form>
@@ -308,6 +309,8 @@
 
                   var showJapan_id = $(`#showJapan_${japan_id}`);
                   showJapan_id.bind("click", onShowJapan);
+
+                  show_count++;
 
                },
                error: function(request, status, error){

@@ -50,7 +50,7 @@ $(document).ready(function(){
     optionDiv.setAttribute('style', 'padding: 10px;');
     
     var answerDiv = document.createElement('div');
-    answerDiv.setAttribute('id', 'answer'+data['id']);
+    answerDiv.setAttribute('id', 'answer_'+data['id']);
     answerDiv.setAttribute('style', 'padding: 10px;');
 
     var parent = document.getElementById('div');

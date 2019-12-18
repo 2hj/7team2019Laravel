@@ -130,9 +130,7 @@ class JapanController extends Controller
             ]);
         }
 
-        $respon = \App\User::where('id', '=', $id)->get();
-
-        return $respon;
+        return $request;
     }
 
     /**
